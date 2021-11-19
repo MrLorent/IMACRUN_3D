@@ -40,11 +40,13 @@ add_subdirectory(${LIB_DIR}/assimp-5.0.1)
 # Add header files
 file(GLOB_RECURSE HEADER_FILES 
 	${CMAKE_SOURCE_DIR}/include/*.hpp
+    ${CMAKE_SOURCE_DIR}/lib/glimac/glimac/*.hpp
 )
 
 # Add source files
 file(GLOB_RECURSE SOURCE_FILES 
 	${CMAKE_SOURCE_DIR}/src/*.cpp
+    ${CMAKE_SOURCE_DIR}/lib/glimac/src/*.cpp
 )
 
 # create the executable file

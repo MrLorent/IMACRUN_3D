@@ -1,32 +1,16 @@
-#include "App.hpp"
+#include "./App.hpp"
 
 static App& get_app(GLFWwindow* window)
 {
     return *reinterpret_cast<App*>(glfwGetWindowUserPointer(window));
 }
 
-int main()
+int main(int argc, char** argv)
 {
     /* Initialize the library */
     if (!glfwInit()) {
         return -1;
     }
-
-    FT_Library ft;
-
-    if(FT_Init_FreeType(&ft)) {
-        fprintf(stderr, "Could not init freetype library\n");
-    return 1;
-
-    FT_Face face;
-
-    if(FT_New_Face(ft, "FreeSans.ttf", 0, &face)) {
-        fprintf(stderr, "Could not open font\n");
-        return 1;
-    }
-
-    Assimp::Importer importer;
-}
 
     /* Create a windowed mode window and its OpenGL context */
 #ifdef __APPLE__
@@ -36,7 +20,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Hello World", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(720, 720, "Hello World", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
         return -1;
@@ -53,7 +37,7 @@ int main()
     /* Create the App */
     int w, h;
     glfwGetWindowSize(window, &w, &h);
-    App app{w, h};
+    App app{w, h, argv[0]};
 
     /* Hook user inputs to the App */
     glfwSetWindowUserPointer(window, reinterpret_cast<void*>(&app));
@@ -83,6 +67,8 @@ int main()
         /* Poll for and process events */
         glfwPollEvents();
     }
+
+    app.destroy();
 
     glfwTerminate();
     return 0;
