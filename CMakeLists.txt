@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 project(IMACRUN_3D)
 
 # Set C++ version
-set(CXX_STANDARD 11)
+set(CXX_STANDARD 14)
 
 # Set the path to the lib folder
 set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
