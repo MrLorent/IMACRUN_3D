@@ -8,7 +8,6 @@ set(CXX_STANDARD 14)
 
 # Set the path to the lib folder
 set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-
 # Set the path to the src folder
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -16,37 +15,14 @@ set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(EXECUTABLE_OUTPUT_PATH 
     ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}
 )
-
-# GLFW
-# Setting-up GLFW
-set(GLFW_DIR ${LIB_DIR}/glfw)
-option(GLFW_BUILD_EXAMPLES "Build the GLFW example programs" OFF)
-option(GLFW_BUILD_TESTS "Build the GLFW test programs" OFF)
-option(GLFW_BUILD_DOCS "Build the GLFW documentation" OFF)
-option(GLFW_INSTALL "Generate installation target" OFF)
-option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
-add_subdirectory(${GLFW_DIR} binary_dir EXCLUDE_FROM_ALL)
-
-# GLAD
-set(GLAD_DIR ${LIB_DIR}/glad)
-add_library(GLAD STATIC ${GLAD_DIR}/src/glad.c)
-
-# FREETYPE
-add_subdirectory(${LIB_DIR}/freetype-2.10.0)
-
-# ASSIMP
-add_subdirectory(${LIB_DIR}/assimp-5.0.1)
-
 # Add header files
 file(GLOB_RECURSE HEADER_FILES 
 	${CMAKE_SOURCE_DIR}/include/*.hpp
-    ${CMAKE_SOURCE_DIR}/lib/glimac/glimac/*.hpp
 )
 
 # Add source files
 file(GLOB_RECURSE SOURCE_FILES 
 	${CMAKE_SOURCE_DIR}/src/*.cpp
-    ${CMAKE_SOURCE_DIR}/lib/glimac/src/*.cpp
 )
 
 # create the executable file
@@ -54,45 +30,14 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
 # Include the directories containing our code
 include_directories(
-    lib
-    lib/glimac
     include
     src
 )
 
-# OPENGL
-find_package(OpenGL REQUIRED)
-# Include the directories containing OpenGL's code
-include_directories(
-    ${OPENGL_INCLUDE_DIR}
-)
-target_link_libraries(${PROJECT_NAME}
-    ${OPENGL_LIBRARIES}
-    freetype
-    assimp
-)
-
-# GLAD
-target_include_directories(GLAD PRIVATE ${GLAD_DIR}/include)
-target_include_directories(${PROJECT_NAME} PRIVATE ${GLAD_DIR}/include)
-target_link_libraries(${PROJECT_NAME}
-    GLAD
-)
-
-#GLFW
-# Including GLFW into IMACRUN_3D code space
-include_directories(
-    ${GLFW_DIR}/include
-    ${GLFW_DIR}/deps
-)
-target_link_libraries(${PROJECT_NAME}
-    glfw
-)
-
 # Including GLM into IMACRUN_3D code space
-set(GLM_DIR ${LIB_DIR}/glm)
-include_directories(
-    ${GLM_DIR}
+add_subdirectory(${LIB_DIR}/glimac)
+target_link_libraries(${PROJECT_NAME}
+    glimac
 )
 
 #
