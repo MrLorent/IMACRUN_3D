@@ -7,7 +7,7 @@ project(IMACRUN_3D)
 set(CXX_STANDARD 14)
 
 # Set the path to the lib folder
-set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party)
 # Set the path to the src folder
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -17,12 +17,14 @@ set(EXECUTABLE_OUTPUT_PATH
 )
 # Add header files
 file(GLOB_RECURSE HEADER_FILES 
-	${CMAKE_SOURCE_DIR}/include/*.hpp
+	${CMAKE_SOURCE_DIR}/src/*.hpp
+    ${CMAKE_SOURCE_DIR}/src/app/*.hpp
 )
 
 # Add source files
 file(GLOB_RECURSE SOURCE_FILES 
 	${CMAKE_SOURCE_DIR}/src/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/app/*.cpp
 )
 
 # create the executable file
@@ -30,14 +32,31 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
 # Include the directories containing our code
 include_directories(
-    include
     src
+    src/app
 )
 
-# Including GLM into IMACRUN_3D code space
-add_subdirectory(${LIB_DIR}/glimac)
-target_link_libraries(${PROJECT_NAME}
-    glimac
+# ---Add GLFW---
+add_subdirectory(${LIB_DIR}/glfw)
+target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
+
+# ---Add glad---
+add_library(glad ${LIB_DIR}/glad/src/glad.c)
+target_include_directories(glad PUBLIC ${LIB_DIR}/glad/include)
+target_link_libraries(${PROJECT_NAME} PUBLIC glad)
+
+# ---Add glm---
+add_subdirectory(${LIB_DIR}/glm)
+target_link_libraries(${PROJECT_NAME} PUBLIC glm)
+
+# ---Add FreeType---
+add_subdirectory(${LIB_DIR}/freetype)
+target_link_libraries(${PROJECT_NAME} PUBLIC freetype)
+
+# ---Add header librairies---
+include_directories(
+    ${LIB_DIR}/tinyobj_loader_c
+    ${LIB_DIR}/stb
 )
 
 #
