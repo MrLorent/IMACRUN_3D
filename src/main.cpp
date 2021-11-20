@@ -6,6 +6,7 @@
 #include <tiny_obj_loader.h>
 #include "Program.hpp"
 #include "FilePath.hpp"
+#include "glm.hpp"
 
 int window_width  = 1280;
 int window_height = 720;
@@ -68,13 +69,15 @@ int main(int argc, char** argv)
     glfwSetCursorPosCallback(window, &cursor_position_callback);
     glfwSetWindowSizeCallback(window, &size_callback);
 
+    //Chargement des shaders
     glimac::FilePath applicationPath(argv[0]);
     glimac::Program program = loadProgram(
-        applicationPath.dirPath() + "shaders/triangle.vs.glsl",
-        applicationPath.dirPath() + "shaders/triangle.fs.glsl"
+        applicationPath.dirPath() + "src/shaders/triangle.vs.glsl",
+        applicationPath.dirPath() + "src/shaders/triangle.fs.glsl"
         );
     program.use();
 
+    //Chargement du model 3D
     std::string inputfile = "./assets/models/cup.obj";
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
@@ -92,10 +95,51 @@ int main(int argc, char** argv)
         exit(1);
     }
 
+
+    //Initialisation des matrices
+    glm::mat4 ProjMatrix=glm::perspective(glm::radians(70.f),float(window_width/window_height), 0.1f, 100.f);
+    glm::mat4 id=glm::mat4(glm::vec4(1.0,0.,0.,0.), glm::vec4(0.,1.,0.,0.), glm::vec4(0.,0.,1.,0.), glm::vec4(0.,0.,0.,1.));
+    glm::mat4 MVMatrix=glm::translate(id, glm::vec3(0.,0.,-5.));
+    glm::mat4 NormalMatrix=glm::transpose(glm::inverse(MVMatrix));
+
+     // Creation du vbo
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo); 
+
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        attrib.vertices.size()*sizeof(GLfloat),
+        attrib.vertices.data(),
+        GL_STATIC_DRAW
+    );
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+
+    const GLuint VERTEX_ATTR_POSITION = 0;
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    //POSITION
+    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(tinyobj::attrib_t), (const void*)(offsetof(tinyobj::attrib_t, vertices)));
+
+     glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glBindVertexArray(0);
+
+
+
+
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.5f, 0.5f, 1.f, 1.f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glBindVertexArray(vao);
+        glDrawArrays(GL_TRIANGLES, 0, attrib.vertices.size());
+        glBindVertexArray(0);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
