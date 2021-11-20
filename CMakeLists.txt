@@ -31,7 +31,6 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 # Include the directories containing our code
 include_directories(
     src
-    src/app
 )
 
 # ---Add GLFW---
@@ -51,9 +50,12 @@ target_link_libraries(${PROJECT_NAME} PUBLIC glm)
 add_subdirectory(${LIB_DIR}/freetype)
 target_link_libraries(${PROJECT_NAME} PUBLIC freetype)
 
+# ---Add tinyobjloader---
+add_subdirectory(${LIB_DIR}/tinyobjloader)
+target_link_libraries(${PROJECT_NAME} PUBLIC tinyobjloader)
+
 # ---Add header librairies---
 include_directories(
-    ${LIB_DIR}/tinyobj_loader_c
     ${LIB_DIR}/stb
 )
 

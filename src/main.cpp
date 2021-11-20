@@ -1,33 +1,38 @@
+#include <iostream>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#define TINYOBJLOADER_IMPLEMENTATION
+#include <tiny_obj_loader.h>
+#include "Program.hpp"
+#include "FilePath.hpp"
 
 int window_width  = 1280;
 int window_height = 720;
 
-static void key_callback(GLFWwindow* /*window*/, int /*key*/, int /*scancode*/, int /*action*/, int /*mods*/)
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 }
 
-static void mouse_button_callback(GLFWwindow* /*window*/, int /*button*/, int /*action*/, int /*mods*/)
+static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
 }
 
-static void scroll_callback(GLFWwindow* /*window*/, double /*xoffset*/, double /*yoffset*/)
+static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 }
 
-static void cursor_position_callback(GLFWwindow* /*window*/, double /*xpos*/, double /*ypos*/)
+static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
 }
 
-static void size_callback(GLFWwindow* /*window*/, int width, int height)
+static void size_callback(GLFWwindow* window, int width, int height)
 {
     window_width  = width;
     window_height = height;
 }
 
-int main()
+int main(int argc, char** argv)
 {
     /* Initialize the library */
     if (!glfwInit()) {
@@ -62,6 +67,30 @@ int main()
     glfwSetScrollCallback(window, &scroll_callback);
     glfwSetCursorPosCallback(window, &cursor_position_callback);
     glfwSetWindowSizeCallback(window, &size_callback);
+
+    glimac::FilePath applicationPath(argv[0]);
+    glimac::Program program = loadProgram(
+        applicationPath.dirPath() + "shaders/triangle.vs.glsl",
+        applicationPath.dirPath() + "shaders/triangle.fs.glsl"
+        );
+    program.use();
+
+    std::string inputfile = "./assets/models/cup.obj";
+    tinyobj::attrib_t attrib;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
+    
+    std::string warn;
+    std::string err;
+    bool ret = tinyobj::LoadObj(&attrib,&shapes,&materials, &warn, &err, inputfile.c_str(), nullptr);
+    
+    if (!err.empty()) { // `err` may contain warning message.
+        std::cerr << err << std::endl;
+    }
+
+    if (!ret) {
+        exit(1);
+    }
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
