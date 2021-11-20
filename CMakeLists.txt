@@ -33,7 +33,8 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 # Include the directories containing our code
 include_directories(
     src
-    src/app
+    src/glimac
+    src/rendering
 )
 
 # ---Add GLFW---
@@ -53,9 +54,12 @@ target_link_libraries(${PROJECT_NAME} PUBLIC glm)
 add_subdirectory(${LIB_DIR}/freetype)
 target_link_libraries(${PROJECT_NAME} PUBLIC freetype)
 
+# ---Add tinyObjLoader---
+add_subdirectory(${LIB_DIR}/assimp)
+target_link_libraries(${PROJECT_NAME} PUBLIC assimp)
+
 # ---Add header librairies---
 include_directories(
-    ${LIB_DIR}/tinyobj_loader_c
     ${LIB_DIR}/stb
 )
 
