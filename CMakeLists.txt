@@ -1,78 +1,87 @@
-cmake_minimum_required(VERSION 3.10)
+# Copyright (C) 2018 Tomasz Gałaj
 
-# Set project name
-project(IMACRUN_3D)
+cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+project(OpenGLExample)
 
-# Set C++ version
-set(CXX_STANDARD 14)
-
-# Set the path to the lib folder
-set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party)
-# Set the path to the src folder
-set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-
-# Set the folder where the executable is created
-set(EXECUTABLE_OUTPUT_PATH 
-    ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}
-)
-# Add header files
-file(GLOB_RECURSE HEADER_FILES 
-	${CMAKE_SOURCE_DIR}/src/*.hpp
-    ${CMAKE_SOURCE_DIR}/src/app/*.hpp
-)
+# Add .lib files
+link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 # Add source files
 file(GLOB_RECURSE SOURCE_FILES 
-	${CMAKE_SOURCE_DIR}/src/*.cpp
-    ${CMAKE_SOURCE_DIR}/src/app/*.cpp
-)
+	${CMAKE_SOURCE_DIR}/src/*.c
+	${CMAKE_SOURCE_DIR}/src/*.cpp)
+	
+# Add header files
+file(GLOB_RECURSE HEADER_FILES 
+	${CMAKE_SOURCE_DIR}/src/*.h
+	${CMAKE_SOURCE_DIR}/src/*.hpp)
 
-# create the executable file
+# Configure assets header file
+configure_file(src/helpers/RootDir.h.in src/helpers/RootDir.h)
+include_directories(${CMAKE_BINARY_DIR}/src)
+	
+# Define the executable
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
-# Include the directories containing our code
-include_directories(
-    src
-    src/glimac
-    src/rendering
-)
+# We need a CMAKE_DIR with some code to find external dependencies
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
-# ---Add GLFW---
-add_subdirectory(${LIB_DIR}/glfw)
-target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
-
-# ---Add glad---
-add_library(glad ${LIB_DIR}/glad/src/glad.c)
-target_include_directories(glad PUBLIC ${LIB_DIR}/glad/include)
-target_link_libraries(${PROJECT_NAME} PUBLIC glad)
+#######################################
+# LOOK for the packages that we need! #
+#######################################
 
 # ---Add glm---
-add_subdirectory(${LIB_DIR}/glm)
-target_link_libraries(${PROJECT_NAME} PUBLIC glm)
+add_subdirectory(thirdparty/glm)
 
-# ---Add FreeType---
-add_subdirectory(${LIB_DIR}/freetype)
-target_link_libraries(${PROJECT_NAME} PUBLIC freetype)
+# ---Add GLFW---
+add_subdirectory(thirdparty/glfw)
 
-# ---Add tinyObjLoader---
-add_subdirectory(${LIB_DIR}/assimp)
-target_link_libraries(${PROJECT_NAME} PUBLIC assimp)
+# ASSIMP
+add_subdirectory(thirdparty/assimp)
 
-# ---Add header librairies---
+# STB_IMAGE
+add_library(STB_IMAGE "thirdparty/stb_image.cpp")
+
+# GLAD
+add_library(GLAD "thirdparty/glad.c")
+
+# Put all libraries into a variable
+set(LIBS glm glfw assimp STB_IMAGE GLAD)
+
+# Define the include DIRs
 include_directories(
-    ${LIB_DIR}/stb
+	"${CMAKE_SOURCE_DIR}/src"
+	"${CMAKE_SOURCE_DIR}/include"
 )
 
-#
-#Add a post build operation to copy shaders to the output folder (where the executable is created)
-#
-function(copy_folder_to_the_output_folder _FOLDERPATH)
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/${_FOLDERPATH}
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/${_FOLDERPATH}
-)
-endfunction()
-copy_folder_to_the_output_folder("assets")
-copy_folder_to_the_output_folder("src/shaders")
+# Define the link libraries
+target_link_libraries(${PROJECT_NAME} ${LIBS})
+
+# Create virtual folders to make it look nicer in VS
+if(MSVC_IDE)
+	# Macro to preserve source files hierarchy in the IDE
+	macro(GroupSources curdir)
+		file(GLOB children RELATIVE ${PROJECT_SOURCE_DIR}/${curdir} ${PROJECT_SOURCE_DIR}/${curdir}/*)
+
+		foreach(child ${children})
+			if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/${curdir}/${child})
+				GroupSources(${curdir}/${child})
+			else()
+				string(REPLACE "/" "\\" groupname ${curdir})
+				string(REPLACE "src" "Sources" groupname ${groupname})
+				source_group(${groupname} FILES ${PROJECT_SOURCE_DIR}/${curdir}/${child})
+			endif()
+		endforeach()
+	endmacro()
+
+	# Run macro
+	GroupSources(src)
+endif()
+
+# Copy dlls
+if(WIN32)
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${PROJECT_SOURCE_DIR}/dlls"
+		$<TARGET_FILE_DIR:${PROJECT_NAME}>)
+endif()
