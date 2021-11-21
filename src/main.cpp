@@ -139,13 +139,14 @@ int main(int argc, char** argv)
                 Vertex shape = Vertex(pos, text, norm);
                 model.push_back(shape);
             }
+            index_offset += fv;
         }
     }
 
     //Initialisation des matrices
     glm::mat4 ProjMatrix=glm::perspective(glm::radians(70.f),float(window_width/window_height), 0.1f, 100.f);
     glm::mat4 id=glm::mat4(glm::vec4(1.0,0.,0.,0.), glm::vec4(0.,1.,0.,0.), glm::vec4(0.,0.,1.,0.), glm::vec4(0.,0.,0.,1.));
-    glm::mat4 MVMatrix=glm::translate(id, glm::vec3(0.,0.,-5.));
+    glm::mat4 MVMatrix=glm::translate(id, glm::vec3(0.,0.,-10.));
     glm::mat4 NormalMatrix=glm::transpose(glm::inverse(MVMatrix));
 
      // Creation du vbo
