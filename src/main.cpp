@@ -15,6 +15,8 @@
 int window_width  = 720;
 int window_height = 720;
 
+glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
+
 //Creation de la camera
 glimac::TrackballCamera cam= glimac::TrackballCamera();
 
@@ -258,8 +260,14 @@ static void cursor_position_callback(GLFWwindow* window, double xpos, double ypo
 
 static void size_callback(GLFWwindow* window, int width, int height)
 {
-    window_width  = width;
-    window_height = height;
+    glViewport(0, 0, width, height);
+    ProjMatrix = glm::perspectiveFov(
+        glm::radians(70.0f),
+        float(width),
+        float(height),
+        0.1f,
+        100.0f
+    );
 }
 
 int main(int argc, char** argv)
@@ -288,7 +296,6 @@ int main(int argc, char** argv)
     loadMesh(model);
     
     //Initialisation des matrices
-    glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
     initMatrix(ProjMatrix, MVMatrix, NormalMatrix);
     
     //Initalisation du vbo
