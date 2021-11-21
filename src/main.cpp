@@ -12,13 +12,14 @@
 #include <Image.hpp>
 
 //Dimension de la fenêtre
+GLFWwindow* window;
 int window_width  = 720;
 int window_height = 720;
 
-glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
-
 //Creation de la camera
 glimac::TrackballCamera cam= glimac::TrackballCamera();
+
+glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
 
 struct Vertex{
     glm::vec3 position;
@@ -32,11 +33,11 @@ struct Vertex{
     }
 };
 
-GLFWwindow* initGLFW(const int &window_width, const int &window_height){
+int init(const int &window_width, const int &window_height){
 
     /* Initialize the library */
     if (!glfwInit()) {
-        //return -1; yaura des trucs à faire là mais jsp (nullptr?)
+        return -1;
     }
 
     /* Create a window and its OpenGL context */
@@ -47,10 +48,18 @@ GLFWwindow* initGLFW(const int &window_width, const int &window_height){
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     #endif
-    GLFWwindow* window = glfwCreateWindow(window_width, window_height, "IMACRUN_3D", nullptr, nullptr);
+    
+    window = glfwCreateWindow(
+        window_width,
+        window_height,
+        "IMACRUN_3D",
+        nullptr,
+        nullptr
+    );
+
     if (!window) {
         glfwTerminate();
-        //return -1; yaura des trucs à faire là mais jsp (nullptr?)
+        return -1;
     }
 
     /* Make the window's context current */
@@ -58,10 +67,19 @@ GLFWwindow* initGLFW(const int &window_width, const int &window_height){
 
     /* Intialize glad (loads the OpenGL functions) */
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        //return -1; yaura des trucs à faire là mais jsp (nullptr?)
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
     }
-    return window;
+
+    /* Set the viewport */
+    //glViewport(0, 0, window_width, window_height);
+
+    glEnable(GL_DEPTH_TEST);
+
+
+    return 1;
 }
+
 glimac::Program loadShader(glimac::FilePath applicationPath){
     glimac::Program program = loadProgram(
         applicationPath.dirPath() + "src/shaders/triangle.vs.glsl",
@@ -69,6 +87,7 @@ glimac::Program loadShader(glimac::FilePath applicationPath){
         );
     return program;
 }
+
 void loadTexture(glimac::FilePath applicationPath, GLuint &texture){
     std::unique_ptr<glimac::Image> image= glimac::loadImage(applicationPath.dirPath()+"assets/textures/alliance.png");
     if(image==nullptr){
@@ -82,6 +101,7 @@ void loadTexture(glimac::FilePath applicationPath, GLuint &texture){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D,0);
 }
+
 void loadMesh(std::vector<Vertex> &vec){
     //Chargement du model 3D
     std::string inputfile = "./assets/models/alliance.obj";
@@ -136,6 +156,7 @@ void loadMesh(std::vector<Vertex> &vec){
         }
     }
 }
+
 void initMatrix(glm::mat4 &ProjMatrix, glm::mat4 &MVMatrix, glm::mat4 &NormalMatrix){
     //Initialisation des matrices
     ProjMatrix=glm::perspective(glm::radians(70.f),float(window_width/window_height), 0.1f, 100.f);
@@ -143,6 +164,7 @@ void initMatrix(glm::mat4 &ProjMatrix, glm::mat4 &MVMatrix, glm::mat4 &NormalMat
     MVMatrix=glm::translate(id, glm::vec3(0.,0.,-10.));
     NormalMatrix=glm::transpose(glm::inverse(MVMatrix));
 }
+
 void initVbo(GLuint &vbo, std::vector<Vertex> &model){
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo); 
@@ -156,6 +178,7 @@ void initVbo(GLuint &vbo, std::vector<Vertex> &model){
 
     glBindBuffer(GL_ARRAY_BUFFER,0);
 }
+
 void initVao(GLuint &vao, GLuint &vbo){
     const GLuint VERTEX_ATTR_POSITION = 0;
     const GLuint VERTEX_ATTR_NORMAL = 1;
@@ -202,15 +225,14 @@ void initVao(GLuint &vao, GLuint &vbo){
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
-    glEnable(GL_DEPTH_TEST);
 }
+
 void linkMatrix(GLint &uMVPMatrix, GLint &uMVMatrix, GLint &uNormalMatrix, GLint &uTexture, const glimac::Program &program){
     uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
     uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix"); 
     uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
     uTexture = glGetUniformLocation(program.getGLId(), "uTexture");
 }
-
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -260,20 +282,19 @@ static void cursor_position_callback(GLFWwindow* window, double xpos, double ypo
 
 static void size_callback(GLFWwindow* window, int width, int height)
 {
-    glViewport(0, 0, width, height);
+    //glViewport(0, 0, width, height);
     ProjMatrix = glm::perspectiveFov(
         glm::radians(70.0f),
         float(width),
         float(height),
         0.1f,
-        100.0f
-    );
+        100.0f);
 }
 
 int main(int argc, char** argv)
 {
     //Creation de la fenêtre
-    GLFWwindow* window=initGLFW(window_width, window_height);
+    init(window_width, window_height);
 
     /* Hook input callbacks */
     glfwSetKeyCallback(window, &key_callback);
@@ -347,9 +368,7 @@ int main(int argc, char** argv)
         /* Poll for and process events */
         glfwPollEvents();
     }
-    glDeleteBuffers(1,&vbo);
-    glDeleteVertexArrays(1, &vao);
-    
+    glDeleteBuffers(1,&vbo);     glDeleteVertexArrays(1, &vao);
     glfwTerminate();
     return 0;
 }
