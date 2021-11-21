@@ -8,6 +8,8 @@
 #include "FilePath.hpp"
 #include "glm.hpp"
 #include <vector>
+#include <TrackballCamera.hpp>
+#include <Image.hpp>
 
 struct Vertex{
     glm::vec3 position;
@@ -24,8 +26,32 @@ struct Vertex{
 int window_width  = 1280;
 int window_height = 720;
 
+//Creation de la camera
+glimac::TrackballCamera cam= glimac::TrackballCamera();
+
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+     switch (key)
+    {
+    case 262: //Fleche droite
+        cam.rotateSide(-2.*float(action/2));
+        break;
+
+    case 263: //Fleche gauche
+        cam.rotateSide(2.*float(action/2));
+        break;
+
+    case 264: //Fleche bas
+        cam.rotateUp(-2.*float(action/2));
+        break;
+    
+    case 265: //Fleche haut
+        cam.rotateUp(2.*float(action/2));
+        break;
+
+    default:
+        break;
+    }
 }
 
 static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -34,6 +60,7 @@ static void mouse_button_callback(GLFWwindow* window, int button, int action, in
 
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+    cam.moveFront(yoffset);
 }
 
 static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
@@ -90,8 +117,22 @@ int main(int argc, char** argv)
         );
     program.use();
 
+    //CHARGEMENT DES TEXTURES 
+    GLuint textureChevalier;
+    std::unique_ptr<glimac::Image> image= glimac::loadImage(applicationPath.dirPath()+"assets/textures/alliance.png");
+    if(image==nullptr){
+        std::cout << "image non chargée " << std::endl;
+    }
+    glEnable(GL_TEXTURE_2D);
+    glGenTextures(1, &textureChevalier);
+    glBindTexture(GL_TEXTURE_2D, textureChevalier);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->getWidth(), image->getHeight(), 0, GL_RGBA, GL_FLOAT, image->getPixels());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D,0);
+
     //Chargement du model 3D
-    std::string inputfile = "./assets/models/cup.obj";
+    std::string inputfile = "./assets/models/alliance.obj";
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
@@ -165,9 +206,15 @@ int main(int argc, char** argv)
 
     GLuint vao;
     const GLuint VERTEX_ATTR_POSITION = 0;
+    const GLuint VERTEX_ATTR_NORMAL = 1;
+    const GLuint VERTEX_ATTR_TEXTURE = 2;
+
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
         glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+        glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
+        glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
+
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
             //POSITION
@@ -180,20 +227,69 @@ int main(int argc, char** argv)
                 (const void*)(offsetof(Vertex, position))
             );
 
+                //NORMAL
+            glVertexAttribPointer(
+                VERTEX_ATTR_NORMAL,
+                3,
+                GL_FLOAT,
+                GL_FALSE,
+                sizeof(Vertex),
+                (const void*)(offsetof(Vertex, normal))
+                );
+
+            //TEXTURE
+            glVertexAttribPointer(
+                VERTEX_ATTR_TEXTURE,
+                2,
+                GL_FLOAT,
+                GL_FALSE,
+                sizeof(Vertex),
+                (const void*)(offsetof(Vertex, texture))
+                );
+
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
+
+    
+
+    GLint uMVPMatrix;
+    GLint uMVMatrix;
+    GLint uNormalMatrix;
+    GLint uTexture;
+    uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
+    uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix"); 
+    uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
+    uTexture = glGetUniformLocation(program.getGLId(), "uTexture");
+
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glBindVertexArray(vao);
+        MVMatrix= cam.getViewMatrix();
+
+         //On charge la bonne texture
+        glUniform1i(uTexture, 0);
+
+        //Binding de la texture sur le 0
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureChevalier);
+
+        glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
+        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix*MVMatrix));
+        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix)); 
+
             glDrawArrays(
                 GL_TRIANGLES,
                 0,
                 model.size()
             );
+
+        //Debinding des textures
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D,0); 
         glBindVertexArray(0);
 
         /* Swap front and back buffers */
