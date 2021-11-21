@@ -7,6 +7,15 @@
 #include "Program.hpp"
 #include "FilePath.hpp"
 #include "glm.hpp"
+#include <vector>
+
+struct Shape3D{
+    glm::vec3 position;
+    glm::vec2 texture;
+    glm::vec3 normal;
+
+    Shape3D(glm::vec3 pos, glm::vec2 tex, glm::vec3 norm):position(pos), texture(tex), normal(norm){}
+};
 
 int window_width  = 1280;
 int window_height = 720;
@@ -95,6 +104,39 @@ int main(int argc, char** argv)
         exit(1);
     }
 
+    std::vector<Shape3D> model;
+
+    // Loop over shapes
+for (size_t s = 0; s < shapes.size(); s++) {
+  // Loop over faces(polygon)
+  size_t index_offset = 0;
+  for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+    int fv = shapes[s].mesh.num_face_vertices[f];
+
+    // Loop over vertices in the face.
+    for (size_t v = 0; v < fv; v++) {
+
+        tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+        // access to vertex
+        tinyobj::real_t vx = attrib.vertices[3*idx.vertex_index+0];
+        tinyobj::real_t vy = attrib.vertices[3*idx.vertex_index+1];
+        tinyobj::real_t vz = attrib.vertices[3*idx.vertex_index+2];
+        glm::vec3 pos= glm::vec3(vx, vy, vz);
+
+        tinyobj::real_t nx = attrib.normals[3*idx.normal_index+0];
+        tinyobj::real_t ny = attrib.normals[3*idx.normal_index+1];
+        tinyobj::real_t nz = attrib.normals[3*idx.normal_index+2];
+        glm::vec3 norm= glm::vec3(nx, ny, nz);
+
+        tinyobj::real_t tx = attrib.texcoords[2*idx.texcoord_index+0];
+        tinyobj::real_t ty = attrib.texcoords[2*idx.texcoord_index+1];
+        glm::vec2 text= glm::vec2(tx,ty);
+
+        Shape3D shape= Shape3D(pos, text, norm);
+        model.push_back(shape);
+    }
+  }
+}
 
     //Initialisation des matrices
     glm::mat4 ProjMatrix=glm::perspective(glm::radians(70.f),float(window_width/window_height), 0.1f, 100.f);
@@ -109,8 +151,8 @@ int main(int argc, char** argv)
 
     glBufferData(
         GL_ARRAY_BUFFER,
-        attrib.vertices.size()*sizeof(GLfloat),
-        attrib.vertices.data(),
+        model.size()*sizeof(Shape3D),
+        model.data(),
         GL_STATIC_DRAW
     );
     glBindBuffer(GL_ARRAY_BUFFER,0);
@@ -123,22 +165,18 @@ int main(int argc, char** argv)
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     //POSITION
-    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(tinyobj::attrib_t), (const void*)(offsetof(tinyobj::attrib_t, vertices)));
+    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(Shape3D), (const void*)(offsetof(Shape3D, position)));
 
-     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
-
-
-
-
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, attrib.vertices.size());
+        glDrawArrays(GL_TRIANGLES, 0, model.size());
         glBindVertexArray(0);
 
         /* Swap front and back buffers */
