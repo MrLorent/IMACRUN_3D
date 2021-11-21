@@ -11,6 +11,8 @@
 #include <TrackballCamera.hpp>
 #include <Image.hpp>
 
+
+
 struct Vertex{
     glm::vec3 position;
     glm::vec2 texture;
@@ -23,7 +25,7 @@ struct Vertex{
     }
 };
 
-int window_width  = 1280;
+int window_width  = 720;
 int window_height = 720;
 
 //Creation de la camera
@@ -31,27 +33,35 @@ glimac::TrackballCamera cam= glimac::TrackballCamera();
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-     switch (key)
-    {
-    case 262: //Fleche droite
-        cam.rotateSide(-2.*float(action/2));
-        break;
+        switch (key)
+        {
+        case 262: //Fleche droite
+            if(action!=0){
+                cam.rotateSide(-2.*float(1));
+            }
+            break;
 
-    case 263: //Fleche gauche
-        cam.rotateSide(2.*float(action/2));
-        break;
+        case 263: //Fleche gauche
+            if(action!=0){
+                cam.rotateSide(2.*float(1));
+            }
+            break;
 
-    case 264: //Fleche bas
-        cam.rotateUp(-2.*float(action/2));
-        break;
-    
-    case 265: //Fleche haut
-        cam.rotateUp(2.*float(action/2));
-        break;
+        case 264: //Fleche bas
+            if(action!=0){
+                cam.rotateUp(-2.*float(1));
+            }
+            break;
+        
+        case 265: //Fleche haut
+            if(action!=0){
+                cam.rotateUp(2.*float(1));
+            }
+            break;
 
-    default:
-        break;
-    }
+        default:
+            break;
+        }
 }
 
 static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -109,6 +119,8 @@ int main(int argc, char** argv)
     glfwSetCursorPosCallback(window, &cursor_position_callback);
     glfwSetWindowSizeCallback(window, &size_callback);
 
+      
+
     //Chargement des shaders
     glimac::FilePath applicationPath(argv[0]);
     glimac::Program program = loadProgram(
@@ -135,7 +147,7 @@ int main(int argc, char** argv)
     std::string inputfile = "./assets/models/alliance.obj";
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials;
+    std::vector<tinyobj::material_t> materials; 
     
     std::string warn;
     std::string err;
@@ -235,7 +247,7 @@ int main(int argc, char** argv)
                 GL_FALSE,
                 sizeof(Vertex),
                 (const void*)(offsetof(Vertex, normal))
-                );
+            );
 
             //TEXTURE
             glVertexAttribPointer(
@@ -245,7 +257,7 @@ int main(int argc, char** argv)
                 GL_FALSE,
                 sizeof(Vertex),
                 (const void*)(offsetof(Vertex, texture))
-                );
+            );
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -261,7 +273,7 @@ int main(int argc, char** argv)
     uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix"); 
     uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
     uTexture = glGetUniformLocation(program.getGLId(), "uTexture");
-
+    glEnable(GL_DEPTH_TEST);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {

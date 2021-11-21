@@ -7,6 +7,7 @@ namespace glimac {
 
 std::unique_ptr<Image> loadImage(const FilePath& filepath) {
     int x, y, n;
+    stbi_set_flip_vertically_on_load(true);
     unsigned char *data = stbi_load(filepath.c_str(), &x, &y, &n, 4);
     if(!data) {
         std::cerr << "loading image " << filepath << " error: " << stbi_failure_reason() << std::endl;

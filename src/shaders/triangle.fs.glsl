@@ -11,5 +11,4 @@ uniform sampler2D uTexture;
 
 void main() {
     fFragColor= texture(uTexture,vTexCoords).xyz;
-
 }
