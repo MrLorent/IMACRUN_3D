@@ -73,7 +73,6 @@ int init(const int &window_width, const int &window_height){
 
     /* Set the viewport */
     //glViewport(0, 0, window_width, window_height);
-
     glEnable(GL_DEPTH_TEST);
 
 
@@ -282,7 +281,8 @@ static void cursor_position_callback(GLFWwindow* window, double xpos, double ypo
 
 static void size_callback(GLFWwindow* window, int width, int height)
 {
-    //glViewport(0, 0, width, height);
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, width, height);
     ProjMatrix = glm::perspectiveFov(
         glm::radians(70.0f),
         float(width),
