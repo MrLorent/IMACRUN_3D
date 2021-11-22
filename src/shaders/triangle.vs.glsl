@@ -1,4 +1,4 @@
-#version 300 es
+#version 330
 
 // Attributs de sommet
 layout(location = 0) in vec3 aVertexPosition; // Position du sommet

@@ -19,12 +19,14 @@ set(EXECUTABLE_OUTPUT_PATH
 file(GLOB_RECURSE HEADER_FILES 
 	${CMAKE_SOURCE_DIR}/src/*.hpp
     ${CMAKE_SOURCE_DIR}/src/glimac/*.hpp
+    ${CMAKE_SOURCE_DIR}/src/rendering/*.hpp
 )
 
 # Add source files
 file(GLOB_RECURSE SOURCE_FILES 
 	${CMAKE_SOURCE_DIR}/src/*.cpp
     ${CMAKE_SOURCE_DIR}/src/glimac/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/rendering/*.cpp
 )
 
 # create the executable file
@@ -34,6 +36,7 @@ add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 include_directories(
     src
     src/glimac
+    src/rendering
 )
 
 # ---Add GLFW---
