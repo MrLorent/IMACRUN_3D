@@ -2,8 +2,8 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#define TINYOBJLOADER_IMPLEMENTATION
-#include <tiny_obj_loader.h>
+// #define TINYOBJLOADER_IMPLEMENTATION
+// #include <tiny_obj_loader.h>
 #include "Program.hpp"
 #include "FilePath.hpp"
 #include "glm.hpp"
@@ -11,6 +11,7 @@
 #include <TrackballCamera.hpp>
 #include <Image.hpp>
 #include "Texture.hpp"
+#include "Mesh.hpp"
 
 //Dimension de la fenêtre
 GLFWwindow* window;
@@ -21,16 +22,6 @@ int window_height = 720;
 glimac::TrackballCamera cam= glimac::TrackballCamera();
 
 glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
-
-struct Vertex{
-    glm::vec3 _position;
-    glm::vec3 _normal;
-    glm::vec2 _texCoords;
-
-    Vertex(glm::vec3 pos, glm::vec3 norm, glm::vec2 tex)
-        :_position(pos), _normal(norm), _texCoords(tex)
-    {}
-};
 
 int init(const int &window_width, const int &window_height){
 
@@ -86,80 +77,67 @@ glimac::Program loadShader(glimac::FilePath applicationPath){
     return program;
 }
 
-void loadTexture(glimac::FilePath applicationPath, GLuint &texture){
-    std::unique_ptr<glimac::Image> image= glimac::loadImage(applicationPath.dirPath()+"assets/textures/alliance.png");
-    if(image==nullptr){
-        std::cout << "image non chargée " << std::endl;
-    }
-    glEnable(GL_TEXTURE_2D);
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->getWidth(), image->getHeight(), 0, GL_RGBA, GL_FLOAT, image->getPixels());
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D,0);
-}
 
-void loadMesh(std::vector<Vertex> &vec){
-    //Chargement du model 3D
-    std::string inputfile = "./assets/models/alliance.obj";
-    tinyobj::attrib_t attrib;
-    std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials; 
+// void loadMesh(std::vector<Vertex> &vec){
+//     //Chargement du model 3D
+//     std::string inputfile = "./assets/models/alliance.obj";
+//     tinyobj::attrib_t attrib;
+//     std::vector<tinyobj::shape_t> shapes;
+//     std::vector<tinyobj::material_t> materials; 
     
-    std::string warn;
-    std::string err;
-    bool ret = tinyobj::LoadObj(&attrib,&shapes,&materials, &warn, &err, inputfile.c_str(), nullptr);
+//     std::string warn;
+//     std::string err;
+//     bool ret = tinyobj::LoadObj(&attrib,&shapes,&materials, &warn, &err, inputfile.c_str(), nullptr);
     
-    if (!err.empty()) { // `err` may contain warning message.
-        std::cerr << err << std::endl;
-    }
+//     if (!err.empty()) { // `err` may contain warning message.
+//         std::cerr << err << std::endl;
+//     }
 
-    if (!ret) {
-        exit(1);
-    }
+//     if (!ret) {
+//         exit(1);
+//     }
 
-    // Loop over shapes
-    for (size_t s = 0; s < shapes.size(); s++) {
-        // Loop over faces(polygon)
-        size_t index_offset = 0;
-        for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-            int fv = shapes[s].mesh.num_face_vertices[f];
+//     // Loop over shapes
+//     for (size_t s = 0; s < shapes.size(); s++) {
+//         // Loop over faces(polygon)
+//         size_t index_offset = 0;
+//         for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+//             int fv = shapes[s].mesh.num_face_vertices[f];
 
-            // Loop over vertices in the face.
-            for (size_t v = 0; v < fv; v++) {
+//             // Loop over vertices in the face.
+//             for (size_t v = 0; v < fv; v++) {
 
-                tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-                // access to vertex
-                Vertex newVertex = Vertex(
+//                 tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+//                 // access to vertex
+//                 Vertex newVertex = Vertex(
                     
-                    // POSITION
-                    glm::vec3(
-                        tinyobj::real_t(attrib.vertices[3*idx.vertex_index+0]), // vx
-                        tinyobj::real_t(attrib.vertices[3*idx.vertex_index+1]), // vy
-                        tinyobj::real_t(attrib.vertices[3*idx.vertex_index+2])  // vz
-                    ),
+//                     // POSITION
+//                     glm::vec3(
+//                         tinyobj::real_t(attrib.vertices[3*idx.vertex_index+0]), // vx
+//                         tinyobj::real_t(attrib.vertices[3*idx.vertex_index+1]), // vy
+//                         tinyobj::real_t(attrib.vertices[3*idx.vertex_index+2])  // vz
+//                     ),
 
-                    // NORMAL
-                    glm::vec3(
-                        tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
-                        tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
-                        tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
-                    ),
+//                     // NORMAL
+//                     glm::vec3(
+//                         tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
+//                         tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
+//                         tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
+//                     ),
 
-                    // TEXTURE_COORDINATES
-                    glm::vec2(
-                        tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+0]),  //tx
-                        tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+1])   //ty
-                    )
-                );
+//                     // TEXTURE_COORDINATES
+//                     glm::vec2(
+//                         tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+0]),  //tx
+//                         tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+1])   //ty
+//                     )
+//                 );
 
-                vec.push_back(newVertex);
-            }
-            index_offset += fv;
-        }
-    }
-}
+//                 vec.push_back(newVertex);
+//             }
+//             index_offset += fv;
+//         }
+//     }
+// }
 
 void initMatrix(glm::mat4 &ProjMatrix, glm::mat4 &MVMatrix, glm::mat4 &NormalMatrix){
     //Initialisation des matrices
@@ -169,67 +147,67 @@ void initMatrix(glm::mat4 &ProjMatrix, glm::mat4 &MVMatrix, glm::mat4 &NormalMat
     NormalMatrix=glm::transpose(glm::inverse(MVMatrix));
 }
 
-void initVbo(GLuint &vbo, std::vector<Vertex> &model){
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo); 
+// void initVbo(GLuint &vbo, std::vector<Vertex> &model){
+//     glGenBuffers(1, &vbo);
+//     glBindBuffer(GL_ARRAY_BUFFER, vbo); 
 
-        glBufferData(
-            GL_ARRAY_BUFFER,
-            model.size()*sizeof(Vertex),
-            model.data(),
-            GL_STATIC_DRAW
-        );
+//         glBufferData(
+//             GL_ARRAY_BUFFER,
+//             model.size()*sizeof(Vertex),
+//             model.data(),
+//             GL_STATIC_DRAW
+//         );
 
-    glBindBuffer(GL_ARRAY_BUFFER,0);
-}
+//     glBindBuffer(GL_ARRAY_BUFFER,0);
+// }
 
-void initVao(GLuint &vao, GLuint &vbo){
-    const GLuint VERTEX_ATTR_POSITION = 0;
-    const GLuint VERTEX_ATTR_NORMAL = 1;
-    const GLuint VERTEX_ATTR_TEXTURE = 2;
+// void initVao(GLuint &vao, GLuint &vbo){
+//     const GLuint VERTEX_ATTR_POSITION = 0;
+//     const GLuint VERTEX_ATTR_NORMAL = 1;
+//     const GLuint VERTEX_ATTR_TEXTURE = 2;
 
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-        glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-        glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
-        glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
+//     glGenVertexArrays(1, &vao);
+//     glBindVertexArray(vao);
+//         glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+//         glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
+//         glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
 
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//         glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-            //POSITION
-            glVertexAttribPointer(
-                VERTEX_ATTR_POSITION,
-                3,
-                GL_FLOAT,
-                GL_FALSE,
-                sizeof(Vertex),
-                (const void*)(offsetof(Vertex, _position))
-            );
+//             //POSITION
+//             glVertexAttribPointer(
+//                 VERTEX_ATTR_POSITION,
+//                 3,
+//                 GL_FLOAT,
+//                 GL_FALSE,
+//                 sizeof(Vertex),
+//                 (const void*)(offsetof(Vertex, _position))
+//             );
 
-                //NORMAL
-            glVertexAttribPointer(
-                VERTEX_ATTR_NORMAL,
-                3,
-                GL_FLOAT,
-                GL_FALSE,
-                sizeof(Vertex),
-                (const void*)(offsetof(Vertex, _normal))
-            );
+//                 //NORMAL
+//             glVertexAttribPointer(
+//                 VERTEX_ATTR_NORMAL,
+//                 3,
+//                 GL_FLOAT,
+//                 GL_FALSE,
+//                 sizeof(Vertex),
+//                 (const void*)(offsetof(Vertex, _normal))
+//             );
 
-            //TEXTURE
-            glVertexAttribPointer(
-                VERTEX_ATTR_TEXTURE,
-                2,
-                GL_FLOAT,
-                GL_FALSE,
-                sizeof(Vertex),
-                (const void*)(offsetof(Vertex, _texCoords))
-            );
+//             //TEXTURE
+//             glVertexAttribPointer(
+//                 VERTEX_ATTR_TEXTURE,
+//                 2,
+//                 GL_FLOAT,
+//                 GL_FALSE,
+//                 sizeof(Vertex),
+//                 (const void*)(offsetof(Vertex, _texCoords))
+//             );
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+//         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    glBindVertexArray(0);
-}
+//     glBindVertexArray(0);
+// }
 
 void linkMatrix(GLint &uMVPMatrix, GLint &uMVMatrix, GLint &uNormalMatrix, GLint &uTexture, const glimac::Program &program){
     uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
@@ -320,19 +298,21 @@ int main(int argc, char** argv)
     //loadTexture(applicationPath, textureChevalier);
 
     //Chargement de notre model 3D
-    std::vector<Vertex> model;
-    loadMesh(model);
+
+    // std::vector<Vertex> model;
+    // loadMesh(model);
+    Mesh chevalier(applicationPath, "alliance.obj");
     
     //Initialisation des matrices
     initMatrix(ProjMatrix, MVMatrix, NormalMatrix);
     
     //Initalisation du vbo
-    GLuint vbo;
-    initVbo(vbo, model);
+    // GLuint vbo;
+    // initVbo(vbo, model);
      
-    //Initialisation du vao
-    GLuint vao;
-    initVao(vao, vbo);
+    // //Initialisation du vao
+    // GLuint vao;
+    // initVao(vao, vbo);
 
     //Liaison des matrices au shaders
     GLint uMVPMatrix;
@@ -345,7 +325,7 @@ int main(int argc, char** argv)
     while (!glfwWindowShouldClose(window)) {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glBindVertexArray(vao);
+        glBindVertexArray(chevalier.VAO);
         MVMatrix= cam.getViewMatrix();
 
          //On charge la bonne texture
@@ -361,7 +341,7 @@ int main(int argc, char** argv)
             glDrawArrays(
                 GL_TRIANGLES,
                 0,
-                model.size()
+                chevalier._vertices.size()
             );
 
         //Debinding des textures
@@ -374,8 +354,8 @@ int main(int argc, char** argv)
         /* Poll for and process events */
         glfwPollEvents();
     }
-    glDeleteBuffers(1,&vbo);
-    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1,&chevalier.VBO);
+    glDeleteVertexArrays(1, &chevalier.VAO);
     glfwTerminate();
     return 0;
 }
