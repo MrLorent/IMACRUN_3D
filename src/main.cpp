@@ -22,15 +22,13 @@ glimac::TrackballCamera cam= glimac::TrackballCamera();
 glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
 
 struct Vertex{
-    glm::vec3 position;
-    glm::vec2 texture;
-    glm::vec3 normal;
+    glm::vec3 _position;
+    glm::vec3 _normal;
+    glm::vec2 _texCoords;
 
-    Vertex(glm::vec3 pos, glm::vec2 tex, glm::vec3 norm)
-        :position(pos), texture(tex), normal(norm)
-    {
-
-    }
+    Vertex(glm::vec3 pos, glm::vec3 norm, glm::vec2 tex)
+        :_position(pos), _normal(norm), _texCoords(tex)
+    {}
 };
 
 int init(const int &window_width, const int &window_height){
@@ -120,8 +118,6 @@ void loadMesh(std::vector<Vertex> &vec){
         exit(1);
     }
 
-    
-
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
         // Loop over faces(polygon)
@@ -134,22 +130,30 @@ void loadMesh(std::vector<Vertex> &vec){
 
                 tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
                 // access to vertex
-                tinyobj::real_t vx = attrib.vertices[3*idx.vertex_index+0];
-                tinyobj::real_t vy = attrib.vertices[3*idx.vertex_index+1];
-                tinyobj::real_t vz = attrib.vertices[3*idx.vertex_index+2];
-                glm::vec3 pos= glm::vec3(vx, vy, vz);
+                Vertex newVertex = Vertex(
+                    
+                    // POSITION
+                    glm::vec3(
+                        tinyobj::real_t(attrib.vertices[3*idx.vertex_index+0]), // vx
+                        tinyobj::real_t(attrib.vertices[3*idx.vertex_index+1]), // vy
+                        tinyobj::real_t(attrib.vertices[3*idx.vertex_index+2])  // vz
+                    ),
 
-                tinyobj::real_t nx = attrib.normals[3*idx.normal_index+0];
-                tinyobj::real_t ny = attrib.normals[3*idx.normal_index+1];
-                tinyobj::real_t nz = attrib.normals[3*idx.normal_index+2];
-                glm::vec3 norm= glm::vec3(nx, ny, nz);
+                    // NORMAL
+                    glm::vec3(
+                        tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
+                        tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
+                        tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
+                    ),
 
-                tinyobj::real_t tx = attrib.texcoords[2*idx.texcoord_index+0];
-                tinyobj::real_t ty = attrib.texcoords[2*idx.texcoord_index+1];
-                glm::vec2 text= glm::vec2(tx,ty);
+                    // TEXTURE_COORDINATES
+                    glm::vec2(
+                        tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+0]),  //tx
+                        tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+1])   //ty
+                    )
+                );
 
-                Vertex shape = Vertex(pos, text, norm);
-                vec.push_back(shape);
+                vec.push_back(newVertex);
             }
             index_offset += fv;
         }
@@ -198,7 +202,7 @@ void initVao(GLuint &vao, GLuint &vbo){
                 GL_FLOAT,
                 GL_FALSE,
                 sizeof(Vertex),
-                (const void*)(offsetof(Vertex, position))
+                (const void*)(offsetof(Vertex, _position))
             );
 
                 //NORMAL
@@ -208,7 +212,7 @@ void initVao(GLuint &vao, GLuint &vbo){
                 GL_FLOAT,
                 GL_FALSE,
                 sizeof(Vertex),
-                (const void*)(offsetof(Vertex, normal))
+                (const void*)(offsetof(Vertex, _normal))
             );
 
             //TEXTURE
@@ -218,7 +222,7 @@ void initVao(GLuint &vao, GLuint &vbo){
                 GL_FLOAT,
                 GL_FALSE,
                 sizeof(Vertex),
-                (const void*)(offsetof(Vertex, texture))
+                (const void*)(offsetof(Vertex, _texCoords))
             );
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
