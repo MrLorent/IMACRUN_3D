@@ -10,6 +10,7 @@
 #include <vector>
 #include <TrackballCamera.hpp>
 #include <Image.hpp>
+#include "Texture.hpp"
 
 //Dimension de la fenêtre
 GLFWwindow* window;
@@ -72,7 +73,7 @@ int init(const int &window_width, const int &window_height){
     /* Set the viewport */
     //glViewport(0, 0, window_width, window_height);
     glEnable(GL_DEPTH_TEST);
-
+    glEnable(GL_TEXTURE_2D);
 
     return 1;
 }
@@ -292,7 +293,8 @@ static void size_callback(GLFWwindow* window, int width, int height)
         float(width),
         float(height),
         0.1f,
-        100.0f);
+        100.0f
+    );
 }
 
 int main(int argc, char** argv)
@@ -313,8 +315,9 @@ int main(int argc, char** argv)
     program.use();
 
     //Chargement de texture
-    GLuint textureChevalier;
-    loadTexture(applicationPath, textureChevalier);
+    Texture textureChevalier(0);
+    textureChevalier.load(applicationPath, "alliance.png");
+    //loadTexture(applicationPath, textureChevalier);
 
     //Chargement de notre model 3D
     std::vector<Vertex> model;
@@ -349,8 +352,7 @@ int main(int argc, char** argv)
         glUniform1i(uTexture, 0);
 
         //Binding de la texture sur le 0
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureChevalier);
+        textureChevalier.bind(0);
 
         glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix*MVMatrix));
@@ -372,7 +374,8 @@ int main(int argc, char** argv)
         /* Poll for and process events */
         glfwPollEvents();
     }
-    glDeleteBuffers(1,&vbo);     glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1,&vbo);
+    glDeleteVertexArrays(1, &vao);
     glfwTerminate();
     return 0;
 }
