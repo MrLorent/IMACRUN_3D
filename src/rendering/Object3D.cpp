@@ -1,9 +1,9 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-#include "Mesh.hpp"
+#include "Object3D.hpp"
 
-Mesh::Mesh(
+Object3D::Object3D(
     const glimac::FilePath applicationPath,
     const std::string& fileName)
 {
@@ -66,14 +66,14 @@ Mesh::Mesh(
         }
     }
 
-    setupMesh();
+    setupObject3D();
 }
 
-void Mesh::setupMesh()
+void Object3D::setupObject3D()
 {
     // VBO
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO); 
+    glGenBuffers(1, &_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo); 
 
         glBufferData(
             GL_ARRAY_BUFFER,
@@ -89,13 +89,13 @@ void Mesh::setupMesh()
     const GLuint VERTEX_ATTR_NORMAL = 1;
     const GLuint VERTEX_ATTR_TEXTURE = 2;
 
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
+    glGenVertexArrays(1, &_vao);
+    glBindVertexArray(_vao);
         glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
         glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
         glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE);
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
             //POSITION
             glVertexAttribPointer(

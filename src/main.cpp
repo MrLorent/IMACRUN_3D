@@ -11,7 +11,7 @@
 #include <TrackballCamera.hpp>
 #include <Image.hpp>
 #include "Texture.hpp"
-#include "Mesh.hpp"
+#include "Object3D.hpp"
 
 //Dimension de la fenêtre
 GLFWwindow* window;
@@ -301,7 +301,7 @@ int main(int argc, char** argv)
 
     // std::vector<Vertex> model;
     // loadMesh(model);
-    Mesh chevalier(applicationPath, "alliance.obj");
+    Object3D chevalier(applicationPath, "alliance.obj");
     
     //Initialisation des matrices
     initMatrix(ProjMatrix, MVMatrix, NormalMatrix);
@@ -325,7 +325,7 @@ int main(int argc, char** argv)
     while (!glfwWindowShouldClose(window)) {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glBindVertexArray(chevalier.VAO);
+        glBindVertexArray(chevalier._vao);
         MVMatrix= cam.getViewMatrix();
 
          //On charge la bonne texture
@@ -354,8 +354,8 @@ int main(int argc, char** argv)
         /* Poll for and process events */
         glfwPollEvents();
     }
-    glDeleteBuffers(1,&chevalier.VBO);
-    glDeleteVertexArrays(1, &chevalier.VAO);
+    glDeleteBuffers(1,&chevalier._vbo);
+    glDeleteVertexArrays(1, &chevalier._vao);
     glfwTerminate();
     return 0;
 }
