@@ -1,9 +1,9 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-#include "Object3D.hpp"
+#include "Mesh.hpp"
 
-Object3D::Object3D(
+Mesh::Mesh(
     const glimac::FilePath applicationPath,
     const std::string& fileName)
 {
@@ -66,10 +66,10 @@ Object3D::Object3D(
         }
     }
 
-    setupObject3D();
+    setupMesh();
 }
 
-void Object3D::setupObject3D()
+void Mesh::setupMesh()
 {
     // VBO
     glGenBuffers(1, &_vbo);

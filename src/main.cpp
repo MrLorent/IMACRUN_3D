@@ -11,7 +11,7 @@
 #include <TrackballCamera.hpp>
 #include <Image.hpp>
 #include "Texture.hpp"
-#include "Object3D.hpp"
+#include "Mesh.hpp"
 
 //Dimension de la fenêtre
 GLFWwindow* window;
@@ -301,7 +301,7 @@ int main(int argc, char** argv)
 
     // std::vector<Vertex> model;
     // loadMesh(model);
-    Object3D chevalier(applicationPath, "alliance.obj");
+    Mesh chevalier(applicationPath, "alliance.obj");
     
     //Initialisation des matrices
     initMatrix(ProjMatrix, MVMatrix, NormalMatrix);

@@ -18,17 +18,17 @@ struct Vertex{
     {}
 };
 
-class Object3D
+class Mesh
 {
     public:
         std::vector<Vertex> _vertices;
         std::vector<unsigned int> _indices;
         std::vector<Texture> _textures;
 
-        Object3D(const glimac::FilePath applicationPath, const std::string& fileName);
+        Mesh(const glimac::FilePath applicationPath, const std::string& fileName);
         unsigned int _vao;
         unsigned int _vbo;
         unsigned int _ibo;
     private:
-        void setupObject3D();
+        void setupMesh();
 };
