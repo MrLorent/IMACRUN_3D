@@ -172,5 +172,6 @@ int main(int argc, char** argv)
         glfwPollEvents();
     }
     glfwTerminate();
+    
     return 0;
 }

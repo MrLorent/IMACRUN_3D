@@ -24,23 +24,33 @@ class Mesh
 {
     private:
         // ATTRIBUTS
+        
         unsigned int _vao;
         unsigned int _vbo;
         unsigned int _ibo;
 
         // PRIVATE METHODS
+
         void initVbo();
         void initVao();
+    
     public:
+        // PUBLIC ATTRIBUTS
+        
         std::vector<Vertex> _vertices;
         std::vector<unsigned int> _indices;
         std::vector<Texture> _textures;
 
+        // CONSTRUCTORS
+        /* basic constructor */
+        
         Mesh(
             const std::vector<Vertex>& vertices,
             const std::vector<unsigned int>& indices,
             std::vector<Texture>&& textures
         );
 
+        // METHODS
+        
         void draw(glimac::Program& shaders);
 };

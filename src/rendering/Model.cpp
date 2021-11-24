@@ -4,23 +4,28 @@
 #include "Mesh.hpp"
 #include "Model.hpp"
 
+// CONSTRUCTORS
+/* basic constructeur */
+
 void Model::draw(
     glm::mat4 &ProjMatrix,
     glm::mat4 &MVMatrix,
     glm::mat4 &NormalMatrix)
 {
-    // Link the shaders of the model
+    /* Link the shaders of the model */
     _shaders.use();
     glUniformMatrix4fv(_uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
     glUniformMatrix4fv(_uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix*MVMatrix));
     glUniformMatrix4fv(_uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 
-    // Draw all the meshes that compose the model
+    /* Draw all the meshes that compose the model */
     for(unsigned int i = 0; i < _meshes.size(); i++)
     {
         _meshes[i].draw(_shaders);
     }
 }
+
+// PRIVATE METHODS
 
 void Model::loadModel(
     const glimac::FilePath appPath,

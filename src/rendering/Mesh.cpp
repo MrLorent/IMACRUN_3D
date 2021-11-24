@@ -1,5 +1,8 @@
 #include "Mesh.hpp"
 
+// CONSTRUCTORS
+/* basic constructors */
+
 Mesh::Mesh(
     const std::vector<Vertex>& vertices,
     const std::vector<unsigned int>& indices,
@@ -12,6 +15,8 @@ Mesh::Mesh(
     initVbo();
     initVao();
 }
+
+// PRIVATE METHODS
 
 void Mesh::initVbo()
 {
@@ -28,6 +33,7 @@ void Mesh::initVbo()
 
     glBindBuffer(GL_ARRAY_BUFFER,0);
 }
+
 
 void Mesh::initVao()
 {
@@ -78,6 +84,8 @@ void Mesh::initVao()
 
     glBindVertexArray(0);
 }
+
+// PUBLIC METHODS
 
 void Mesh::draw(glimac::Program& shaders)
 {
