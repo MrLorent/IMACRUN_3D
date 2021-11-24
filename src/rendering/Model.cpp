@@ -27,9 +27,10 @@ void Model::loadModel(
     const std::string fileName
 )
 {
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
+    // VARIABLES TEMPORAIRES
+    std::vector<Vertex> tmpVertices;
+    std::vector<unsigned int> tmpIndices;
+    std::vector<Texture> tmpTextures;
  
     //Chargement du model 3D
     std::string inputfile = "./assets/models/"+fileName;
@@ -84,7 +85,7 @@ void Model::loadModel(
                     )
                 );
 
-                vertices.push_back(newVertex);
+                tmpVertices.push_back(newVertex);
             }
             index_offset += fv;
 
@@ -94,9 +95,9 @@ void Model::loadModel(
     }
 
     // CHARGEMENT DES TEXTURES
-    textures.push_back(std::move(Texture(appPath, "alliance.png")));
+    tmpTextures.push_back(std::move(Texture(appPath, "alliance.png")));
     
-    _meshes.push_back(Mesh(vertices, indices, std::move(textures)));
+    _meshes.push_back(Mesh(tmpVertices, tmpIndices, std::move(tmpTextures)));
 }
 
 void Model::linkMatrix()

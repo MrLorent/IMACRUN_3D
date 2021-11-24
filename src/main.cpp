@@ -135,7 +135,7 @@ static void size_callback(GLFWwindow* window, int width, int height)
 
 int main(int argc, char** argv)
 {
-    //Creation de la fenêtre
+    // CREATION OF THE WINDOW
     init(window_width, window_height);
 
     /* Hook input callbacks */
@@ -145,6 +145,7 @@ int main(int argc, char** argv)
     glfwSetCursorPosCallback(window, &cursor_position_callback);
     glfwSetWindowSizeCallback(window, &size_callback);
 
+    // CHARGEMENT DU MODEL
     ModelParams knitParams(
         glimac::FilePath(argv[0]),
         "alliance.obj",
@@ -153,7 +154,7 @@ int main(int argc, char** argv)
     );
     Model chevalier(knitParams);
     
-    //Initialisation des matrices
+    // INITIALISATION DES MATRICES
     initMatrix(ProjMatrix, MVMatrix, NormalMatrix);
 
     /* Loop until the user closes the window */

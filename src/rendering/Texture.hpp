@@ -13,11 +13,12 @@ class Texture
         uint _id;
 
     public:
-        // CONSTRUCTOR
-        // basic
+        // CONSTRUCTORS
+        /* basic constructor */
         Texture();
         Texture(const glimac::FilePath applicationPath, const std::string& fileName);
-        // move
+        
+        /* move constructor */
         Texture(Texture&& rhs) noexcept;
 
         // DESTRUCTOR
@@ -26,6 +27,7 @@ class Texture
         // ACCESSORS
         uint getId(){ return _id; }
 
+        // METHODS
         bool load(const glimac::FilePath applicationPath, const std::string& fileName);
         void bind(const int index);
 };

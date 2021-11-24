@@ -1,12 +1,9 @@
 #include "Texture.hpp"
 
-// CONSTRUCTEURS
-// basic constructor
+// CONSTRUCTORS
+/* basic constructors */
 Texture::Texture()
-    :_id(0)
-{
-
-}
+    :_id(0){}
 
 Texture::Texture(const glimac::FilePath applicationPath, const std::string& fileName)
     :_id(0)
@@ -14,20 +11,21 @@ Texture::Texture(const glimac::FilePath applicationPath, const std::string& file
     load(applicationPath, fileName);
 }
 
-// move constructor
+/* move constructor */
 Texture::Texture(Texture&& rhs) noexcept
     :_id(rhs._id)
 {
     rhs._id = 0;
 }
 
-// DESTRUCTEURS
+// DESTRUCTOR
 Texture::~Texture()
 {
     glDeleteTextures(1, &_id);
     _id = 0;
 }
 
+// METHODS
 bool Texture::load(const glimac::FilePath applicationPath, const std::string& fileName)
 {
     std::unique_ptr<glimac::Image> image = glimac::loadImage(
