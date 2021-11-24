@@ -94,9 +94,7 @@ void Model::loadModel(
     }
 
     // CHARGEMENT DES TEXTURES
-    Texture tex;
-    tex.load(appPath, "alliance.png");
-    textures.push_back(std::move(tex));
+    textures.push_back(std::move(Texture(appPath, "alliance.png")));
     
     _meshes.push_back(Mesh(vertices, indices, std::move(textures)));
 }

@@ -7,6 +7,13 @@ Texture::Texture()
 {
 
 }
+
+Texture::Texture(const glimac::FilePath applicationPath, const std::string& fileName)
+    :_id(0)
+{
+    load(applicationPath, fileName);
+}
+
 // move constructor
 Texture::Texture(Texture&& rhs) noexcept
     :_id(rhs._id)

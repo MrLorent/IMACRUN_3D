@@ -8,9 +8,19 @@
 
 class Texture
 {
+    private:
+        // ATTRIBUTS
+        uint _id;
+
     public:
+        // CONSTRUCTOR
+        // basic
         Texture();
+        Texture(const glimac::FilePath applicationPath, const std::string& fileName);
+        // move
         Texture(Texture&& rhs) noexcept;
+
+        // DESTRUCTOR
         ~Texture();
 
         // ACCESSORS
@@ -18,6 +28,4 @@ class Texture
 
         bool load(const glimac::FilePath applicationPath, const std::string& fileName);
         void bind(const int index);
-    private:
-        GLuint _id;
 };
