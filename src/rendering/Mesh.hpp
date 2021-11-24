@@ -27,9 +27,11 @@ class Mesh
 
         Mesh(const glimac::FilePath applicationPath, const std::string& fileName);
         void draw();
+    private:
         unsigned int _vao;
         unsigned int _vbo;
         unsigned int _ibo;
-    private:
-        void setupMesh();
+
+        void initVbo();
+        void initVao();
 };

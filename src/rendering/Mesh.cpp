@@ -66,10 +66,11 @@ Mesh::Mesh(
         }
     }
 
-    setupMesh();
+    initVbo();
+    initVao();
 }
 
-void Mesh::setupMesh()
+void Mesh::initVbo()
 {
     // VBO
     glGenBuffers(1, &_vbo);
@@ -83,7 +84,10 @@ void Mesh::setupMesh()
         );
 
     glBindBuffer(GL_ARRAY_BUFFER,0);
+}
 
+void Mesh::initVao()
+{
     // VAO
     const GLuint VERTEX_ATTR_POSITION = 0;
     const GLuint VERTEX_ATTR_NORMAL = 1;
