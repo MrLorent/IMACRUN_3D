@@ -131,3 +131,14 @@ void Mesh::setupMesh()
 
     glBindVertexArray(0);
 }
+
+void Mesh::draw()
+{
+    glBindVertexArray(_vao);
+        glDrawArrays(
+                GL_TRIANGLES,
+                0,
+                _vertices.size()
+            );
+    glBindVertexArray(0);
+}

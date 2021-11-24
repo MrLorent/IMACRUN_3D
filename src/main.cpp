@@ -325,7 +325,7 @@ int main(int argc, char** argv)
     while (!glfwWindowShouldClose(window)) {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glBindVertexArray(chevalier._vao);
+        
         MVMatrix= cam.getViewMatrix();
 
          //On charge la bonne texture
@@ -338,17 +338,8 @@ int main(int argc, char** argv)
         glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix*MVMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix)); 
 
-            glDrawArrays(
-                GL_TRIANGLES,
-                0,
-                chevalier._vertices.size()
-            );
-
-        //Debinding des textures
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D,0); 
-        glBindVertexArray(0);
-
+        chevalier.draw();
+        
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
         /* Poll for and process events */

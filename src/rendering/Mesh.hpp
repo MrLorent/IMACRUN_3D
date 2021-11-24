@@ -26,6 +26,7 @@ class Mesh
         std::vector<Texture> _textures;
 
         Mesh(const glimac::FilePath applicationPath, const std::string& fileName);
+        void draw();
         unsigned int _vao;
         unsigned int _vbo;
         unsigned int _ibo;
