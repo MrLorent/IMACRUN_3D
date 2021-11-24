@@ -2,7 +2,7 @@
 
 // CONSTRUCTEURS
 Texture::Texture()
-    :_id(0)
+    :_id(1)
 {}
 
 Texture::Texture(const int id)
@@ -24,8 +24,10 @@ bool Texture::load(const glimac::FilePath applicationPath, const std::string& fi
     
     if(image == nullptr)
     {
-        std::cout << "Couldn't load " << applicationPath.dirPath()+fileName << std::endl;
+        std::cout << "Couldn't load " << applicationPath.dirPath()+"assets/textures/"+fileName << std::endl;
         return false;
+    }else{
+        std::cout << applicationPath.dirPath()+"assets/textures/"+fileName << " loaded successfuly." << std::endl;
     }
 
     

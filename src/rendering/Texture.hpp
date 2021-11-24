@@ -13,8 +13,11 @@ class Texture
         Texture(const int id);
         ~Texture();
 
+        // ACCESSORS
+        uint getId(){ return _id; }
+
         bool load(const glimac::FilePath applicationPath, const std::string& fileName);
         void bind(const int index);
     private:
-        GLuint _id;
+        uint _id;
 };

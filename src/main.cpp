@@ -11,7 +11,7 @@
 #include <TrackballCamera.hpp>
 #include <Image.hpp>
 #include "Texture.hpp"
-#include "Mesh.hpp"
+#include "Model.hpp"
 
 //Dimension de la fenêtre
 GLFWwindow* window;
@@ -68,27 +68,12 @@ int init(const int &window_width, const int &window_height){
     return 1;
 }
 
-glimac::Program loadShader(glimac::FilePath applicationPath){
-    glimac::Program program = loadProgram(
-        applicationPath.dirPath() + "src/shaders/triangle.vs.glsl",
-        applicationPath.dirPath() + "src/shaders/triangle.fs.glsl"
-        );
-    return program;
-}
-
 void initMatrix(glm::mat4 &ProjMatrix, glm::mat4 &MVMatrix, glm::mat4 &NormalMatrix){
     //Initialisation des matrices
     ProjMatrix=glm::perspective(glm::radians(70.f),float(window_width/window_height), 0.1f, 100.f);
     glm::mat4 id=glm::mat4(1.);
     MVMatrix=glm::translate(id, glm::vec3(0.,0.,-10.));
     NormalMatrix=glm::transpose(glm::inverse(MVMatrix));
-}
-
-void linkMatrix(GLint &uMVPMatrix, GLint &uMVMatrix, GLint &uNormalMatrix, GLint &uTexture, const glimac::Program &program){
-    uMVPMatrix = glGetUniformLocation(program.getGLId(), "uMVPMatrix");
-    uMVMatrix = glGetUniformLocation(program.getGLId(), "uMVMatrix"); 
-    uNormalMatrix = glGetUniformLocation(program.getGLId(), "uNormalMatrix");
-    uTexture = glGetUniformLocation(program.getGLId(), "uTexture");
 }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -162,59 +147,27 @@ int main(int argc, char** argv)
     glfwSetCursorPosCallback(window, &cursor_position_callback);
     glfwSetWindowSizeCallback(window, &size_callback);
 
-    //Chargement des shaders
-    glimac::FilePath applicationPath(argv[0]);
-    glimac::Program program=loadShader(applicationPath);
-    program.use();
-
-    //Chargement de texture
-    Texture textureChevalier(0);
-    textureChevalier.load(applicationPath, "alliance.png");
-    //loadTexture(applicationPath, textureChevalier);
-
-    //Chargement de notre model 3D
-
-    // std::vector<Vertex> model;
-    // loadMesh(model);
-    Mesh chevalier(applicationPath, "alliance.obj");
+    ModelParams knitParams(
+        glimac::FilePath(argv[0]),
+        "alliance.obj",
+        "triangle.vs.glsl",
+        "triangle.fs.glsl"
+    );
+    Model chevalier(knitParams);
     
     //Initialisation des matrices
     initMatrix(ProjMatrix, MVMatrix, NormalMatrix);
-    
-    //Initalisation du vbo
-    // GLuint vbo;
-    // initVbo(vbo, model);
-     
-    // //Initialisation du vao
-    // GLuint vao;
-    // initVao(vao, vbo);
-
-    //Liaison des matrices au shaders
-    GLint uMVPMatrix;
-    GLint uMVMatrix;
-    GLint uNormalMatrix;
-    GLint uTexture;
-    linkMatrix(uMVPMatrix, uMVMatrix, uNormalMatrix, uTexture, program);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        MVMatrix= cam.getViewMatrix();
+        MVMatrix= cam.getViewMatrix(); 
+        glUniform1i(chevalier._uTexture, 0);
+        texChevalier.bind(0);
+        chevalier.draw(ProjMatrix, MVMatrix, NormalMatrix);
 
-         //On charge la bonne texture
-        glUniform1i(uTexture, 0);
-
-        //Binding de la texture sur le 0
-        textureChevalier.bind(0);
-
-        glUniformMatrix4fv(uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
-        glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix*MVMatrix));
-        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix)); 
-
-        chevalier.draw();
-        
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
         /* Poll for and process events */

@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 
+#include "Program.hpp"
+
 #include "Texture.hpp"
 
 struct Vertex{
@@ -25,8 +27,12 @@ class Mesh
         std::vector<unsigned int> _indices;
         std::vector<Texture> _textures;
 
-        Mesh(const glimac::FilePath applicationPath, const std::string& fileName);
-        void draw();
+        Mesh(
+            std::vector<Vertex> vertices,
+            std::vector<unsigned int> indices,
+            std::vector<Texture> textures
+        );
+        void draw(glimac::Program& shaders);
     private:
         unsigned int _vao;
         unsigned int _vbo;
