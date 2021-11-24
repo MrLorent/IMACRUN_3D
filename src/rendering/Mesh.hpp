@@ -28,10 +28,11 @@ class Mesh
         std::vector<Texture> _textures;
 
         Mesh(
-            std::vector<Vertex> vertices,
-            std::vector<unsigned int> indices,
-            std::vector<Texture> textures
+            const std::vector<Vertex>& vertices,
+            const std::vector<unsigned int>& indices,
+            std::vector<Texture>&& textures
         );
+
         void draw(glimac::Program& shaders);
     private:
         unsigned int _vao;

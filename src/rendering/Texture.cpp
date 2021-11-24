@@ -1,13 +1,18 @@
 #include "Texture.hpp"
 
 // CONSTRUCTEURS
+// basic constructor
 Texture::Texture()
-    :_id(1)
-{}
+    :_id(0)
+{
 
-Texture::Texture(const int id)
-    :_id(id)
-{}
+}
+// move constructor
+Texture::Texture(Texture&& rhs) noexcept
+    :_id(rhs._id)
+{
+    rhs._id = 0;
+}
 
 // DESTRUCTEURS
 Texture::~Texture()
@@ -26,11 +31,8 @@ bool Texture::load(const glimac::FilePath applicationPath, const std::string& fi
     {
         std::cout << "Couldn't load " << applicationPath.dirPath()+"assets/textures/"+fileName << std::endl;
         return false;
-    }else{
-        std::cout << applicationPath.dirPath()+"assets/textures/"+fileName << " loaded successfuly." << std::endl;
     }
 
-    
     glGenTextures(1, &_id);
     glBindTexture(GL_TEXTURE_2D, _id);
         glTexImage2D(

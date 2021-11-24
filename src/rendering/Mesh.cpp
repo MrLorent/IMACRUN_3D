@@ -1,13 +1,13 @@
 #include "Mesh.hpp"
 
 Mesh::Mesh(
-    std::vector<Vertex> vertices,
-    std::vector<unsigned int> indices,
-    std::vector<Texture> textures
+    const std::vector<Vertex>& vertices,
+    const std::vector<unsigned int>& indices,
+    std::vector<Texture>&& textures
 )
     :_vertices(vertices),
      _indices(indices),
-     _textures(textures)
+     _textures(std::move(textures))
 {
     initVbo();
     initVao();
@@ -81,11 +81,10 @@ void Mesh::initVao()
 
 void Mesh::draw(glimac::Program& shaders)
 {
-    for(unsigned int i=0; i < _textures.size(); i++)
+    for(uint i=0; i < _textures.size(); i++)
     {
-        //_textures[i].bind(i);
-        _textures[i].bind(i);
         glUniform1i(glGetUniformLocation(shaders.getGLId(), "uTexture"), i);
+        _textures[i].bind(i);
     }
 
     glBindVertexArray(_vao);

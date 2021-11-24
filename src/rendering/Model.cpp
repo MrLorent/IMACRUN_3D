@@ -87,15 +87,18 @@ void Model::loadModel(
                 vertices.push_back(newVertex);
             }
             index_offset += fv;
+
+            // per-face material
+            shapes[s].mesh.material_ids[f];
         }
     }
 
     // CHARGEMENT DES TEXTURES
-    Texture tex(1);
+    Texture tex;
     tex.load(appPath, "alliance.png");
-    textures.push_back(tex);
-
-    _meshes.push_back(Mesh(vertices, indices, textures));
+    textures.push_back(std::move(tex));
+    
+    _meshes.push_back(Mesh(vertices, indices, std::move(textures)));
 }
 
 void Model::linkMatrix()

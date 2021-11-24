@@ -10,7 +10,7 @@ class Texture
 {
     public:
         Texture();
-        Texture(const int id);
+        Texture(Texture&& rhs) noexcept;
         ~Texture();
 
         // ACCESSORS
@@ -19,5 +19,5 @@ class Texture
         bool load(const glimac::FilePath applicationPath, const std::string& fileName);
         void bind(const int index);
     private:
-        uint _id;
+        GLuint _id;
 };

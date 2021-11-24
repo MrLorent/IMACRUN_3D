@@ -2,8 +2,6 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-// #define TINYOBJLOADER_IMPLEMENTATION
-// #include <tiny_obj_loader.h>
 #include "Program.hpp"
 #include "FilePath.hpp"
 #include "glm.hpp"
@@ -163,9 +161,8 @@ int main(int argc, char** argv)
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        MVMatrix= cam.getViewMatrix(); 
-        glUniform1i(chevalier._uTexture, 0);
-        texChevalier.bind(0);
+        MVMatrix= cam.getViewMatrix();
+        
         chevalier.draw(ProjMatrix, MVMatrix, NormalMatrix);
 
         /* Swap front and back buffers */
