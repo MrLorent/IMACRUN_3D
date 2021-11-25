@@ -140,5 +140,4 @@ void Model::linkMatrix()
     _uMVPMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVPMatrix");
     _uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
     _uNormalMatrix = glGetUniformLocation(_shaders.getGLId(), "uNormalMatrix");
-    _uTexture = glGetUniformLocation(_shaders.getGLId(), "uTexture");
 }
