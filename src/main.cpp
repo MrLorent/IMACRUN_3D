@@ -12,7 +12,7 @@ int window_height = 720;
 //Creation de la camera
 glimac::TrackballCamera cam= glimac::TrackballCamera();
 
-glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
+glm::mat4 ProjMatrix, MVMatrix;
 
 int init(const int &window_width, const int &window_height){
 
@@ -59,12 +59,11 @@ int init(const int &window_width, const int &window_height){
     return 1;
 }
 
-void initMatrix(glm::mat4 &ProjMatrix, glm::mat4 &MVMatrix, glm::mat4 &NormalMatrix){
+void initMatrix(glm::mat4 &ProjMatrix, glm::mat4 &MVMatrix){
     //Initialisation des matrices
     ProjMatrix=glm::perspective(glm::radians(70.f),float(window_width/window_height), 0.1f, 100.f);
     glm::mat4 id=glm::mat4(1.);
     MVMatrix=glm::translate(id, glm::vec3(0.,0.,-10.));
-    NormalMatrix=glm::transpose(glm::inverse(MVMatrix));
 }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -148,7 +147,7 @@ int main(int argc, char** argv)
     Model chevalier(knightParams);
     
     // INITIALISATION DES MATRICES
-    initMatrix(ProjMatrix, MVMatrix, NormalMatrix);
+    initMatrix(ProjMatrix, MVMatrix);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
@@ -157,7 +156,7 @@ int main(int argc, char** argv)
         
         MVMatrix= cam.getViewMatrix();
         
-        chevalier.draw(ProjMatrix, MVMatrix, NormalMatrix);
+        chevalier.draw(ProjMatrix, MVMatrix);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
