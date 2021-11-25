@@ -31,6 +31,7 @@ file(GLOB_RECURSE SOURCE_FILES
 
 # create the executable file
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_11)
 
 # Include the directories containing our code
 include_directories(

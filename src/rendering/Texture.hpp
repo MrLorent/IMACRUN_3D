@@ -11,7 +11,7 @@ class Texture
     private:
         // ATTRIBUTS
 
-        uint _id;
+        GLuint _id;
 
     public:
         // CONSTRUCTORS
@@ -30,7 +30,7 @@ class Texture
 
         // ACCESSORS
         
-        uint getId(){ return _id; }
+        GLuint getId(){ return _id; }
 
         // METHODS
         

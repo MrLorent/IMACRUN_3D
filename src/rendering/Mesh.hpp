@@ -46,9 +46,9 @@ class Mesh
     private:
         // ATTRIBUTS
         
-        uint _vao;
-        uint _vbo;
-        uint _ibo;
+        GLuint _vao;
+        GLuint _vbo;
+        GLuint _ibo;
 
         // PRIVATE METHODS
 

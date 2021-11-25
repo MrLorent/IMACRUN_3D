@@ -35,7 +35,7 @@ void Model::loadModel(
 {
     // VARIABLES TEMPORAIRES
     std::vector<Vertex> tmpVertices;
-    std::vector<uint> tmpIndices;
+    std::vector<unsigned int> tmpIndices;
     std::vector<Texture> tmpTextures;
     std::unordered_map<Vertex, uint32_t> uniqueVertices;
  

@@ -5,7 +5,7 @@
 
 Mesh::Mesh(
     const std::vector<Vertex>& vertices,
-    const std::vector<uint>& indices,
+    const std::vector<unsigned int>& indices,
     std::vector<Texture>&& textures
 )
     :_vertices(vertices),
@@ -44,7 +44,7 @@ void Mesh::initIbo()
         
         glBufferData(
             GL_ELEMENT_ARRAY_BUFFER,
-            _indices.size() * sizeof(uint),
+            _indices.size() * sizeof(GLuint),
             _indices.data(),
             GL_STATIC_DRAW
         );
@@ -105,7 +105,7 @@ void Mesh::initVao()
 
 void Mesh::draw(glimac::Program& shaders)
 {
-    for(uint i=0; i < _textures.size(); i++)
+    for (size_t i=0; i < _textures.size(); i++)
     {
         glUniform1i(glGetUniformLocation(shaders.getGLId(), "uTexture"), i);
         _textures[i].bind(i);
