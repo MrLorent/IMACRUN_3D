@@ -22,9 +22,30 @@ void Model::draw(
 {
     /* Link the shaders of the model */
     _shaders.use();
-    glUniformMatrix4fv(_uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
-    glUniformMatrix4fv(_uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix*MVMatrix));
-    glUniformMatrix4fv(_uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix)))); // Normal Matrix = glm::transpose(glm::inverse(MVMatrix))
+    
+    // MV MATRIX
+    glUniformMatrix4fv(
+        _uMVMatrix,
+        1,
+        GL_FALSE,
+        glm::value_ptr(MVMatrix)
+    );
+    
+    // MVPMATRIX
+    glUniformMatrix4fv(
+        _uMVPMatrix,
+        1,
+        GL_FALSE,
+        glm::value_ptr(ProjMatrix*MVMatrix)
+    );
+    
+    // NORMAL MATRIX
+    glUniformMatrix4fv(
+        _uNormalMatrix,
+        1,
+        GL_FALSE,
+        glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))) // Normal Matrix = glm::transpose(glm::inverse(MVMatrix))
+    );
 
     /* Draw all the meshes that compose the model */
     for(unsigned int i = 0; i < _meshes.size(); i++)
