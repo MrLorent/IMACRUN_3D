@@ -139,13 +139,13 @@ int main(int argc, char** argv)
     glfwSetWindowSizeCallback(window, &size_callback);
 
     // CHARGEMENT DU MODEL
-    ModelParams knitParams(
+    ModelParams knightParams(
         glimac::FilePath(argv[0]),
-        "alliance.obj",
+        "knight/alliance.obj",
         "triangle.vs.glsl",
         "triangle.fs.glsl"
     );
-    Model chevalier(knitParams);
+    Model chevalier(knightParams);
     
     // INITIALISATION DES MATRICES
     initMatrix(ProjMatrix, MVMatrix, NormalMatrix);
