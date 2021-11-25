@@ -1,15 +1,13 @@
-#include <iostream>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+#include <iostream>
 #include <glad/glad.h>
 #include "Program.hpp"
 #include "FilePath.hpp"
 #include "glm.hpp"
-#include <vector>
-#include <TrackballCamera.hpp>
-#include <Image.hpp>
 #include "Texture.hpp"
 #include "Model.hpp"
+#include "TrackballCamera.hpp"
 
 //Dimension de la fenêtre
 GLFWwindow* window;

@@ -9,7 +9,6 @@
 #include "Program.hpp"
 
 #include "Mesh.hpp"
-#include "Texture.hpp"
 
 struct ModelParams
 {
