@@ -1,5 +1,6 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
+#include <unordered_map>
 
 #include "Mesh.hpp"
 #include "Model.hpp"
@@ -36,6 +37,7 @@ void Model::loadModel(
     std::vector<Vertex> tmpVertices;
     std::vector<unsigned int> tmpIndices;
     std::vector<Texture> tmpTextures;
+    std::unordered_map<Vertex, uint32_t> uniqueVertices;
  
     //Chargement du model 3D
     std::string inputfile = "./assets/models/"+fileName;
@@ -104,7 +106,13 @@ void Model::loadModel(
                 // tinyobj::real_t green = attrib.colors[3*size_t(idx.vertex_index)+1];
                 // tinyobj::real_t blue  = attrib.colors[3*size_t(idx.vertex_index)+2];
 
-                tmpVertices.push_back(newVertex);
+                if(uniqueVertices.count(newVertex) == 0)
+                {
+                    uniqueVertices[newVertex] = static_cast<uint32_t>(tmpVertices.size());
+                    tmpVertices.push_back(newVertex);
+                }
+
+                tmpIndices.push_back(uniqueVertices[newVertex]);
             }
             index_offset += fv;
 

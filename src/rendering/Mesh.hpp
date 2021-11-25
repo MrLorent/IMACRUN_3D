@@ -1,6 +1,9 @@
 #pragma once
 #define MESH_H
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/hash.hpp>
+
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <vector>
@@ -15,10 +18,28 @@ struct Vertex{
     glm::vec3 _normal;
     glm::vec2 _texCoords;
 
+    // OPERATORS
+
+    bool operator==(const Vertex& other) const {
+        return _position == other._position && _normal == other._normal && _texCoords == other._texCoords;
+    }
+
     // CONSTRUCTOR
+    
     Vertex(glm::vec3 pos, glm::vec3 norm, glm::vec2 tex)
         :_position(pos), _normal(norm), _texCoords(tex){}
+
 };
+
+namespace std {
+    template<> struct hash<Vertex> {
+        size_t operator()(Vertex const& vertex) const {
+            return ((hash<glm::vec3>()(vertex._position) ^
+                   (hash<glm::vec3>()(vertex._normal) << 1)) >> 1) ^
+                   (hash<glm::vec2>()(vertex._texCoords) << 1);
+        }
+    };
+}
 
 class Mesh
 {
