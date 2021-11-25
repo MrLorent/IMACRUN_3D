@@ -6,6 +6,16 @@
 // CONSTRUCTORS
 /* basic constructeur */
 
+Model::Model(ModelParams params)
+    :_shaders(loadProgram(
+        params._appPath.dirPath() + "src/shaders/"+params._vsShader,
+        params._appPath.dirPath() + "src/shaders/"+params._fsShader
+))
+{
+    loadModel(params._appPath, params._fileName);
+    linkMatrix();
+}
+
 void Model::draw(
     glm::mat4 &ProjMatrix,
     glm::mat4 &MVMatrix,
@@ -118,8 +128,6 @@ void Model::loadModel(
             shapes[s].mesh.material_ids[f];
         }
     }
-    std::cout << "Nb tmpVertices : " << tmpVertices.size() << std::endl;
-    std::cout << "Nb tmpIndices : " << tmpIndices.size() << std::endl;
 
     // CHARGEMENT DES TEXTURES
     tmpTextures.push_back(std::move(Texture(appPath, "alliance.png")));

@@ -15,8 +15,6 @@ Mesh::Mesh(
     initVbo();
     initIbo();
     initVao();
-    std::cout << "Nb _vertices : " << _vertices.size() << std::endl;
-    std::cout << "Nb _indices : " << _indices.size() << std::endl;
 }
 
 // PRIVATE METHODS

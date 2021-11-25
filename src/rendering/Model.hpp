@@ -52,15 +52,7 @@ class Model
         // CONSTRUCTORS
         /* basic constructors */
         
-        Model(ModelParams params)
-            :_shaders(loadProgram(
-                params._appPath.dirPath() + "src/shaders/"+params._vsShader,
-                params._appPath.dirPath() + "src/shaders/"+params._fsShader
-        ))
-        {
-            loadModel(params._appPath, params._fileName);
-            linkMatrix();
-        }
+        Model(ModelParams params);
 
         // METHODS
         
