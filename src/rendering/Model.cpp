@@ -171,33 +171,30 @@ void Model::loadTextures(
     #else
     const size_t lastSlashIndex = filePath.rfind('/');
     #endif
-    std::string dirPath;
+    std::string dirName;
     std::string objFile;
     
     /* Get the path to the current file and the .obj file name */
     if (std::string::npos != lastSlashIndex)
     {
         objFile = filePath.substr(lastSlashIndex+1);
-        dirPath = "./assets/models/" + filePath.substr(0, lastSlashIndex);
+        dirName = filePath.substr(0, lastSlashIndex);
     }
-
-    std::cout << objFile << std::endl;
-    std::cout << dirPath << std::endl;
 
     DIR *dir;
     struct dirent *file;
 
-    if ((dir = opendir (dirPath.c_str())) != NULL) {
+    if ((dir = opendir (("./assets/models/" + dirName).c_str())) != nullptr) {
         /* print all the files and directories within directory */
-        while ((file = readdir (dir)) != NULL) {
-            if(file->d_name != objFile.c_str())
+        while ((file = readdir (dir)) != nullptr) {
+            if(file->d_name != objFile)
             {
                 std::cout << file->d_name << std::endl;
-                textures.push_back(Texture(appPath, file->d_name));
+                textures.push_back(Texture(dirName + "/" + file->d_name));
             }
         }
         closedir (dir);
     }else{
-        std::cout << "Error: fail to open " << dirPath << " directory" << std::endl;
+        std::cout << "Error: fail to open " << dirName << " directory" << std::endl;
     }
 }
