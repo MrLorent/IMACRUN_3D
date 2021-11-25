@@ -63,7 +63,7 @@ void Model::draw(
 
 void Model::loadModel(
     const glimac::FilePath appPath,
-    const std::string fileName
+    const std::string& filePath
 )
 {
     // VARIABLES TEMPORAIRES
@@ -73,7 +73,7 @@ void Model::loadModel(
     std::unordered_map<Vertex, uint32_t> uniqueVertices;
  
     //Chargement du model 3D
-    std::string inputfile = "./assets/models/"+fileName;
+    std::string inputfile = "./assets/models/"+filePath;
     tinyobj::ObjReaderConfig reader_config;
     reader_config.mtl_search_path = "./assets/textures/"; // Path to material files
 
@@ -155,7 +155,49 @@ void Model::loadModel(
     }
 
     // CHARGEMENT DES TEXTURES
-    tmpTextures.push_back(std::move(Texture(appPath, "alliance.png")));
+    loadTextures(appPath, filePath, tmpTextures);
     
     _meshes.push_back(Mesh(tmpVertices, tmpIndices, std::move(tmpTextures)));
+}
+
+void Model::loadTextures(
+    glimac::FilePath appPath,
+    std::string filePath,
+    std::vector<Texture>& textures
+)
+{
+    #ifdef _WIN32
+    const size_t lastSlashIndex = filePath.rfind('\\');
+    #else
+    const size_t lastSlashIndex = filePath.rfind('/');
+    #endif
+    std::string dirPath;
+    std::string objFile;
+    
+    /* Get the path to the current file and the .obj file name */
+    if (std::string::npos != lastSlashIndex)
+    {
+        objFile = filePath.substr(lastSlashIndex+1);
+        dirPath = "./assets/models/" + filePath.substr(0, lastSlashIndex);
+    }
+
+    std::cout << objFile << std::endl;
+    std::cout << dirPath << std::endl;
+
+    DIR *dir;
+    struct dirent *file;
+
+    if ((dir = opendir (dirPath.c_str())) != NULL) {
+        /* print all the files and directories within directory */
+        while ((file = readdir (dir)) != NULL) {
+            if(file->d_name != objFile.c_str())
+            {
+                std::cout << file->d_name << std::endl;
+                textures.push_back(Texture(appPath, file->d_name));
+            }
+        }
+        closedir (dir);
+    }else{
+        std::cout << "Error: fail to open " << dirPath << " directory" << std::endl;
+    }
 }
