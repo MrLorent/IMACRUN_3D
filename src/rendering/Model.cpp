@@ -39,36 +39,45 @@ void Model::loadModel(
  
     //Chargement du model 3D
     std::string inputfile = "./assets/models/"+fileName;
-    tinyobj::attrib_t attrib;
-    std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials; 
-    
-    std::string warn;
-    std::string err;
-    bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, inputfile.c_str(), nullptr);
-    
-    if (!err.empty()) { // `err` may contain warning message.
-        std::cerr << err << std::endl;
-    }
+    tinyobj::ObjReaderConfig reader_config;
+    reader_config.mtl_search_path = "./assets/textures/"; // Path to material files
 
-    if (!ret) {
+    tinyobj::ObjReader reader;
+
+    if (!reader.ParseFromFile(inputfile, reader_config))
+    {
+        if (!reader.Error().empty())
+        {
+            std::cerr << "TinyObjReader: " << reader.Error();
+        }
         exit(1);
     }
 
+    if (!reader.Warning().empty())
+    {
+        std::cout << "TinyObjReader: " << reader.Warning();
+    }
+
+    auto& attrib = reader.GetAttrib();
+    auto& shapes = reader.GetShapes();
+    auto& materials = reader.GetMaterials();
+
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
-        
         // Loop over faces(polygon)
         size_t index_offset = 0;
-        for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-            int fv = shapes[s].mesh.num_face_vertices[f];
+        for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++)
+        {
+            size_t fv = size_t(shapes[s].mesh.num_face_vertices[f]);
 
             // Loop over vertices in the face.
-            for (size_t v = 0; v < fv; v++) {
-                tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+            for (size_t v = 0; v < fv; v++)
+            {
                 // access to vertex
+                tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+
                 Vertex newVertex = Vertex(
-                    
+
                     // POSITION
                     glm::vec3(
                         tinyobj::real_t(attrib.vertices[3*idx.vertex_index+0]), // vx
@@ -89,6 +98,11 @@ void Model::loadModel(
                         tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+1])   //ty
                     )
                 );
+
+                // Optional: vertex colors
+                // tinyobj::real_t red   = attrib.colors[3*size_t(idx.vertex_index)+0];
+                // tinyobj::real_t green = attrib.colors[3*size_t(idx.vertex_index)+1];
+                // tinyobj::real_t blue  = attrib.colors[3*size_t(idx.vertex_index)+2];
 
                 tmpVertices.push_back(newVertex);
             }
