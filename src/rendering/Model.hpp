@@ -1,6 +1,7 @@
 #pragma once
 #define MODEL_H
 
+#include <dirent.h>
 #include "Mesh.hpp"
 
 struct ModelParams
@@ -40,12 +41,16 @@ class Model
 
         void loadModel(
             const glimac::FilePath appPath,
-            const std::string fileName
+            const std::string& fileName
         );
 
         void linkMatrix();
 
-        std::vector<Texture> loadTextures();
+        void loadTextures(
+            glimac::FilePath appPath,
+            std::string filePath,
+            std::vector<Texture>& textures
+        );
 
     public:
         // CONSTRUCTORS
