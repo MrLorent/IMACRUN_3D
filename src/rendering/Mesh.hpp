@@ -2,15 +2,10 @@
 #define MESH_H
 
 #define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>
 
-#include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <vector>
-#include <string>
-
 #include "Program.hpp"
-
 #include "Texture.hpp"
 
 struct Vertex{

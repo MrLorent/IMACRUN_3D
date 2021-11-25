@@ -1,11 +1,6 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include <iostream>
-#include <glad/glad.h>
-#include "Program.hpp"
-#include "FilePath.hpp"
-#include "glm.hpp"
-#include "Texture.hpp"
+
 #include "Model.hpp"
 #include "TrackballCamera.hpp"
 

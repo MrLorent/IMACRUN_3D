@@ -1,13 +1,6 @@
 #pragma once
 #define MODEL_H
 
-#include "vector"
-#include "string"
-#include "glm.hpp"
-
-#include "FilePath.hpp"
-#include "Program.hpp"
-
 #include "Mesh.hpp"
 
 struct ModelParams
