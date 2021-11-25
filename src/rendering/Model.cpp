@@ -35,7 +35,7 @@ void Model::loadModel(
 {
     // VARIABLES TEMPORAIRES
     std::vector<Vertex> tmpVertices;
-    std::vector<unsigned int> tmpIndices;
+    std::vector<uint> tmpIndices;
     std::vector<Texture> tmpTextures;
     std::unordered_map<Vertex, uint32_t> uniqueVertices;
  
@@ -120,6 +120,8 @@ void Model::loadModel(
             shapes[s].mesh.material_ids[f];
         }
     }
+    std::cout << "Nb tmpVertices : " << tmpVertices.size() << std::endl;
+    std::cout << "Nb tmpIndices : " << tmpIndices.size() << std::endl;
 
     // CHARGEMENT DES TEXTURES
     tmpTextures.push_back(std::move(Texture(appPath, "alliance.png")));

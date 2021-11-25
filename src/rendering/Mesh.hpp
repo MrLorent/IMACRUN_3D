@@ -46,13 +46,14 @@ class Mesh
     private:
         // ATTRIBUTS
         
-        unsigned int _vao;
-        unsigned int _vbo;
-        unsigned int _ibo;
+        uint _vao;
+        uint _vbo;
+        uint _ibo;
 
         // PRIVATE METHODS
 
         void initVbo();
+        void initIbo();
         void initVao();
     
     public:
