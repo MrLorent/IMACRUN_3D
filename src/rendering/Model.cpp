@@ -12,8 +12,13 @@ Model::Model(ModelParams params)
         params._appPath.dirPath() + "src/shaders/"+params._fsShader
 ))
 {
+    /* Load the model and its textures */
     loadModel(params._appPath, params._fileName);
-    linkMatrix();
+    
+    /* Link the matrix attribut to the shaders matrix */
+    _uMVPMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVPMatrix");
+    _uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
+    _uNormalMatrix = glGetUniformLocation(_shaders.getGLId(), "uNormalMatrix");
 }
 
 void Model::draw(
@@ -153,11 +158,4 @@ void Model::loadModel(
     tmpTextures.push_back(std::move(Texture(appPath, "alliance.png")));
     
     _meshes.push_back(Mesh(tmpVertices, tmpIndices, std::move(tmpTextures)));
-}
-
-void Model::linkMatrix()
-{
-    _uMVPMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVPMatrix");
-    _uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
-    _uNormalMatrix = glGetUniformLocation(_shaders.getGLId(), "uNormalMatrix");
 }
