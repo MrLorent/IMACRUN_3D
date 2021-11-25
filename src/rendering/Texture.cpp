@@ -6,10 +6,13 @@
 Texture::Texture()
     :_id(0){}
 
-Texture::Texture(const glimac::FilePath applicationPath, const std::string& fileName)
+Texture::Texture(const std::string filePath)
     :_id(0)
 {
-    load(applicationPath, fileName);
+    if(filePath.find("/.") == std::string::npos)
+    {
+        load(filePath);
+    }
 }
 
 /* move constructor */
@@ -30,15 +33,15 @@ Texture::~Texture()
 
 // METHODS
 
-bool Texture::load(const glimac::FilePath applicationPath, const std::string& fileName)
+bool Texture::load(const std::string& filePath)
 {
     std::unique_ptr<glimac::Image> image = glimac::loadImage(
-        applicationPath.dirPath()+"assets/textures/"+fileName
+        "./assets/models/"+filePath
     );
     
     if(image == nullptr)
     {
-        std::cout << "Couldn't load " << applicationPath.dirPath()+"assets/textures/"+fileName << std::endl;
+        std::cout << "Couldn't load " << "./assets/Models/"+filePath << std::endl;
         return false;
     }
 

@@ -2,7 +2,6 @@
 #define TEXTURE_H
 #include <iostream>
 #include <glad/glad.h>
-#include "FilePath.hpp"
 #include "Image.hpp"
 
 class Texture
@@ -17,7 +16,7 @@ class Texture
         /* basic constructor */
         
         Texture();
-        Texture(const glimac::FilePath applicationPath, const std::string& fileName);
+        Texture(const std::string filePath);
         
         /* move constructor */
         
@@ -33,6 +32,6 @@ class Texture
 
         // METHODS
         
-        bool load(const glimac::FilePath applicationPath, const std::string& fileName);
+        bool load(const std::string& filePath);
         void bind(const int index);
 };
