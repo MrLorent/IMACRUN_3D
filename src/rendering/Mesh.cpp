@@ -17,6 +17,27 @@ Mesh::Mesh(
     initVao();
 }
 
+// DESTRUCTOR
+
+Mesh::~Mesh()
+{
+    glDeleteBuffers(1, &_vbo);
+    glDeleteVertexArrays(1, &_vao);
+}
+
+Mesh::Mesh(Mesh&& rhs) noexcept
+    :_vertices(rhs._vertices),
+     _indices(rhs._indices),
+     _textures(std::move(rhs._textures)),
+     _vbo(rhs._vbo),
+     _ibo(rhs._ibo),
+     _vao(rhs._vao)
+{
+   rhs._vbo = 0;
+   rhs._ibo = 0;
+   rhs._vao = 0;
+}
+
 // PRIVATE METHODS
 
 void Mesh::initVbo()

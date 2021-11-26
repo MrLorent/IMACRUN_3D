@@ -18,12 +18,6 @@ struct Vertex{
     bool operator==(const Vertex& other) const {
         return _position == other._position && _normal == other._normal && _texCoords == other._texCoords;
     }
-
-    // CONSTRUCTOR
-    
-    Vertex(glm::vec3 pos, glm::vec3 norm, glm::vec2 tex)
-        :_position(pos), _normal(norm), _texCoords(tex){}
-
 };
 
 namespace std {
@@ -66,6 +60,14 @@ class Mesh
             const std::vector<unsigned int>& indices,
             std::vector<Texture>&& textures
         );
+
+        /* move constructor */
+
+        Mesh(Mesh&& rhs) noexcept;
+
+        // DESTRUCTOR
+
+        ~Mesh();
 
         // METHODS
         

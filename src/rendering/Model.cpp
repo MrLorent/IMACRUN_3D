@@ -111,41 +111,45 @@ void Model::loadModel(
                 // access to vertex
                 tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
 
-                Vertex newVertex = Vertex(
+                Vertex vertex;
 
-                    // POSITION
-                    glm::vec3(
-                        tinyobj::real_t(attrib.vertices[3*idx.vertex_index+0]), // vx
-                        tinyobj::real_t(attrib.vertices[3*idx.vertex_index+1]), // vy
-                        tinyobj::real_t(attrib.vertices[3*idx.vertex_index+2])  // vz
-                    ),
+                // POSITION
+                vertex._position = glm::vec3(
+                    tinyobj::real_t(attrib.vertices[3*idx.vertex_index+0]), // vx
+                    tinyobj::real_t(attrib.vertices[3*idx.vertex_index+1]), // vy
+                    tinyobj::real_t(attrib.vertices[3*idx.vertex_index+2])  // vz
+                );
 
-                    // NORMAL
-                    glm::vec3(
-                        tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
-                        tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
-                        tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
-                    ),
+                // NORMAL
+                vertex._normal = glm::vec3(
+                    tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
+                    tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
+                    tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
+                );
 
-                    // TEXTURE_COORDINATES
-                    glm::vec2(
+                // TEXTURE_COORDINATES
+                if (idx.texcoord_index >= 0)
+                {
+                    vertex._texCoords = glm::vec2(
                         tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+0]),  //tx
                         tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+1])   //ty
-                    )
-                );
+                    );
+                }else{
+                    vertex._texCoords = glm::vec2(0.f);
+                }
 
                 // Optional: vertex colors
                 // tinyobj::real_t red   = attrib.colors[3*size_t(idx.vertex_index)+0];
                 // tinyobj::real_t green = attrib.colors[3*size_t(idx.vertex_index)+1];
                 // tinyobj::real_t blue  = attrib.colors[3*size_t(idx.vertex_index)+2];
 
-                if(uniqueVertices.count(newVertex) == 0)
+                if(uniqueVertices.count(vertex) == 0)
                 {
-                    uniqueVertices[newVertex] = static_cast<uint32_t>(tmpVertices.size());
-                    tmpVertices.push_back(newVertex);
+                    uniqueVertices[vertex] = static_cast<uint32_t>(tmpVertices.size());
+                    tmpVertices.push_back(vertex);
                 }
 
-                tmpIndices.push_back(uniqueVertices[newVertex]);
+                tmpIndices.push_back(uniqueVertices[vertex]);
             }
             index_offset += fv;
 
@@ -157,7 +161,7 @@ void Model::loadModel(
     // CHARGEMENT DES TEXTURES
     loadTextures(appPath, filePath, tmpTextures);
     
-    _meshes.push_back(Mesh(tmpVertices, tmpIndices, std::move(tmpTextures)));
+    _meshes.push_back(std::move(Mesh(tmpVertices, tmpIndices, std::move(tmpTextures))));
 }
 
 void Model::loadTextures(
@@ -189,7 +193,6 @@ void Model::loadTextures(
         while ((file = readdir (dir)) != nullptr) {
             if(file->d_name != objFile)
             {
-                std::cout << file->d_name << std::endl;
                 textures.push_back(Texture(dirName + "/" + file->d_name));
             }
         }
