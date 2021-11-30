@@ -5,7 +5,6 @@
 *.slo
 *.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch
@@ -34,3 +33,9 @@
 bin/
 
 build/
+
+src/.DS_Store
+
+assets/.DS_Store
+
+.DS_Store
