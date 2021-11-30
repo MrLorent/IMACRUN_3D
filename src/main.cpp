@@ -47,8 +47,12 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    /* Set the OpenGL environnement */
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+
     /* Create the App */
-    App app(window_width, window_height, argv[0]);
+    App app(window, window_width, window_height, argv[0]);
 
     /* Hook user inputs to the App */
     glfwSetWindowUserPointer(window, reinterpret_cast<void*>(&app));

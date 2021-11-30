@@ -1,15 +1,19 @@
 #include "App.hpp"
 
-App::App(int window_width, int window_height, std::string name)
+App::App(GLFWwindow* window, int window_width, int window_height, std::string name)
 {
-    /* Set the OpenGL environnement */
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
-
-    //Initialisation des matrices
-    ProjMatrix=glm::perspective(glm::radians(70.f),float(window_width/window_height), 0.1f, 100.f);
-    glm::mat4 id=glm::mat4(1.);
-    MVMatrix=glm::translate(id, glm::vec3(0.,0.,-10.));
+    //Initialization of the matrices
+    ProjMatrix = glm::perspective(
+        glm::radians(70.f),
+        float(window_width/window_height),
+        0.1f,
+        100.f
+    );
+    
+    MVMatrix = glm::translate(
+        glm::mat4(1.),
+        glm::vec3(0.,0.,-10.)
+    );
 
     // CHARGEMENT DU MODEL
     ModelParams knightParams(

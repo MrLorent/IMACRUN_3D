@@ -13,7 +13,7 @@ class App
     public:
         // CONSTRUCTORS
         /* Basic constructor*/
-        App(int window_width, int window_height, std::string name);
+        App(GLFWwindow* window, int window_width, int window_height, std::string name);
         
         void render();
         void key_callback(int key, int scancode, int action, int mods);
