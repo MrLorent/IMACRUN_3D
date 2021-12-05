@@ -1,16 +1,15 @@
 #pragma once
 #define GAME_HPP
 
-#include "Model.hpp"
+#include "Player.hpp"
 #include "TrackballCamera.hpp"
 
 class Game
 {
 private:
     glimac::FilePath _applicationPath;
-    glm::mat4 _MVMatrix;
 
-    Model _model;
+    Player _player;
 
     void load();
 
