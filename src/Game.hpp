@@ -19,7 +19,7 @@ public:
     glimac::TrackballCamera _camera;
     
     Game(){}
-    Game(glimac::FilePath applicationPath, glm::mat4 projectionMatrix);
+    Game(glimac::FilePath applicationPath);
 
-    void render();
+    void render(glm::mat4& projectionMatrix);
 };

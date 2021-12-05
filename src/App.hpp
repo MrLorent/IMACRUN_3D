@@ -18,8 +18,8 @@ class App
     private:
         short unsigned int _currentScreen;
 
-        int _windowWidth;
-        int _windowHeight;
+        int _width;
+        int _height;
     public:
         // CONSTRUCTORS
         /* Basic constructor*/
@@ -33,7 +33,7 @@ class App
         void size_callback(GLFWwindow* window, int width, int height);
         void destroy();
 
-        glm::mat4 ProjMatrix, MVMatrix;
-
+        // PUBLIC ATTRIBUTS
+        glm::mat4 projectionMatrix;
         Game game;
 };

@@ -1,8 +1,7 @@
 #include "Game.hpp"
 
-Game::Game(glimac::FilePath applicationPath, glm::mat4 projectionMatrix)
+Game::Game(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
-     _projectionMatix(projectionMatrix),
      _MVMatrix(glm::mat4(1.)),
      _camera(glimac::TrackballCamera())
 {
@@ -26,8 +25,8 @@ void Game::load()
     _model = Model(params);
 }
 
-void Game::render()
+void Game::render(glm::mat4& projectionMatrix)
 {
     _MVMatrix = _camera.getViewMatrix();
-    _model.draw(_projectionMatix, _MVMatrix);
+    _model.draw(projectionMatrix, _MVMatrix);
 }

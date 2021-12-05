@@ -4,13 +4,13 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string na
 {
     /* Initialization of the window size */
     size_callback(window, window_width, window_height);
-    _windowWidth = window_width;
-    _windowHeight = window_height;
+    _width = window_width;
+    _height = window_height;
     
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
 
-    game = Game(glimac::FilePath(name), ProjMatrix);
+    game = Game(glimac::FilePath(name));
 }
 
 void App::render()
@@ -22,7 +22,7 @@ void App::render()
         break;
     case GAME:
         glClearColor(0.f, 0.f, 0.f, 1.f);
-        game.render();
+        game.render(projectionMatrix);
         break;
     case LOAD_MENU:
         glClearColor(1.f, 0.f, 0.f, 1.f);
@@ -104,7 +104,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
 {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
-    ProjMatrix = glm::perspectiveFov(
+    projectionMatrix = glm::perspectiveFov(
         glm::radians(70.0f),
         float(width),
         float(height),
@@ -112,6 +112,6 @@ void App::size_callback(GLFWwindow* window, int width, int height)
         100.0f
     );
     /* We store the size of the window just in case */
-    _windowWidth = width;
-    _windowHeight = height;
+    _width = width;
+    _height = height;
 }
