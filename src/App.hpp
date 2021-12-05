@@ -4,7 +4,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "Model.hpp"
+#include "Game.hpp"
 #include "TrackballCamera.hpp"
 
 // MENU NAVIGATION
@@ -40,4 +40,6 @@ class App
         glm::mat4 ProjMatrix, MVMatrix;
 
         Model chevalier;
+
+        Game game(glimac::FilePath(name), glm::mat4(ProjMatrix));
 };
