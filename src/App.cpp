@@ -10,13 +10,6 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string na
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
 
-    /* Initialization of the MVMatrix */
-    /* WILL SOON BE IN GAME CLASS */
-    MVMatrix = glm::translate(
-        glm::mat4(1.),
-        glm::vec3(0.,0.,-10.)
-    );
-
     game = Game(glimac::FilePath(name), ProjMatrix);
 }
 
@@ -29,9 +22,7 @@ void App::render()
         break;
     case GAME:
         glClearColor(0.f, 0.f, 0.f, 1.f);
-        MVMatrix= cam.getViewMatrix();
-        
-        game.render(MVMatrix);
+        game.render();
         break;
     case LOAD_MENU:
         glClearColor(1.f, 0.f, 0.f, 1.f);
@@ -53,25 +44,25 @@ void App::key_callback(int key, int scancode, int action, int mods)
         {
         case 262: //Fleche droite
             if(action!=0){
-                cam.rotateSide(-2.*float(1));
+                game._camera.rotateSide(-2.*float(1));
             }
             break;
 
         case 263: //Fleche gauche
             if(action!=0){
-                cam.rotateSide(2.*float(1));
+                game._camera.rotateSide(2.*float(1));
             }
             break;
 
         case 264: //Fleche bas
             if(action!=0){
-                cam.rotateUp(-2.*float(1));
+                game._camera.rotateUp(-2.*float(1));
             }
             break;
         
         case 265: //Fleche haut
             if(action!=0){
-                cam.rotateUp(2.*float(1));
+                game._camera.rotateUp(2.*float(1));
             }
             break;
         case 320: // "0" NUM PAD
@@ -102,7 +93,7 @@ void App::mouse_button_callback(int button, int action, int mods)
 
 void App::scroll_callback(double xoffset, double yoffset)
 {
-    cam.moveFront(yoffset);
+    game._camera.moveFront(yoffset);
 }
 
 void App::cursor_position_callback(double xpos, double ypos)

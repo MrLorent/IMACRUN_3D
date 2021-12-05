@@ -5,7 +5,6 @@
 #include FT_FREETYPE_H
 
 #include "Game.hpp"
-#include "TrackballCamera.hpp"
 
 // MENU NAVIGATION
 const short unsigned int PRINCIPAL_MENU = 0;
@@ -33,9 +32,6 @@ class App
         void cursor_position_callback(double xpos, double ypos);
         void size_callback(GLFWwindow* window, int width, int height);
         void destroy();
-
-        //Creation de la camera
-        glimac::TrackballCamera cam = glimac::TrackballCamera();
 
         glm::mat4 ProjMatrix, MVMatrix;
 
