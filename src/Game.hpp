@@ -7,8 +7,14 @@ class Game
 {
 private:
     glimac::FilePath _applicationPath;
-    glm::mat4& _projectionMatix;
+    glm::mat4 _projectionMatix;
+    Model _model;
+
+    void load();
 
 public:
-    Game(glimac::FilePath applicationPath, glm::mat4& projectionMatrix);
+    Game(){}
+    Game(glimac::FilePath applicationPath, glm::mat4 projectionMatrix);
+
+    void render(glm::mat4 MVMatrix);
 };

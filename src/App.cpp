@@ -17,15 +17,7 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string na
         glm::vec3(0.,0.,-10.)
     );
 
-    // CHARGEMENT DU MODEL
-    /* WILL SOON BE IN GAME CLASS */
-    ModelParams knightParams(
-        glimac::FilePath(name),
-        "knight/alliance.obj",
-        "triangle.vs.glsl",
-        "triangle.fs.glsl"
-    );
-    chevalier = Model(knightParams);
+    game = Game(glimac::FilePath(name), ProjMatrix);
 }
 
 void App::render()
@@ -38,7 +30,8 @@ void App::render()
     case GAME:
         glClearColor(0.f, 0.f, 0.f, 1.f);
         MVMatrix= cam.getViewMatrix();
-        chevalier.draw(ProjMatrix, MVMatrix);
+        
+        game.render(MVMatrix);
         break;
     case LOAD_MENU:
         glClearColor(1.f, 0.f, 0.f, 1.f);

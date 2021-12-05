@@ -39,7 +39,5 @@ class App
 
         glm::mat4 ProjMatrix, MVMatrix;
 
-        Model chevalier;
-
-        Game game(glimac::FilePath(name), glm::mat4(ProjMatrix));
+        Game game;
 };
