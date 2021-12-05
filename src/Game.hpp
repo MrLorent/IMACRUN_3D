@@ -8,7 +8,6 @@ class Game
 {
 private:
     glimac::FilePath _applicationPath;
-    glm::mat4 _projectionMatix;
     glm::mat4 _MVMatrix;
 
     Model _model;
