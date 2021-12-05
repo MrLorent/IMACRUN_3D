@@ -2,20 +2,23 @@
 
 App::App(GLFWwindow* window, int window_width, int window_height, std::string name)
 {
-    //Initialization of the matrices
-    ProjMatrix = glm::perspective(
-        glm::radians(70.f),
-        float(window_width/window_height),
-        0.1f,
-        100.f
-    );
+    /* Initialization of the window size */
+    size_callback(window, window_width, window_height);
+    _windowWidth = window_width;
+    _windowHeight = window_height;
     
+    /* Initialization of the navigation */
+    _currentScreen = PRINCIPAL_MENU;
+
+    /* Initialization of the MVMatrix */
+    /* WILL SOON BE IN GAME CLASS */
     MVMatrix = glm::translate(
         glm::mat4(1.),
         glm::vec3(0.,0.,-10.)
     );
 
     // CHARGEMENT DU MODEL
+    /* WILL SOON BE IN GAME CLASS */
     ModelParams knightParams(
         glimac::FilePath(name),
         "knight/alliance.obj",
@@ -27,11 +30,28 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string na
 
 void App::render()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    MVMatrix= cam.getViewMatrix();
-        
-    chevalier.draw(ProjMatrix, MVMatrix);
+    switch (_currentScreen)
+    {
+    case PRINCIPAL_MENU:
+        glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
+        break;
+    case GAME:
+        glClearColor(0.f, 0.f, 0.f, 1.f);
+        MVMatrix= cam.getViewMatrix();
+        chevalier.draw(ProjMatrix, MVMatrix);
+        break;
+    case LOAD_MENU:
+        glClearColor(1.f, 0.f, 0.f, 1.f);
+        break;
+    case SCORES:
+        glClearColor(0.f, 1.f, 0.0f, 1.f);
+        break;
+    case SCORE_INPUT:
+        glClearColor(0.f, 0.f, 1.f, 1.f);
+        break;
+    default:
+        break;
+    }
 }
 
 void App::key_callback(int key, int scancode, int action, int mods)
@@ -61,8 +81,24 @@ void App::key_callback(int key, int scancode, int action, int mods)
                 cam.rotateUp(2.*float(1));
             }
             break;
+        case 320: // "0" NUM PAD
+            _currentScreen = PRINCIPAL_MENU;
+            break;
+        case 321: // "1" NUM PAD
+            _currentScreen = GAME;
+            break;
+        case 322: // "2" NUM PAD
+            _currentScreen = LOAD_MENU;
+            break;
+        case 323: // "3" NUM PAD
+            _currentScreen = SCORES;
+            break;
+        case 324: // "4" NUM PAD
+            _currentScreen = SCORE_INPUT;
+            break;
 
         default:
+            std::cout << key << std::endl;
             break;
         }
 }
@@ -91,4 +127,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
         0.1f,
         100.0f
     );
+    /* We store the size of the window just in case */
+    _windowWidth = width;
+    _windowHeight = height;
 }

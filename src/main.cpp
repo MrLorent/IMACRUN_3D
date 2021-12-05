@@ -51,6 +51,14 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
 
+    FT_Library  library;
+
+    FT_Error error = FT_Init_FreeType( &library );
+    if ( error )
+    {
+        std::cout << "Failed to initialize FreeType" << std::endl;
+    }
+
     /* Create the App */
     App app(window, window_width, window_height, argv[0]);
 
@@ -84,6 +92,8 @@ int main(int argc, char** argv)
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
+        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         app.render();
 
