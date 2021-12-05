@@ -185,6 +185,7 @@ void Model::loadTextures(
         dirName = filePath.substr(0, lastSlashIndex);
     }
 
+    // ON COMMENCE A UTILISE DIRENT.H
     DIR *dir;
     struct dirent *file;
 

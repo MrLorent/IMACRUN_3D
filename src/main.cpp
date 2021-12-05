@@ -1,22 +1,17 @@
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-
-#include "Model.hpp"
-#include "TrackballCamera.hpp"
+#include "App.hpp"
 
 //Dimension de la fenêtre
-GLFWwindow* window;
 int window_width  = 720;
 int window_height = 720;
 
-//Creation de la camera
-glimac::TrackballCamera cam= glimac::TrackballCamera();
+static App& get_app(GLFWwindow* window)
+{
+    return *reinterpret_cast<App*>(glfwGetWindowUserPointer(window));
+}
 
-glm::mat4 ProjMatrix, MVMatrix;
-
-int init(const int &window_width, const int &window_height){
-
-    /* Initialize the library */
+int main(int argc, char** argv)
+{   
+    /* Initialize the library GLFW */
     if (!glfwInit()) {
         return -1;
     }
@@ -30,7 +25,7 @@ int init(const int &window_width, const int &window_height){
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     #endif
     
-    window = glfwCreateWindow(
+    GLFWwindow* window = glfwCreateWindow(
         window_width,
         window_height,
         "IMACRUN_3D",
@@ -56,107 +51,51 @@ int init(const int &window_width, const int &window_height){
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
 
-    return 1;
-}
+    FT_Library  library;
 
-void initMatrix(glm::mat4 &ProjMatrix, glm::mat4 &MVMatrix){
-    //Initialisation des matrices
-    ProjMatrix=glm::perspective(glm::radians(70.f),float(window_width/window_height), 0.1f, 100.f);
-    glm::mat4 id=glm::mat4(1.);
-    MVMatrix=glm::translate(id, glm::vec3(0.,0.,-10.));
-}
+    FT_Error error = FT_Init_FreeType( &library );
+    if ( error )
+    {
+        std::cout << "Failed to initialize FreeType" << std::endl;
+    }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-        switch (key)
-        {
-        case 262: //Fleche droite
-            if(action!=0){
-                cam.rotateSide(-2.*float(1));
-            }
-            break;
+    /* Create the App */
+    App app(window, window_width, window_height, argv[0]);
 
-        case 263: //Fleche gauche
-            if(action!=0){
-                cam.rotateSide(2.*float(1));
-            }
-            break;
-
-        case 264: //Fleche bas
-            if(action!=0){
-                cam.rotateUp(-2.*float(1));
-            }
-            break;
-        
-        case 265: //Fleche haut
-            if(action!=0){
-                cam.rotateUp(2.*float(1));
-            }
-            break;
-
-        default:
-            break;
-        }
-}
-
-static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
-}
-
-static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    cam.moveFront(yoffset);
-}
-
-static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
-{
-}
-
-static void size_callback(GLFWwindow* window, int width, int height)
-{
-    glfwGetFramebufferSize(window, &width, &height);
-    glViewport(0, 0, width, height);
-    ProjMatrix = glm::perspectiveFov(
-        glm::radians(70.0f),
-        float(width),
-        float(height),
-        0.1f,
-        100.0f
-    );
-}
-
-int main(int argc, char** argv)
-{
-    // CREATION OF THE WINDOW
-    init(window_width, window_height);
+    /* Hook user inputs to the App */
+    glfwSetWindowUserPointer(window, reinterpret_cast<void*>(&app));
 
     /* Hook input callbacks */
-    glfwSetKeyCallback(window, &key_callback);
-    glfwSetMouseButtonCallback(window, &mouse_button_callback);
-    glfwSetScrollCallback(window, &scroll_callback);
-    glfwSetCursorPosCallback(window, &cursor_position_callback);
-    glfwSetWindowSizeCallback(window, &size_callback);
+    /* Keyboard */ 
+    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods){
+        get_app(window).key_callback(key, scancode, action, mods);
+    });
+    /* Mouse Buttons */
+    glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods){
+        get_app(window).mouse_button_callback(button, action, mods);
+    });
 
-    // CHARGEMENT DU MODEL
-    ModelParams knightParams(
-        glimac::FilePath(argv[0]),
-        "knight/alliance.obj",
-        "triangle.vs.glsl",
-        "triangle.fs.glsl"
-    );
-    Model chevalier(knightParams);
-    
-    // INITIALISATION DES MATRICES
-    initMatrix(ProjMatrix, MVMatrix);
+    /* Mouse scroll */
+    glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset){
+        get_app(window).scroll_callback(xoffset, yoffset);
+    });
+
+    /* Cursor position */
+    glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos){
+        get_app(window).cursor_position_callback(xpos, ypos);
+    });
+
+    /* Window resize */
+    glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height){
+        get_app(window).size_callback(window, width, height);
+    });
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        MVMatrix= cam.getViewMatrix();
-        
-        chevalier.draw(ProjMatrix, MVMatrix);
+        app.render();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

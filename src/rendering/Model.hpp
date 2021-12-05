@@ -56,6 +56,7 @@ class Model
         // CONSTRUCTORS
         /* basic constructors */
         
+        Model(){};
         Model(ModelParams params);
 
         // METHODS
