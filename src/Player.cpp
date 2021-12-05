@@ -2,13 +2,7 @@
 
 Player::Player(glimac::FilePath applicationPath)
 {
-    /* Initialization of the MVMatrix */
-    _MVMatrix = glm::translate(
-        glm::mat4(1.),
-        glm::vec3(0.,0.,-10.)
-    );
-    
-    // CHARGEMENT DU MODEL
+    // CHARGEMENT DU MODEL DU JOUEUR
     ModelParams params(
         applicationPath,
         "knight/alliance.obj",
