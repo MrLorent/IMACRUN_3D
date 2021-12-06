@@ -5,14 +5,14 @@
 
 Camera::Camera()
     :_mode(TRACKBALL),
-    /* trackball parameters */
+    // TRACKBALL
      _distance(2),
-     _xAngle(0),
-     _yAngle(0),
-    /* freely parameters */
+     _xAngle(0),    /* horizontal */
+     _yAngle(0),    /* vertical */
+    // FREELY
      _position(glm::vec3(0.f, 1.f, 0.f)),
-     _phi(M_PI),
-     _theta(0.f)
+     _phi(M_PI),    /* horizontal */
+     _theta(0.f)    /* vertical */
 {
     computeDirectionVectors();
 }
