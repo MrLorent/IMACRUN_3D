@@ -90,7 +90,7 @@ void Model::loadModel(
 
     if (!reader.Warning().empty())
     {
-        std::cout << "TinyObjReader: " << reader.Warning();
+       std::cout << "TinyObjReader: " << reader.Warning();
     }
 
     auto& attrib = reader.GetAttrib();
@@ -186,10 +186,37 @@ void Model::loadTextures(
     }
 
     // ON COMMENCE A UTILISE DIRENT.H
-    DIR *dir;
+     DIR *dir;
     struct dirent *file;
 
-    if ((dir = opendir (("./assets/models/" + dirName).c_str())) != nullptr) {
+
+    
+    #ifdef __APPLE__ 
+        if ((dir = opendir (("./assets/models/" + dirName).c_str())) != nullptr) {
+            /* print all the files and directories within directory */
+            file = readdir(dir);
+            while ((file = readdir(dir)) != nullptr) {
+
+                std::string fileName(file->d_name-1);
+                size_t pts=-1;
+                pts=fileName.rfind(".");
+
+                
+
+                if(pts != -1 && (fileName.substr(pts) == ".png" || fileName.substr(pts) == ".jpg"))
+                {
+                    std::cout << std::endl;
+                    std::cout << "NAME: "<<dirName + "/" + fileName << std::endl;
+                    std::cout << std::endl;    
+                    textures.push_back(Texture(dirName + "/" + fileName));
+                }
+            }
+            closedir (dir);
+        }else{
+            std::cout << "Error: fail to open " << dirName << " directory" << std::endl;
+        }
+    #else
+        if ((dir = opendir (("./assets/models/" + dirName).c_str())) != nullptr) {
         /* print all the files and directories within directory */
         while ((file = readdir (dir)) != nullptr) {
             if(file->d_name != objFile)
@@ -198,7 +225,8 @@ void Model::loadTextures(
             }
         }
         closedir (dir);
-    }else{
-        std::cout << "Error: fail to open " << dirName << " directory" << std::endl;
-    }
+        }else{
+            std::cout << "Error: fail to open " << dirName << " directory" << std::endl;
+        }
+    #endif
 }

@@ -1,341 +1,132 @@
-/* Copyright (C) 1991-2019 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
-   <http://www.gnu.org/licenses/>.  */
 /*
- *        POSIX Standard: 5.1.2 Directory Operations        <dirent.h>
+ * Copyright (c) 2000 Apple Computer, Inc. All rights reserved.
+ *
+ * @APPLE_LICENSE_HEADER_START@
+ * 
+ * Copyright (c) 1999-2003 Apple Computer, Inc.  All Rights Reserved.
+ * 
+ * This file contains Original Code and/or Modifications of Original Code
+ * as defined in and that are subject to the Apple Public Source License
+ * Version 2.0 (the 'License'). You may not use this file except in
+ * compliance with the License. Please obtain a copy of the License at
+ * http://www.opensource.apple.com/apsl/ and read it before using this
+ * file.
+ * 
+ * The Original Code and all software distributed under the License are
+ * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
+ * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
+ * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
+ * Please see the License for the specific language governing rights and
+ * limitations under the License.
+ * 
+ * @APPLE_LICENSE_HEADER_END@
  */
-#ifndef        _DIRENT_H
-#define        _DIRENT_H        1
-#include <features.h>
+/*-
+ * Copyright (c) 1989, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *	This product includes software developed by the University of
+ *	California, Berkeley and its contributors.
+ * 4. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ *	@(#)dirent.h	8.2 (Berkeley) 7/28/94
+ */
+
+#ifndef _DIRENT_H_
+#define _DIRENT_H_
+
+/*
+ * The kernel defines the format of directory entries returned by 
+ * the getdirentries(2) system call.
+ */
+#include <sys/types.h>
+#include <sys/dirent.h>
+
+#ifdef _POSIX_SOURCE
+typedef void *	DIR;
+#else
+
+#define	d_ino		d_fileno	/* backward compatibility */
+
+/* definitions for library routines operating on directories. */
+#define	DIRBLKSIZ	1024
+
+struct _telldir;		/* see telldir.h */
+
+/* structure describing an open directory. */
+typedef struct _dirdesc {
+	int	dd_fd;		/* file descriptor associated with directory */
+	long	dd_loc;		/* offset in current buffer */
+	long	dd_size;	/* amount of data returned by getdirentries */
+	char	*dd_buf;	/* data buffer */
+	int	dd_len;		/* size of data buffer */
+	long	dd_seek;	/* magic cookie returned by getdirentries */
+	long	dd_rewind;	/* magic cookie for rewinding */
+	int	dd_flags;	/* flags for readdir */
+	pthread_mutex_t	dd_lock; /* for thread locking */
+	struct _telldir *dd_td;	/* telldir position recording */
+} DIR;
+
+#define	dirfd(dirp)	((dirp)->dd_fd)
+
+/* flags for opendir2 */
+#define DTF_HIDEW	0x0001	/* hide whiteout entries */
+#define DTF_NODUP	0x0002	/* don't return duplicate names */
+#define DTF_REWIND	0x0004	/* rewind after reading union stack */
+#define __DTF_READALL	0x0008	/* everything has been read */
+
+#ifndef NULL
+#define	NULL	0
+#endif
+
+#endif /* _POSIX_SOURCE */
+
+#ifndef KERNEL
+
+#include <sys/cdefs.h>
+
 __BEGIN_DECLS
-#include <bits/types.h>
-#ifdef __USE_XOPEN
-# ifndef __ino_t_defined
-#  ifndef __USE_FILE_OFFSET64
-typedef __ino_t ino_t;
-#  else
-typedef __ino64_t ino_t;
-#  endif
-#  define __ino_t_defined
-# endif
-# if defined __USE_LARGEFILE64 && !defined __ino64_t_defined
-typedef __ino64_t ino64_t;
-#  define __ino64_t_defined
-# endif
-#endif
-/* This file defines `struct dirent'.
-   It defines the macro `_DIRENT_HAVE_D_NAMLEN' iff there is a `d_namlen'
-   member that gives the length of `d_name'.
-   It defines the macro `_DIRENT_HAVE_D_RECLEN' iff there is a `d_reclen'
-   member that gives the size of the entire directory entry.
-   It defines the macro `_DIRENT_HAVE_D_OFF' iff there is a `d_off'
-   member that gives the file offset of the next directory entry.
-   It defines the macro `_DIRENT_HAVE_D_TYPE' iff there is a `d_type'
-   member that gives the type of the file.
- */
-#include <bits/dirent.h>
-#if defined __USE_MISC && !defined d_fileno
-# define d_ino        d_fileno                 /* Backward compatibility.  */
-#endif
-/* These macros extract size information from a `struct dirent *'.
-   They may evaluate their argument multiple times, so it must not
-   have side effects.  Each of these may involve a relatively costly
-   call to `strlen' on some systems, so these values should be cached.
-   _D_EXACT_NAMLEN (DP)        returns the length of DP->d_name, not including
-   its terminating null character.
-   _D_ALLOC_NAMLEN (DP)        returns a size at least (_D_EXACT_NAMLEN (DP) + 1);
-   that is, the allocation size needed to hold the DP->d_name string.
-   Use this macro when you don't need the exact length, just an upper bound.
-   This macro is less likely to require calling `strlen' than _D_EXACT_NAMLEN.
-   */
-#ifdef _DIRENT_HAVE_D_NAMLEN
-# define _D_EXACT_NAMLEN(d) ((d)->d_namlen)
-# define _D_ALLOC_NAMLEN(d) (_D_EXACT_NAMLEN (d) + 1)
-#else
-# define _D_EXACT_NAMLEN(d) (strlen ((d)->d_name))
-# ifdef _DIRENT_HAVE_D_RECLEN
-#  define _D_ALLOC_NAMLEN(d) (((char *) (d) + (d)->d_reclen) - &(d)->d_name[0])
-# else
-#  define _D_ALLOC_NAMLEN(d) (sizeof (d)->d_name > 1 ? sizeof (d)->d_name \
-                              : _D_EXACT_NAMLEN (d) + 1)
-# endif
-#endif
-#ifdef __USE_MISC
-/* File types for `d_type'.  */
-enum
-  {
-    DT_UNKNOWN = 0,
-# define DT_UNKNOWN        DT_UNKNOWN
-    DT_FIFO = 1,
-# define DT_FIFO        DT_FIFO
-    DT_CHR = 2,
-# define DT_CHR                DT_CHR
-    DT_DIR = 4,
-# define DT_DIR                DT_DIR
-    DT_BLK = 6,
-# define DT_BLK                DT_BLK
-    DT_REG = 8,
-# define DT_REG                DT_REG
-    DT_LNK = 10,
-# define DT_LNK                DT_LNK
-    DT_SOCK = 12,
-# define DT_SOCK        DT_SOCK
-    DT_WHT = 14
-# define DT_WHT                DT_WHT
-  };
-/* Convert between stat structure types and directory types.  */
-# define IFTODT(mode)        (((mode) & 0170000) >> 12)
-# define DTTOIF(dirtype)        ((dirtype) << 12)
-#endif
-/* This is the data type of directory stream objects.
-   The actual structure is opaque to users.  */
-typedef struct __dirstream DIR;
-/* Open a directory stream on NAME.
-   Return a DIR stream on the directory, or NULL if it could not be opened.
-   This function is a possible cancellation point and therefore not
-   marked with __THROW.  */
-extern DIR *opendir (const char *__name) __nonnull ((1));
-#ifdef __USE_XOPEN2K8
-/* Same as opendir, but open the stream on the file descriptor FD.
-   This function is a possible cancellation point and therefore not
-   marked with __THROW.  */
-extern DIR *fdopendir (int __fd);
-#endif
-/* Close the directory stream DIRP.
-   Return 0 if successful, -1 if not.
-   This function is a possible cancellation point and therefore not
-   marked with __THROW.  */
-extern int closedir (DIR *__dirp) __nonnull ((1));
-/* Read a directory entry from DIRP.  Return a pointer to a `struct
-   dirent' describing the entry, or NULL for EOF or error.  The
-   storage returned may be overwritten by a later readdir call on the
-   same DIR stream.
-   If the Large File Support API is selected we have to use the
-   appropriate interface.
-   This function is a possible cancellation point and therefore not
-   marked with __THROW.  */
-#ifndef __USE_FILE_OFFSET64
-extern struct dirent *readdir (DIR *__dirp) __nonnull ((1));
-#else
-# ifdef __REDIRECT
-extern struct dirent *__REDIRECT (readdir, (DIR *__dirp), readdir64)
-     __nonnull ((1));
-# else
-#  define readdir readdir64
-# endif
-#endif
-#ifdef __USE_LARGEFILE64
-extern struct dirent64 *readdir64 (DIR *__dirp) __nonnull ((1));
-#endif
-#ifdef __USE_POSIX
-/* Reentrant version of `readdir'.  Return in RESULT a pointer to the
-   next entry.
-   This function is a possible cancellation point and therefore not
-   marked with __THROW.  */
-# ifndef __USE_FILE_OFFSET64
-extern int readdir_r (DIR *__restrict __dirp,
-                      struct dirent *__restrict __entry,
-                      struct dirent **__restrict __result)
-     __nonnull ((1, 2, 3)) __attribute_deprecated__;
-# else
-#  ifdef __REDIRECT
-extern int __REDIRECT (readdir_r,
-                       (DIR *__restrict __dirp,
-                        struct dirent *__restrict __entry,
-                        struct dirent **__restrict __result),
-                       readdir64_r)
-  __nonnull ((1, 2, 3)) __attribute_deprecated__;
-#  else
-#   define readdir_r readdir64_r
-#  endif
-# endif
-# ifdef __USE_LARGEFILE64
-extern int readdir64_r (DIR *__restrict __dirp,
-                        struct dirent64 *__restrict __entry,
-                        struct dirent64 **__restrict __result)
-  __nonnull ((1, 2, 3)) __attribute_deprecated__;
-# endif
-#endif        /* POSIX or misc */
-/* Rewind DIRP to the beginning of the directory.  */
-extern void rewinddir (DIR *__dirp) __THROW __nonnull ((1));
-#if defined __USE_MISC || defined __USE_XOPEN
-# include <bits/types.h>
-/* Seek to position POS on DIRP.  */
-extern void seekdir (DIR *__dirp, long int __pos) __THROW __nonnull ((1));
-/* Return the current position of DIRP.  */
-extern long int telldir (DIR *__dirp) __THROW __nonnull ((1));
-#endif
-#ifdef __USE_XOPEN2K8
-/* Return the file descriptor used by DIRP.  */
-extern int dirfd (DIR *__dirp) __THROW __nonnull ((1));
-# if defined __OPTIMIZE__ && defined _DIR_dirfd
-#  define dirfd(dirp)        _DIR_dirfd (dirp)
-# endif
-# ifdef __USE_MISC
-#  ifndef MAXNAMLEN
-/* Get the definitions of the POSIX.1 limits.  */
-#  include <bits/posix1_lim.h>
-/* `MAXNAMLEN' is the BSD name for what POSIX calls `NAME_MAX'.  */
-#   ifdef NAME_MAX
-#    define MAXNAMLEN        NAME_MAX
-#   else
-#    define MAXNAMLEN        255
-#   endif
-#  endif
-# endif
-# define __need_size_t
-# include <stddef.h>
-/* Scan the directory DIR, calling SELECTOR on each directory entry.
-   Entries for which SELECT returns nonzero are individually malloc'd,
-   sorted using qsort with CMP, and collected in a malloc'd array in
-   *NAMELIST.  Returns the number of entries selected, or -1 on error.
-   This function is a cancellation point and therefore not marked with
-   __THROW.  */
-# ifndef __USE_FILE_OFFSET64
-extern int scandir (const char *__restrict __dir,
-                    struct dirent ***__restrict __namelist,
-                    int (*__selector) (const struct dirent *),
-                    int (*__cmp) (const struct dirent **,
-                                  const struct dirent **))
-     __nonnull ((1, 2));
-# else
-#  ifdef __REDIRECT
-extern int __REDIRECT (scandir,
-                       (const char *__restrict __dir,
-                        struct dirent ***__restrict __namelist,
-                        int (*__selector) (const struct dirent *),
-                        int (*__cmp) (const struct dirent **,
-                                      const struct dirent **)),
-                       scandir64) __nonnull ((1, 2));
-#  else
-#   define scandir scandir64
-#  endif
-# endif
-# if defined __USE_GNU && defined __USE_LARGEFILE64
-/* This function is like `scandir' but it uses the 64bit dirent structure.
-   Please note that the CMP function must now work with struct dirent64 **.  */
-extern int scandir64 (const char *__restrict __dir,
-                      struct dirent64 ***__restrict __namelist,
-                      int (*__selector) (const struct dirent64 *),
-                      int (*__cmp) (const struct dirent64 **,
-                                    const struct dirent64 **))
-     __nonnull ((1, 2));
-# endif
-# ifdef __USE_GNU
-/* Similar to `scandir' but a relative DIR name is interpreted relative
-   to the directory for which DFD is a descriptor.
-   This function is a cancellation point and therefore not marked with
-   __THROW.  */
-#  ifndef __USE_FILE_OFFSET64
-extern int scandirat (int __dfd, const char *__restrict __dir,
-                      struct dirent ***__restrict __namelist,
-                      int (*__selector) (const struct dirent *),
-                      int (*__cmp) (const struct dirent **,
-                                    const struct dirent **))
-     __nonnull ((2, 3));
-#  else
-#   ifdef __REDIRECT
-extern int __REDIRECT (scandirat,
-                       (int __dfd, const char *__restrict __dir,
-                        struct dirent ***__restrict __namelist,
-                        int (*__selector) (const struct dirent *),
-                        int (*__cmp) (const struct dirent **,
-                                      const struct dirent **)),
-                       scandirat64) __nonnull ((2, 3));
-#   else
-#    define scandirat scandirat64
-#   endif
-#  endif
-/* This function is like `scandir' but it uses the 64bit dirent structure.
-   Please note that the CMP function must now work with struct dirent64 **.  */
-extern int scandirat64 (int __dfd, const char *__restrict __dir,
-                        struct dirent64 ***__restrict __namelist,
-                        int (*__selector) (const struct dirent64 *),
-                        int (*__cmp) (const struct dirent64 **,
-                                      const struct dirent64 **))
-     __nonnull ((2, 3));
-# endif
-/* Function to compare two `struct dirent's alphabetically.  */
-# ifndef __USE_FILE_OFFSET64
-extern int alphasort (const struct dirent **__e1,
-                      const struct dirent **__e2)
-     __THROW __attribute_pure__ __nonnull ((1, 2));
-# else
-#  ifdef __REDIRECT
-extern int __REDIRECT_NTH (alphasort,
-                           (const struct dirent **__e1,
-                            const struct dirent **__e2),
-                           alphasort64) __attribute_pure__ __nonnull ((1, 2));
-#  else
-#   define alphasort alphasort64
-#  endif
-# endif
-# if defined __USE_GNU && defined __USE_LARGEFILE64
-extern int alphasort64 (const struct dirent64 **__e1,
-                        const struct dirent64 **__e2)
-     __THROW __attribute_pure__ __nonnull ((1, 2));
-# endif
-#endif /* Use XPG7.  */
-#ifdef __USE_MISC
-/* Read directory entries from FD into BUF, reading at most NBYTES.
-   Reading starts at offset *BASEP, and *BASEP is updated with the new
-   position after reading.  Returns the number of bytes read; zero when at
-   end of directory; or -1 for errors.  */
-# ifndef __USE_FILE_OFFSET64
-extern __ssize_t getdirentries (int __fd, char *__restrict __buf,
-                                size_t __nbytes,
-                                __off_t *__restrict __basep)
-     __THROW __nonnull ((2, 4));
-# else
-#  ifdef __REDIRECT
-extern __ssize_t __REDIRECT_NTH (getdirentries,
-                                 (int __fd, char *__restrict __buf,
-                                  size_t __nbytes,
-                                  __off64_t *__restrict __basep),
-                                 getdirentries64) __nonnull ((2, 4));
-#  else
-#   define getdirentries getdirentries64
-#  endif
-# endif
-# ifdef __USE_LARGEFILE64
-extern __ssize_t getdirentries64 (int __fd, char *__restrict __buf,
-                                  size_t __nbytes,
-                                  __off64_t *__restrict __basep)
-     __THROW __nonnull ((2, 4));
-# endif
-#endif /* Use misc.  */
-#ifdef __USE_GNU
-/* Function to compare two `struct dirent's by name & version.  */
-# ifndef __USE_FILE_OFFSET64
-extern int versionsort (const struct dirent **__e1,
-                        const struct dirent **__e2)
-     __THROW __attribute_pure__ __nonnull ((1, 2));
-# else
-#  ifdef __REDIRECT
-extern int __REDIRECT_NTH (versionsort,
-                           (const struct dirent **__e1,
-                            const struct dirent **__e2),
-                           versionsort64)
-     __attribute_pure__ __nonnull ((1, 2));
-#  else
-#   define versionsort versionsort64
-#  endif
-# endif
-# ifdef __USE_LARGEFILE64
-extern int versionsort64 (const struct dirent64 **__e1,
-                          const struct dirent64 **__e2)
-     __THROW __attribute_pure__ __nonnull ((1, 2));
-# endif
-#endif /* Use GNU.  */
+DIR *opendir(const char *);
+struct dirent *readdir(DIR *);
+void rewinddir(DIR *);
+int closedir(DIR *);
+#ifndef _POSIX_SOURCE
+DIR *__opendir2(const char *, int);
+long telldir(DIR *);
+void seekdir(DIR *, long);
+int scandir(const char *, struct dirent ***,
+    int (*)(struct dirent *), int (*)(const void *, const void *));
+int alphasort(const void *, const void *);
+int getdirentries(int, char *, int, long *);
+int readdir_r(DIR *, struct dirent *, struct dirent **);
+#endif /* not POSIX */
 __END_DECLS
-#endif /* dirent.h  */
+
+#endif /* !KERNEL */
+
+#endif /* !_DIRENT_H_ */

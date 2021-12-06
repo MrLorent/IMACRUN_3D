@@ -18,7 +18,7 @@ void Game::load()
     _map = std::vector<char>(18,'f');
     ModelParams floorParams(
         _applicationPath,
-        "box/box.obj",
+        "tile/tile.obj",
         "triangle.vs.glsl",
         "triangle.fs.glsl"
     );
