@@ -2,7 +2,7 @@
 #define GAME_HPP
 
 #include "Player.hpp"
-#include "TrackballCamera.hpp"
+#include "Camera.hpp"
 
 class Game
 {
@@ -14,7 +14,7 @@ private:
     void load();
 
 public:
-    glimac::TrackballCamera _camera;
+    Camera _camera;
     
     Game(){}
     Game(glimac::FilePath applicationPath);

@@ -2,7 +2,7 @@
 
 Game::Game(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
-     _camera(glimac::TrackballCamera())
+     _camera(Camera())
 {
     load();
 }
