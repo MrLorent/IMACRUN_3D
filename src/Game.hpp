@@ -12,6 +12,8 @@ private:
     glm::mat4 _viewMatrix;
 
     Player _player;
+    Model _floor;
+    std::vector<char> _map;
 
     void load();
 

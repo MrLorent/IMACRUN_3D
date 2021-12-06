@@ -15,5 +15,10 @@ Player::Player(glimac::FilePath applicationPath)
 void Player::draw(glm::mat4& projectionMatrix, glm::mat4& MVMatrix)
 {
     _MVMatrix = MVMatrix;
+    _MVMatrix = glm::rotate(
+        _MVMatrix,
+        float(M_PI),
+        glm::vec3(0.f,1.f,0.f)
+    );
     _model.draw(projectionMatrix, _MVMatrix);
 }

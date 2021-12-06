@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 #include "Model.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
 class Player
 {
