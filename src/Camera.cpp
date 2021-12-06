@@ -7,7 +7,7 @@ Camera::Camera()
     :_mode(TRACKBALL),
     // TRACKBALL
      _distance(2),
-     _xAngle(0),    /* horizontal */
+     _xAngle(M_PI / 6),    /* horizontal */
      _yAngle(0),    /* vertical */
     // FREELY
      _position(glm::vec3(0.f, 1.f, 0.f)),
@@ -112,7 +112,7 @@ glm::mat4 Camera::getViewMatrix() const
         viewMatrix,
         glm::vec3(
             0.0f,
-            -0.5f,
+            -0.75f,
             -_distance)
         );
 

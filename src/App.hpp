@@ -16,11 +16,16 @@ const short unsigned int SCORE_INPUT = 4;
 class App
 {
     private:
-        short unsigned int _currentScreen;
-
         int _width;
         int _height;
     public:
+        // PUBLIC ATTRIBUTS
+
+        short unsigned int _currentScreen;
+
+        glm::mat4 _projectionMatrix;
+        Game _game;
+
         // CONSTRUCTORS
         /* Basic constructor*/
         App(GLFWwindow* window, int window_width, int window_height, std::string name);
@@ -32,8 +37,4 @@ class App
         void cursor_position_callback(double xpos, double ypos);
         void size_callback(GLFWwindow* window, int width, int height);
         void destroy();
-
-        // PUBLIC ATTRIBUTS
-        glm::mat4 projectionMatrix;
-        Game game;
 };
