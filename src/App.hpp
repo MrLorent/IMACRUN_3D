@@ -4,8 +4,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "Model.hpp"
-#include "TrackballCamera.hpp"
+#include "Game.hpp"
 
 // MENU NAVIGATION
 const short unsigned int PRINCIPAL_MENU = 0;
@@ -17,11 +16,16 @@ const short unsigned int SCORE_INPUT = 4;
 class App
 {
     private:
+        int _width;
+        int _height;
+    public:
+        // PUBLIC ATTRIBUTS
+
         short unsigned int _currentScreen;
 
-        int _windowWidth;
-        int _windowHeight;
-    public:
+        glm::mat4 _projectionMatrix;
+        Game _game;
+
         // CONSTRUCTORS
         /* Basic constructor*/
         App(GLFWwindow* window, int window_width, int window_height, std::string name);
@@ -33,11 +37,4 @@ class App
         void cursor_position_callback(double xpos, double ypos);
         void size_callback(GLFWwindow* window, int width, int height);
         void destroy();
-
-        //Creation de la camera
-        glimac::TrackballCamera cam = glimac::TrackballCamera();
-
-        glm::mat4 ProjMatrix, MVMatrix;
-
-        Model chevalier;
 };

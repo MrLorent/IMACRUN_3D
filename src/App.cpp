@@ -4,28 +4,13 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string na
 {
     /* Initialization of the window size */
     size_callback(window, window_width, window_height);
-    _windowWidth = window_width;
-    _windowHeight = window_height;
+    _width = window_width;
+    _height = window_height;
     
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
 
-    /* Initialization of the MVMatrix */
-    /* WILL SOON BE IN GAME CLASS */
-    MVMatrix = glm::translate(
-        glm::mat4(1.),
-        glm::vec3(0.,0.,-10.)
-    );
-
-    // CHARGEMENT DU MODEL
-    /* WILL SOON BE IN GAME CLASS */
-    ModelParams knightParams(
-        glimac::FilePath(name),
-        "knight/alliance.obj",
-        "triangle.vs.glsl",
-        "triangle.fs.glsl"
-    );
-    chevalier = Model(knightParams);
+    _game = Game(glimac::FilePath(name));
 }
 
 void App::render()
@@ -36,9 +21,15 @@ void App::render()
         glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
         break;
     case GAME:
-        glClearColor(0.f, 0.f, 0.f, 1.f);
-        MVMatrix= cam.getViewMatrix();
-        chevalier.draw(ProjMatrix, MVMatrix);
+        if(!_game._finished)
+        {
+            glClearColor(0.f, 0.f, 0.f, 1.f);
+            _game.render(_projectionMatrix);
+        }
+        else
+        {
+            _currentScreen = PRINCIPAL_MENU;
+        }
         break;
     case LOAD_MENU:
         glClearColor(1.f, 0.f, 0.f, 1.f);
@@ -58,29 +49,6 @@ void App::key_callback(int key, int scancode, int action, int mods)
 {
     switch (key)
         {
-        case 262: //Fleche droite
-            if(action!=0){
-                cam.rotateSide(-2.*float(1));
-            }
-            break;
-
-        case 263: //Fleche gauche
-            if(action!=0){
-                cam.rotateSide(2.*float(1));
-            }
-            break;
-
-        case 264: //Fleche bas
-            if(action!=0){
-                cam.rotateUp(-2.*float(1));
-            }
-            break;
-        
-        case 265: //Fleche haut
-            if(action!=0){
-                cam.rotateUp(2.*float(1));
-            }
-            break;
         case 320: // "0" NUM PAD
             _currentScreen = PRINCIPAL_MENU;
             break;
@@ -109,7 +77,6 @@ void App::mouse_button_callback(int button, int action, int mods)
 
 void App::scroll_callback(double xoffset, double yoffset)
 {
-    cam.moveFront(yoffset);
 }
 
 void App::cursor_position_callback(double xpos, double ypos)
@@ -120,7 +87,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
 {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
-    ProjMatrix = glm::perspectiveFov(
+    _projectionMatrix = glm::perspectiveFov(
         glm::radians(70.0f),
         float(width),
         float(height),
@@ -128,6 +95,6 @@ void App::size_callback(GLFWwindow* window, int width, int height)
         100.0f
     );
     /* We store the size of the window just in case */
-    _windowWidth = width;
-    _windowHeight = height;
+    _width = width;
+    _height = height;
 }
