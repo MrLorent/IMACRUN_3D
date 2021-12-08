@@ -2,17 +2,11 @@
 
 Game::Game(glimac::FilePath applicationPath)
     :_camera(Camera()),
+     _map(Map()),
      _player(Player()),
      _renderer(GameRenderer(applicationPath)),
      _finished(false)
 {
-    load();
-}
-
-void Game::load()
-{
-    // A PARTIR DE LA C'EST DEGUEU
-    _map = std::vector<char>(18,'f');
 }
 
 void Game::render(glm::mat4& projectionMatrix)

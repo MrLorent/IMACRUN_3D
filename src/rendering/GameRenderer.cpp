@@ -1,8 +1,16 @@
 #include "GameRenderer.hpp"
 
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
-    :_applicationPath(applicationPath)
+    :_applicationPath(applicationPath),
+     _renderingLength(4 * 5) // nb ligne * nb case in a line
 {
+    X_TRANSLATE_MATRICES = {
+        glm::translate(glm::mat4(1.f),glm::vec3(-2.f,0.f,0.f)),
+        glm::translate(glm::mat4(1.f),glm::vec3(-1.f,0.f,0.f)),
+        glm::translate(glm::mat4(1.f),glm::vec3(0.f,0.f,0.f)),
+        glm::translate(glm::mat4(1.f),glm::vec3(1.f,0.f,0.f)),
+        glm::translate(glm::mat4(1.f),glm::vec3(2.f,0.f,0.f))
+    };
     load3DModels();
 }
 
@@ -22,59 +30,49 @@ void GameRenderer::load3DModels()
     params.vsShader = "triangle.vs.glsl";
     params.fsShader = "triangle.fs.glsl";
 
-    _tile = Model(params);
+    _floor = Model(params);
 }
 
 void GameRenderer::render(
     glm::mat4 projectionMatrix,
     glm::mat4 viewMatrix,
     glm::vec3 playerPosition,
-    std::vector<char> map
+    Map& map
 )
 {
     // DRAW THE PLAYER
     /* Place the Player Model into the scene */
-    glm::mat4 MVMatrix = glm::mat4(1.f); 
-    MVMatrix = glm::rotate(
-        MVMatrix,
+
+    /* turn back the model from the camera */
+    glm::mat4 MVMatrix = glm::rotate(
+        glm::mat4(1.f),
         float(M_PI),
         glm::vec3(0.f,1.f,0.f)
     );
 
-    /* Move the scene according to the camera */
+    /* put the player model at the right position */
+    MVMatrix = glm::translate(
+        MVMatrix,
+        playerPosition
+    );
+
+    /* Move the player model according to the camera */
     MVMatrix = viewMatrix * MVMatrix;
 
     _player.draw(projectionMatrix, MVMatrix);
 
     // DRAW THE MAP
-    for(unsigned int i=0; i<map.size(); i++)
+    for(unsigned int i=0; i<_renderingLength; i++)
     {
-        MVMatrix = glm::mat4(1.f);
-
-        glm::vec3 xTranslate;
-
-        if((i+1)%3 == 1){
-            xTranslate = glm::vec3(-1.0, 0.0, 0.0);
-        }else if((i+1)%3 == 0){
-            xTranslate = glm::vec3(1.0, 0.0, 0.0);
-        }else{
-            xTranslate = glm::vec3(0.0);
-        }
+        MVMatrix = X_TRANSLATE_MATRICES[i%5];
 
         MVMatrix = glm::translate(
             MVMatrix,
-            xTranslate
-        );
-
-        glm::vec3 zTranslate = glm::vec3(0.0,0.0,i/3);
-
-        MVMatrix = glm::translate(
-            MVMatrix,
-            zTranslate
+            glm::vec3(0.0,0.0,i/5)
         );
 
         /* Move the scene according to the camera */
         MVMatrix = viewMatrix * MVMatrix;
-        _tile.draw(projectionMatrix, MVMatrix);
+        _floor.draw(projectionMatrix, MVMatrix);
     }
 }

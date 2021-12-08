@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "Camera.hpp"
+#include "Map.hpp"
 #include "GameRenderer.hpp"
 
 struct Player
@@ -14,12 +15,9 @@ struct Player
 class Game
 {
 private:
+    Map _map;
     Player _player;
-    std::vector<char> _map;
     GameRenderer _renderer;
-
-    void load();
-
 public:
     bool _finished;
     Camera _camera;
