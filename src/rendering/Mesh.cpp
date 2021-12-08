@@ -8,9 +8,9 @@ Mesh::Mesh(
     const std::vector<unsigned int>& indices,
     std::vector<Texture>&& textures
 )
-    :_vertices(vertices),
-     _indices(indices),
-     _textures(std::move(textures))
+    :vertices(vertices),
+     indices(indices),
+     textures(std::move(textures))
 {
     initVbo();
     initIbo();
@@ -26,9 +26,9 @@ Mesh::~Mesh()
 }
 
 Mesh::Mesh(Mesh&& rhs) noexcept
-    :_vertices(rhs._vertices),
-     _indices(rhs._indices),
-     _textures(std::move(rhs._textures)),
+    :vertices(rhs.vertices),
+     indices(rhs.indices),
+     textures(std::move(rhs.textures)),
      _vbo(rhs._vbo),
      _ibo(rhs._ibo),
      _vao(rhs._vao)
@@ -48,8 +48,8 @@ void Mesh::initVbo()
 
         glBufferData(
             GL_ARRAY_BUFFER,
-            _vertices.size()*sizeof(Vertex),
-            _vertices.data(),
+            vertices.size()*sizeof(Vertex),
+            vertices.data(),
             GL_STATIC_DRAW
         );
 
@@ -63,8 +63,8 @@ void Mesh::initIbo()
         
         glBufferData(
             GL_ELEMENT_ARRAY_BUFFER,
-            _indices.size() * sizeof(GLuint),
-            _indices.data(),
+            indices.size() * sizeof(GLuint),
+            indices.data(),
             GL_STATIC_DRAW
         );
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -93,7 +93,7 @@ void Mesh::initVao()
                 GL_FLOAT,
                 GL_FALSE,
                 sizeof(Vertex),
-                (const void*)(offsetof(Vertex, _position))
+                (const void*)(offsetof(Vertex, position))
             );
 
                 //NORMAL
@@ -103,7 +103,7 @@ void Mesh::initVao()
                 GL_FLOAT,
                 GL_FALSE,
                 sizeof(Vertex),
-                (const void*)(offsetof(Vertex, _normal))
+                (const void*)(offsetof(Vertex, normal))
             );
 
             //TEXTURE
@@ -113,7 +113,7 @@ void Mesh::initVao()
                 GL_FLOAT,
                 GL_FALSE,
                 sizeof(Vertex),
-                (const void*)(offsetof(Vertex, _texCoords))
+                (const void*)(offsetof(Vertex, texCoords))
             );
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -124,16 +124,16 @@ void Mesh::initVao()
 
 void Mesh::draw(glimac::Program& shaders)
 {
-    for (size_t i=0; i < _textures.size(); i++)
+    for (size_t i=0; i < textures.size(); i++)
     {
         glUniform1i(glGetUniformLocation(shaders.getGLId(), "uTexture"), i);
-        _textures[i].bind(i);
+        textures[i].bind(i);
     }
 
     glBindVertexArray(_vao);
         glDrawElements(
             GL_TRIANGLES,
-            _indices.size(),
+            indices.size(),
             GL_UNSIGNED_INT,
             0
         );

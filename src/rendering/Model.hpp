@@ -6,10 +6,10 @@
 
 struct ModelParams
 {
-    glimac::FilePath _appPath;
-    std::string _fileName;
-    std::string _vsShader;
-    std::string _fsShader;
+    glimac::FilePath appPath;
+    std::string fileName;
+    std::string vsShader;
+    std::string fsShader;
 
     // CONSTRUCTOR
     ModelParams(
@@ -18,10 +18,10 @@ struct ModelParams
         std::string vsShader,
         std::string fsShader
     ):
-    _appPath(appPath),
-    _fileName(fileName),
-    _vsShader(vsShader),
-    _fsShader(fsShader) 
+    appPath(appPath),
+    fileName(fileName),
+    vsShader(vsShader),
+    fsShader(fsShader) 
     {}
 };
 

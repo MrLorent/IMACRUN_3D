@@ -8,12 +8,12 @@
 
 Model::Model(ModelParams params)
     :_shaders(loadProgram(
-        params._appPath.dirPath() + "src/shaders/"+params._vsShader,
-        params._appPath.dirPath() + "src/shaders/"+params._fsShader
+        params.appPath.dirPath() + "src/shaders/"+params.vsShader,
+        params.appPath.dirPath() + "src/shaders/"+params.fsShader
 ))
 {
     /* Load the model and its textures */
-    loadModel(params._appPath, params._fileName);
+    loadModel(params.appPath, params.fileName);
     
     /* Link the matrix attribut to the shaders matrix */
     _uMVPMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVPMatrix");
@@ -114,14 +114,14 @@ void Model::loadModel(
                 Vertex vertex;
 
                 // POSITION
-                vertex._position = glm::vec3(
+                vertex.position = glm::vec3(
                     tinyobj::real_t(attrib.vertices[3*idx.vertex_index+0]), // vx
                     tinyobj::real_t(attrib.vertices[3*idx.vertex_index+1]), // vy
                     tinyobj::real_t(attrib.vertices[3*idx.vertex_index+2])  // vz
                 );
 
                 // NORMAL
-                vertex._normal = glm::vec3(
+                vertex.normal = glm::vec3(
                     tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
                     tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
                     tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
@@ -130,12 +130,12 @@ void Model::loadModel(
                 // TEXTURE_COORDINATES
                 if (idx.texcoord_index >= 0)
                 {
-                    vertex._texCoords = glm::vec2(
+                    vertex.texCoords = glm::vec2(
                         tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+0]),  //tx
                         tinyobj::real_t(attrib.texcoords[2*idx.texcoord_index+1])   //ty
                     );
                 }else{
-                    vertex._texCoords = glm::vec2(0.f);
+                    vertex.texCoords = glm::vec2(0.f);
                 }
 
                 // Optional: vertex colors
