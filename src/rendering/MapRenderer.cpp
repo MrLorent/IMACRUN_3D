@@ -42,7 +42,7 @@ void MapRenderer::render(
     );
 
     /* Move the scene according to the camera */
-    MVMatrix = MVMatrix * viewMatrix;
+    MVMatrix = viewMatrix * MVMatrix;
 
     _player.draw(projectionMatrix, MVMatrix);
 
@@ -74,7 +74,7 @@ void MapRenderer::render(
         );
 
         /* Move the scene according to the camera */
-        //MVMatrix = MVMatrix * viewMatrix;
+        MVMatrix = viewMatrix * MVMatrix;
         _tile.draw(projectionMatrix, MVMatrix);
     }
 }
