@@ -1,31 +1,31 @@
-#include "MapRenderer.hpp"
+#include "GameRenderer.hpp"
 
-MapRenderer::MapRenderer(glimac::FilePath applicationPath)
+GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath)
 {
     load3DModels();
 }
 
-void MapRenderer::load3DModels()
+void GameRenderer::load3DModels()
 {
     ModelParams params(_applicationPath);
 
     // LOADING OF THE PLAYER MODEL
-    params._fileName = "knight/alliance.obj";
-    params._vsShader = "triangle.vs.glsl";
-    params._fsShader = "triangle.fs.glsl";
+    params.fileName = "knight/alliance.obj";
+    params.vsShader = "triangle.vs.glsl";
+    params.fsShader = "triangle.fs.glsl";
 
     _player = Model(params);
 
     // LOADING OF THE TILE MODEL
-    params._fileName = "box/box.obj";
-    params._vsShader = "triangle.vs.glsl";
-    params._fsShader = "triangle.fs.glsl";
+    params.fileName = "box/box.obj";
+    params.vsShader = "triangle.vs.glsl";
+    params.fsShader = "triangle.fs.glsl";
 
     _tile = Model(params);
 }
 
-void MapRenderer::render(
+void GameRenderer::render(
     glm::mat4 projectionMatrix,
     glm::mat4 viewMatrix,
     glm::vec3 playerPosition,

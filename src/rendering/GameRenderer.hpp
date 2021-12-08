@@ -6,7 +6,7 @@
 
 #include "Model.hpp"
 
-class MapRenderer
+class GameRenderer
 {
 private:
     // ATTRIBUTS
@@ -23,8 +23,8 @@ private:
     void load3DModels();
 
 public:
-    MapRenderer(){}
-    MapRenderer(glimac::FilePath applicationPath);
+    GameRenderer(){}
+    GameRenderer(glimac::FilePath applicationPath);
 
     void render(
         glm::mat4 projectionMatrix,

@@ -27,10 +27,10 @@ struct ModelParams
 
     ModelParams(
         glimac::FilePath appPath
-    ):_appPath(appPath),
-      _fileName("unknown"),
-      _vsShader("unknown"),
-      _fsShader("unknown")
+    ):appPath(appPath),
+      fileName("unknown"),
+      vsShader("unknown"),
+      fsShader("unknown")
     {}
 };
 

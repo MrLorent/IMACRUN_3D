@@ -3,7 +3,7 @@
 Game::Game(glimac::FilePath applicationPath)
     :_camera(Camera()),
      _player(Player()),
-     _mapRenderer(MapRenderer(applicationPath)),
+     _renderer(GameRenderer(applicationPath)),
      _finished(false)
 {
     load();
@@ -17,7 +17,7 @@ void Game::load()
 
 void Game::render(glm::mat4& projectionMatrix)
 {
-    _mapRenderer.render(
+    _renderer.render(
         projectionMatrix,
         _camera.getViewMatrix(),
         _player.position,
