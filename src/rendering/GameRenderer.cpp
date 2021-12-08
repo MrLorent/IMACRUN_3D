@@ -2,7 +2,9 @@
 
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
-     _renderingLength(4 * 5) // nb ligne * nb case in a line
+     _renderingLength(15 * 5), // nb ligne * nb case in a line
+     _speedFactor(50.f),
+     _caseIndex(0)
 {
     X_TRANSLATE_MATRICES = {
         glm::translate(glm::mat4(1.f),glm::vec3(-2.f,0.f,0.f)),
@@ -11,6 +13,7 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
         glm::translate(glm::mat4(1.f),glm::vec3(1.f,0.f,0.f)),
         glm::translate(glm::mat4(1.f),glm::vec3(2.f,0.f,0.f))
     };
+
     load3DModels();
 }
 
@@ -62,17 +65,25 @@ void GameRenderer::render(
     _player.draw(projectionMatrix, MVMatrix);
 
     // DRAW THE MAP
-    for(unsigned int i=0; i<_renderingLength; i++)
+    for(unsigned int i=map.getIndex(); i<_renderingLength; i++)
     {
         MVMatrix = X_TRANSLATE_MATRICES[i%5];
 
         MVMatrix = glm::translate(
             MVMatrix,
-            glm::vec3(0.0,0.0,i/5)
+            glm::vec3(0.0,0.0,(i-map.getIndex())/5 - _caseIndex/_speedFactor)
         );
 
         /* Move the scene according to the camera */
         MVMatrix = viewMatrix * MVMatrix;
         _floor.draw(projectionMatrix, MVMatrix);
     }
+
+    _caseIndex++;
+
+    if(_caseIndex == _speedFactor){
+        map.incrementIndex();
+        _caseIndex = 0;
+    }
+    
 }

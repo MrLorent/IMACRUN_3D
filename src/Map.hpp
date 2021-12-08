@@ -12,6 +12,10 @@ private:
 public:
     Map();
     ~Map();
+
+    unsigned int getIndex();
+
+    void incrementIndex();
 };
 
 

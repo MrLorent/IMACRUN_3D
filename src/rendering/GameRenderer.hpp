@@ -16,6 +16,8 @@ private:
 
     glimac::FilePath _applicationPath;
     unsigned int _renderingLength;
+    float _speedFactor;
+    unsigned int _caseIndex;
 
     /* 3D Models */
     Model _player;
