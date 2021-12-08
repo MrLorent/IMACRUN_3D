@@ -3,6 +3,7 @@
 
 #include <dirent.h>
 #include "Mesh.hpp"
+#include "FilePath.hpp"
 
 struct ModelParams
 {
@@ -17,11 +18,18 @@ struct ModelParams
         std::string fileName,
         std::string vsShader,
         std::string fsShader
-    ):
-    _appPath(appPath),
-    _fileName(fileName),
-    _vsShader(vsShader),
-    _fsShader(fsShader) 
+    ):_appPath(appPath),
+      _fileName(fileName),
+      _vsShader(vsShader),
+      _fsShader(fsShader) 
+    {}
+
+    ModelParams(
+        glimac::FilePath appPath
+    ):_appPath(appPath),
+      _fileName("unknown"),
+      _vsShader("unknown"),
+      _fsShader("unknown")
     {}
 };
 

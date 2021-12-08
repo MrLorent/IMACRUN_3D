@@ -1,19 +1,22 @@
 #pragma once
 #define GAME_HPP
 
-#include "Player.hpp"
 #include "Camera.hpp"
+#include "MapRenderer.hpp"
+
+struct Player
+{
+    glm::vec3 position;
+
+    Player():position(glm::vec3(0.f)){}
+};
 
 class Game
 {
 private:
-    glimac::FilePath _applicationPath;
-
-    glm::mat4 _viewMatrix;
-
     Player _player;
-    Model _floor;
     std::vector<char> _map;
+    MapRenderer _mapRenderer;
 
     void load();
 
