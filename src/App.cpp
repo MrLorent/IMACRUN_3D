@@ -52,7 +52,7 @@ void App::key_callback(int key, int scancode, int action, int mods)
         case 320: // "0" NUM PAD
             _currentScreen = PRINCIPAL_MENU;
             break;
-        case 321: // "1" NUM PAD
+        case 71: // "1" NUM PAD
             _currentScreen = GAME;
             break;
         case 322: // "2" NUM PAD

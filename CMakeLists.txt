@@ -64,7 +64,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC tinyobjloader)
 # ---Add header librairies---
 include_directories(
     ${LIB_DIR}/stb
-    ${LIB_DIR}/dirent
 )
 
 #
