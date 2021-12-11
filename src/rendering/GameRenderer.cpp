@@ -85,13 +85,13 @@ void GameRenderer::render(
 
             switch (map[map.getMapWidth() * i + k])
             {
-                case map.FLOOR:
+                case Map::FLOOR:
                     _floor.draw(projectionMatrix, MVMatrix);
                     break;
-                case map.WALL:
+                case Map::WALL:
                     _floor.draw(projectionMatrix, MVMatrix);
                     break;
-                case map.HOLE:
+                case Map::HOLE:
                     break;
                 
                 default:

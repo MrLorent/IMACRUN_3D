@@ -18,6 +18,7 @@ private:
     unsigned int _renderingLength;
     float _caseSubdivisions;
     unsigned int _caseSubdivisionsIndex;
+    short int _rotationDirection;
 
     /* 3D Models */
     Model _player;
@@ -26,11 +27,11 @@ private:
 
     // PRIVATE METHODS
 
-    void load3DModels();
-
 public:
     GameRenderer(){}
     GameRenderer(glimac::FilePath applicationPath);
+
+    void load3DModels();
 
     void render(
         glm::mat4 projectionMatrix,
