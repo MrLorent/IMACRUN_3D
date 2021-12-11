@@ -19,6 +19,8 @@ void App::render()
     {
     case PRINCIPAL_MENU:
         glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
+        if(game._finished)
+            game._finished = false;
         break;
     case GAME:
         if(!game._finished)

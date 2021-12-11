@@ -3,8 +3,8 @@
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
      _renderingLength(15 * 5), // nb ligne * nb case in a line
-     _speedFactor(50.f),
-     _caseIndex(0)
+     _caseSubdivisions(75.f),
+     _caseSubdivisionsIndex(0)
 {
     X_TRANSLATE_MATRICES = {
         glm::translate(glm::mat4(1.f),glm::vec3(-2.f,0.f,0.f)),
@@ -71,7 +71,7 @@ void GameRenderer::render(
 
         MVMatrix = glm::translate(
             MVMatrix,
-            glm::vec3(0.0,0.0,(i-map.getIndex())/5 - _caseIndex/_speedFactor)
+            glm::vec3(0.0,0.0,(i-map.getIndex())/5 - _caseSubdivisionsIndex/_caseSubdivisions)
         );
 
         /* Move the scene according to the camera */
@@ -79,11 +79,11 @@ void GameRenderer::render(
         _floor.draw(projectionMatrix, MVMatrix);
     }
 
-    _caseIndex++;
+    _caseSubdivisionsIndex++;
 
-    if(_caseIndex == _speedFactor){
+    if(_caseSubdivisionsIndex == _caseSubdivisions){
         map.incrementIndex();
-        _caseIndex = 0;
+        _caseSubdivisionsIndex = 0;
     }
     
 }
