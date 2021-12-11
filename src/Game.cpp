@@ -1,9 +1,9 @@
 #include "Game.hpp"
 
 Game::Game(glimac::FilePath applicationPath)
-    :_applicationPath(applicationPath),
-     _camera(Camera()),
-     _viewMatrix(_camera.getViewMatrix()),
+    :_camera(Camera()),
+     _player(Player()),
+     _renderer(GameRenderer(applicationPath)),
      _finished(false)
 {
     load();
@@ -11,14 +11,18 @@ Game::Game(glimac::FilePath applicationPath)
 
 void Game::load()
 {
-    /* Initialisation of the Player and loading of the 3D model */
-    _player = Player(_applicationPath);
+    // A PARTIR DE LA C'EST DEGUEU
+    _map = std::vector<char>(18,'f');
 }
 
 void Game::render(glm::mat4& projectionMatrix)
 {
-    _viewMatrix = _camera.getViewMatrix();
-    _player.draw(projectionMatrix, _viewMatrix);
+    _renderer.render(
+        projectionMatrix,
+        _camera.getViewMatrix(),
+        _player.position,
+        _map
+    );
 }
 
 void Game::key_callback(int key, int scancode, int action, int mods)

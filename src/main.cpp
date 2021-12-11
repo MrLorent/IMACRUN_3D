@@ -1,4 +1,5 @@
 #include "App.hpp"
+#include "Text.hpp"
 
 //Dimension de la fenêtre
 int window_width  = 720;
@@ -50,14 +51,9 @@ int main(int argc, char** argv)
     /* Set the OpenGL environnement */
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    FT_Library  library;
-
-    FT_Error error = FT_Init_FreeType( &library );
-    if ( error )
-    {
-        std::cout << "Failed to initialize FreeType" << std::endl;
-    }
 
     /* Create the App */
     App app(window, window_width, window_height, argv[0]);
@@ -68,9 +64,9 @@ int main(int argc, char** argv)
     /* Hook input callbacks */
     /* Keyboard */ 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods){
-        if(get_app(window)._currentScreen == GAME)
+        if(get_app(window).currentScreen == GAME)
         {
-            get_app(window)._game.key_callback(key, scancode, action, mods);
+            get_app(window).game.key_callback(key, scancode, action, mods);
         }
         else
         {
@@ -79,9 +75,9 @@ int main(int argc, char** argv)
     });
     /* Mouse Buttons */
     glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods){
-        if(get_app(window)._currentScreen == GAME)
+        if(get_app(window).currentScreen == GAME)
         {
-            get_app(window)._game.mouse_button_callback(button, action, mods);
+            get_app(window).game.mouse_button_callback(button, action, mods);
         }
         else
         {
@@ -91,9 +87,9 @@ int main(int argc, char** argv)
 
     /* Mouse scroll */
     glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset){
-        if(get_app(window)._currentScreen == GAME)
+        if(get_app(window).currentScreen == GAME)
         {
-            get_app(window)._game.scroll_callback(xoffset, yoffset);
+            get_app(window).game.scroll_callback(xoffset, yoffset);
         }
         else
         {
@@ -103,9 +99,9 @@ int main(int argc, char** argv)
 
     /* Cursor position */
     glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos){
-        if(get_app(window)._currentScreen == GAME)
+        if(get_app(window).currentScreen == GAME)
         {
-            get_app(window)._game.cursor_position_callback(xpos, ypos);
+            get_app(window).game.cursor_position_callback(xpos, ypos);
         }
         else
         {
