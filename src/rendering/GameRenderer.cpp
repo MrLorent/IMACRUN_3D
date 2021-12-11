@@ -2,16 +2,16 @@
 
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
-     _renderingLength(15 * 5), // nb ligne * nb case in a line
+     _renderingLength(15), // nb ligne to draw
      _caseSubdivisions(75.f),
      _caseSubdivisionsIndex(0)
 {
     X_TRANSLATE_MATRICES = {
-        glm::translate(glm::mat4(1.f),glm::vec3(-2.f,0.f,0.f)),
+        glm::translate(glm::mat4(1.f),glm::vec3(-2.f,1.f,0.f)),
         glm::translate(glm::mat4(1.f),glm::vec3(-1.f,0.f,0.f)),
         glm::translate(glm::mat4(1.f),glm::vec3(0.f,0.f,0.f)),
         glm::translate(glm::mat4(1.f),glm::vec3(1.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(2.f,0.f,0.f))
+        glm::translate(glm::mat4(1.f),glm::vec3(2.f,1.f,0.f))
     };
 
     load3DModels();
@@ -65,18 +65,39 @@ void GameRenderer::render(
     _player.draw(projectionMatrix, MVMatrix);
 
     // DRAW THE MAP
-    for(unsigned int i=map.getIndex(); i<_renderingLength; i++)
+    for(unsigned int i=map.getIndex(); i<map.getIndex()+_renderingLength; ++i)
     {
-        MVMatrix = X_TRANSLATE_MATRICES[i%5];
-
-        MVMatrix = glm::translate(
-            MVMatrix,
-            glm::vec3(0.0,0.0,(i-map.getIndex())/5 - _caseSubdivisionsIndex/_caseSubdivisions)
+        glm::vec3 zTranslation = glm::vec3(
+            0.0,
+            0.0,
+            (i-map.getIndex()) - _caseSubdivisionsIndex/_caseSubdivisions
         );
 
-        /* Move the scene according to the camera */
-        MVMatrix = viewMatrix * MVMatrix;
-        _floor.draw(projectionMatrix, MVMatrix);
+        for(unsigned int k=0; k<5;++k){
+            MVMatrix = X_TRANSLATE_MATRICES[k];
+            MVMatrix = glm::translate(
+                MVMatrix,
+                zTranslation
+            );
+
+            /* Move the scene according to the camera */
+            MVMatrix = viewMatrix * MVMatrix;
+
+            switch (map[5 * i + k])
+            {
+                case map.FLOOR:
+                    _floor.draw(projectionMatrix, MVMatrix);
+                    break;
+                case map.WALL:
+                    _floor.draw(projectionMatrix, MVMatrix);
+                    break;
+                case map.HOLE:
+                    break;
+                
+                default:
+                    break;
+            }
+        }
     }
 
     _caseSubdivisionsIndex++;
