@@ -1,6 +1,7 @@
 #include "App.hpp"
+#include "Text.hpp"
 
-App::App(GLFWwindow* window, int window_width, int window_height, std::string name)
+App::App(GLFWwindow* window, int window_width, int window_height, std::string name):_name(name)
 {
     /* Initialization of the window size */
     size_callback(window, window_width, window_height);
@@ -9,8 +10,8 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string na
     
     /* Initialization of the navigation */
     currentScreen = PRINCIPAL_MENU;
-
-    game = Game(glimac::FilePath(name));
+    game = Game(glimac::FilePath(_name));
+    _text=Text("Arial.ttf", 48, glimac::FilePath(_name));
 }
 
 void App::render()
@@ -18,7 +19,8 @@ void App::render()
     switch (currentScreen)
     {
     case PRINCIPAL_MENU:
-        glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
+        //glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
+        _text.draw(_text.shader, "abcdefghijkl", float(_width/2.), float(_height/2.), 1.0f, glm::vec3(1.000f, 1.f, 1.f), _width, _height);
         break;
     case GAME:
         if(!game._finished)

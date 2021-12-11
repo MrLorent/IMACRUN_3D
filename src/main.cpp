@@ -1,4 +1,5 @@
 #include "App.hpp"
+#include "Text.hpp"
 
 //Dimension de la fenêtre
 int window_width  = 720;
@@ -50,14 +51,9 @@ int main(int argc, char** argv)
     /* Set the OpenGL environnement */
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // FT_Library  library;
-
-    // FT_Error error = FT_Init_FreeType( &library );
-    // if ( error )
-    // {
-    //     std::cout << "Failed to initialize FreeType" << std::endl;
-    // }
 
     /* Create the App */
     App app(window, window_width, window_height, argv[0]);
