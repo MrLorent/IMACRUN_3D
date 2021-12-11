@@ -81,10 +81,10 @@ void GameRenderer::render(
         for(unsigned short int k=0; k<map.getMapWidth(); ++k){
             switch (map[map.getMapWidth() * i + k])
             {
-                case map.FLOOR:
+                case Map::FLOOR:
                     _floor.draw(projectionMatrix, MVMatrix);
                     break;
-                case map.WALL:
+                case Map::WALL:
                     MVMatrix = glm::translate(
                         MVMatrix,
                         glm::vec3(0.f,1.f,0.f)
@@ -95,7 +95,7 @@ void GameRenderer::render(
                         glm::vec3(0.f,-1.f,0.f)
                     );
                     break;
-                case map.HOLE:
+                case Map::HOLE:
                     break;
                 
                 default:
@@ -103,9 +103,9 @@ void GameRenderer::render(
             }
             MVMatrix = glm::translate(MVMatrix, glm::vec3(1.f, 0.f, 0.f));
         }
-        if(map[map.getMapWidth() * i] != map.WALL){ _rotationDirection = -1; } /* right turn */
-        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != map.WALL){ _rotationDirection = 1; } /* left turn*/
-        if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == map.WALL){
+        if(map[map.getMapWidth() * i] != Map::WALL){ _rotationDirection = -1; } /* right turn */
+        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::WALL){ _rotationDirection = 1; } /* left turn*/
+        if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL){
             if(_rotationDirection == -1)
             {
                 MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, -(map.getMapWidth()-1)));
