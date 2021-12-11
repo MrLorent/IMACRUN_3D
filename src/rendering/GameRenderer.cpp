@@ -73,7 +73,7 @@ void GameRenderer::render(
             (i-map.getIndex()) - _caseSubdivisionsIndex/_caseSubdivisions
         );
 
-        for(unsigned int k=0; k<5;++k){
+        for(unsigned short int k=0; k<map.getMapWidth(); ++k){
             MVMatrix = X_TRANSLATE_MATRICES[k];
             MVMatrix = glm::translate(
                 MVMatrix,
@@ -83,7 +83,7 @@ void GameRenderer::render(
             /* Move the scene according to the camera */
             MVMatrix = viewMatrix * MVMatrix;
 
-            switch (map[5 * i + k])
+            switch (map[map.getMapWidth() * i + k])
             {
                 case map.FLOOR:
                     _floor.draw(projectionMatrix, MVMatrix);

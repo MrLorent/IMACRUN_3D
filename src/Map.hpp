@@ -7,6 +7,7 @@ class Map
 {
 private:
     unsigned int _index;
+    unsigned short int _mapWidth;
     std::vector<char> _map;
 
 public:
@@ -25,6 +26,7 @@ public:
     ~Map();
 
     unsigned int getIndex();
+    unsigned short int getMapWidth();
 
     void incrementIndex();
 };

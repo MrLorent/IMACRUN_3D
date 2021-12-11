@@ -6,7 +6,8 @@ const char& Map::operator[](const size_t& i) const
 }
 
 Map::Map()
-    :_index(0)
+    :_index(0),
+     _mapWidth(5)
 {
     _map = {
         'w','f','f','f','w',
@@ -87,6 +88,11 @@ Map::~Map()
 unsigned int Map::getIndex()
 {
     return _index;
+}
+
+unsigned short int Map::getMapWidth()
+{
+    return _mapWidth;
 }
 
 void Map::incrementIndex()
