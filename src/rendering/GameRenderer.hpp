@@ -18,6 +18,7 @@ private:
     unsigned int _renderingLength;
     float _caseSubdivisions;
     unsigned int _caseSubdivisionsIndex;
+    short int _rotationDirection;
 
     /* 3D Models */
     Model _player;

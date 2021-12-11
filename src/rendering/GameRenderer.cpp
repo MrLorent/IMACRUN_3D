@@ -4,14 +4,15 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
      _renderingLength(15), // nb ligne to draw
      _caseSubdivisions(75.f),
-     _caseSubdivisionsIndex(0)
+     _caseSubdivisionsIndex(0),
+     _rotationDirection(0)
 {
     X_TRANSLATE_MATRICES = {
-        glm::translate(glm::mat4(1.f),glm::vec3(-2.f,1.f,0.f)),
+        glm::translate(glm::mat4(1.f),glm::vec3(-2.f,0.f,0.f)),
         glm::translate(glm::mat4(1.f),glm::vec3(-1.f,0.f,0.f)),
         glm::translate(glm::mat4(1.f),glm::vec3(0.f,0.f,0.f)),
         glm::translate(glm::mat4(1.f),glm::vec3(1.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(2.f,1.f,0.f))
+        glm::translate(glm::mat4(1.f),glm::vec3(2.f,0.f,0.f))
     };
 }
 
@@ -63,31 +64,36 @@ void GameRenderer::render(
     _player.draw(projectionMatrix, MVMatrix);
 
     // DRAW THE MAP
+    MVMatrix = X_TRANSLATE_MATRICES[0];
+    /* Move the scene according to the camera */
+    MVMatrix = viewMatrix * MVMatrix;
+    glm::vec3 zTranslation = glm::vec3(
+        0.0,
+        0.0,
+        -1-_caseSubdivisionsIndex/_caseSubdivisions
+    );
+    MVMatrix = glm::translate(
+        MVMatrix,
+        zTranslation
+    );
     for(unsigned int i=map.getIndex(); i<map.getIndex()+_renderingLength; ++i)
     {
-        glm::vec3 zTranslation = glm::vec3(
-            0.0,
-            0.0,
-            (i-map.getIndex()) - _caseSubdivisionsIndex/_caseSubdivisions
-        );
-
         for(unsigned short int k=0; k<map.getMapWidth(); ++k){
-            MVMatrix = X_TRANSLATE_MATRICES[k];
-            MVMatrix = glm::translate(
-                MVMatrix,
-                zTranslation
-            );
-
-            /* Move the scene according to the camera */
-            MVMatrix = viewMatrix * MVMatrix;
-
             switch (map[map.getMapWidth() * i + k])
             {
                 case map.FLOOR:
                     _floor.draw(projectionMatrix, MVMatrix);
                     break;
                 case map.WALL:
+                    MVMatrix = glm::translate(
+                        MVMatrix,
+                        glm::vec3(0.f,1.f,0.f)
+                    );
                     _floor.draw(projectionMatrix, MVMatrix);
+                    MVMatrix = glm::translate(
+                        MVMatrix,
+                        glm::vec3(0.f,-1.f,0.f)
+                    );
                     break;
                 case map.HOLE:
                     break;
@@ -95,6 +101,24 @@ void GameRenderer::render(
                 default:
                     break;
             }
+            MVMatrix = glm::translate(MVMatrix, glm::vec3(1.f, 0.f, 0.f));
+        }
+        if(map[map.getMapWidth() * i] != map.WALL){ _rotationDirection = -1; } /* right turn */
+        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != map.WALL){ _rotationDirection = 1; } /* left turn*/
+        if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == map.WALL){
+            if(_rotationDirection == -1)
+            {
+                MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, -(map.getMapWidth()-1)));
+            }else{
+                MVMatrix = glm::translate(MVMatrix, glm::vec3(0.f, 0.f, 0.f));
+            }
+            MVMatrix = glm::rotate(
+                MVMatrix,
+                float(M_PI/2*_rotationDirection),
+                glm::vec3(0.f, 1.f, 0.f)
+            );
+        }else{
+            MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, 1.f));
         }
     }
 
