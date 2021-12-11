@@ -26,11 +26,11 @@ private:
 
     // PRIVATE METHODS
 
-    void load3DModels();
-
 public:
     GameRenderer(){}
     GameRenderer(glimac::FilePath applicationPath);
+
+    void load3DModels();
 
     void render(
         glm::mat4 projectionMatrix,

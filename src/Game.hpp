@@ -19,11 +19,14 @@ private:
     Player _player;
     GameRenderer _renderer;
 public:
-    bool _finished;
+    bool _running;
     Camera _camera;
     
     Game(){}
     Game(glimac::FilePath applicationPath);
+
+    void initGame();
+    void runGame(glm::mat4& projectionMatrix);
 
     void render(glm::mat4& projectionMatrix);
     void key_callback(int key, int scancode, int action, int mods);

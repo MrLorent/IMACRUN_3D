@@ -13,8 +13,6 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
         glm::translate(glm::mat4(1.f),glm::vec3(1.f,0.f,0.f)),
         glm::translate(glm::mat4(1.f),glm::vec3(2.f,1.f,0.f))
     };
-
-    load3DModels();
 }
 
 void GameRenderer::load3DModels()

@@ -2,15 +2,21 @@
 
 Game::Game(glimac::FilePath applicationPath)
     :_camera(Camera()),
-     _map(Map()),
-     _player(Player()),
      _renderer(GameRenderer(applicationPath)),
-     _finished(false)
+     _running(false)
 {
 }
 
-void Game::render(glm::mat4& projectionMatrix)
+void Game::initGame()
 {
+    _renderer.load3DModels();
+    _map = Map();
+    _player = Player();
+}
+
+void Game::runGame(glm::mat4& projectionMatrix)
+{
+    // RENDERING
     _renderer.render(
         projectionMatrix,
         _camera.getViewMatrix(),
@@ -24,7 +30,7 @@ void Game::key_callback(int key, int scancode, int action, int mods)
     switch (key)
         {
         case 256: //ECHAP
-            _finished = true;
+            _running = false;
             break;
         case 'C': case 'c':
             if(action!=0)

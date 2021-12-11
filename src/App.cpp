@@ -19,14 +19,12 @@ void App::render()
     {
     case PRINCIPAL_MENU:
         glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
-        if(game._finished)
-            game._finished = false;
         break;
     case GAME:
-        if(!game._finished)
+        if(game._running)
         {
             glClearColor(0.f, 0.f, 0.f, 1.f);
-            game.render(projectionMatrix);
+            game.runGame(projectionMatrix);
         }
         else
         {
@@ -56,6 +54,11 @@ void App::key_callback(int key, int scancode, int action, int mods)
             break;
         case 71: // "1" NUM PAD
             currentScreen = GAME;
+            if(!game._running)
+            {
+                game.initGame();
+                game._running = true;
+            }
             break;
         case 322: // "2" NUM PAD
             currentScreen = LOAD_MENU;
