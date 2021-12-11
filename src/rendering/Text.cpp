@@ -109,9 +109,13 @@ void Text::draw(Shader &shader, std::string text, float x, float y, float scale,
             { xpos + w, ypos,       1.0f, 1.0f },
             { xpos + w, ypos + h,   1.0f, 0.0f }           
         };
+        
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         // render glyph texture over quad
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-            std::cout << "ch.texture : "<< ch.TextureID << std::endl;
+        
 
         // update content of VBO memory
         glBindBuffer(GL_ARRAY_BUFFER, _vbo);
@@ -122,6 +126,7 @@ void Text::draw(Shader &shader, std::string text, float x, float y, float scale,
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
         x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        glDisable(GL_BLEND);
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
