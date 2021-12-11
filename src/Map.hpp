@@ -12,9 +12,11 @@ private:
 
 public:
     // CONSTANTS
-    const static char WALL = 'w';
-    const static char FLOOR = 'f';
-    const static char HOLE = 'h';
+    enum Constants{
+        WALL = 'w',
+        FLOOR = 'f',
+        HOLE = 'h'
+    };
 
     // OPERATORS
     const char& operator[](const size_t& i) const;
