@@ -1,5 +1,4 @@
-// #ifndef TEXT_HPP
-// #define TEXT_HPP
+#pragma once
 
 #define GLFW_INCLUDE_NONE
 
@@ -11,12 +10,12 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-// struct Character {
-//     unsigned int TextureID;  // ID handle of the glyph texture
-//     glm::ivec2   Size;       // Size of glyph
-//     glm::ivec2   Bearing;    // Offset from baseline to left/top of glyph
-//     unsigned int Advance;    // Offset to advance to next glyph
-// };
+struct Character {
+    unsigned int TextureID;  // ID handle of the glyph texture
+    glm::ivec2   Size;       // Size of glyph
+    glm::ivec2   Bearing;    // Offset from baseline to left/top of glyph
+    unsigned int Advance;    // Offset to advance to next glyph
+};
 
 struct Shader{
     glimac::Program program;
@@ -51,4 +50,3 @@ public:
 
 
 
-// #endif /*TEXT_HPP*/
