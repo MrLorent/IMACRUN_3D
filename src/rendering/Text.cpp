@@ -1,4 +1,4 @@
-// #include "Text.hpp"
+#include "Text.hpp"
 
 Text::Text(const std::string fontName, const unsigned int fontSize, glimac::FilePath path):shader(path)
 {
