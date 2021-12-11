@@ -8,27 +8,29 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string na
     _height = window_height;
     
     /* Initialization of the navigation */
-    _currentScreen = PRINCIPAL_MENU;
+    currentScreen = PRINCIPAL_MENU;
 
-    _game = Game(glimac::FilePath(name));
+    game = Game(glimac::FilePath(name));
 }
 
 void App::render()
 {
-    switch (_currentScreen)
+    switch (currentScreen)
     {
     case PRINCIPAL_MENU:
         glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
+        if(game._finished)
+            game._finished = false;
         break;
     case GAME:
-        if(!_game._finished)
+        if(!game._finished)
         {
             glClearColor(0.f, 0.f, 0.f, 1.f);
-            _game.render(_projectionMatrix);
+            game.render(projectionMatrix);
         }
         else
         {
-            _currentScreen = PRINCIPAL_MENU;
+            currentScreen = PRINCIPAL_MENU;
         }
         break;
     case LOAD_MENU:
@@ -50,19 +52,19 @@ void App::key_callback(int key, int scancode, int action, int mods)
     switch (key)
         {
         case 320: // "0" NUM PAD
-            _currentScreen = PRINCIPAL_MENU;
+            currentScreen = PRINCIPAL_MENU;
             break;
-        case 321: // "1" NUM PAD
-            _currentScreen = GAME;
+        case 71: // "1" NUM PAD
+            currentScreen = GAME;
             break;
         case 322: // "2" NUM PAD
-            _currentScreen = LOAD_MENU;
+            currentScreen = LOAD_MENU;
             break;
         case 323: // "3" NUM PAD
-            _currentScreen = SCORES;
+            currentScreen = SCORES;
             break;
         case 324: // "4" NUM PAD
-            _currentScreen = SCORE_INPUT;
+            currentScreen = SCORE_INPUT;
             break;
 
         default:
@@ -87,7 +89,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
 {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
-    _projectionMatrix = glm::perspectiveFov(
+    projectionMatrix = glm::perspectiveFov(
         glm::radians(70.0f),
         float(width),
         float(height),

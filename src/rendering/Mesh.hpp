@@ -9,23 +9,23 @@
 #include "Texture.hpp"
 
 struct Vertex{
-    glm::vec3 _position;
-    glm::vec3 _normal;
-    glm::vec2 _texCoords;
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 texCoords;
 
     // OPERATORS
 
     bool operator==(const Vertex& other) const {
-        return _position == other._position && _normal == other._normal && _texCoords == other._texCoords;
+        return position == other.position && normal == other.normal && texCoords == other.texCoords;
     }
 };
 
 namespace std {
     template<> struct hash<Vertex> {
         size_t operator()(Vertex const& vertex) const {
-            return ((hash<glm::vec3>()(vertex._position) ^
-                   (hash<glm::vec3>()(vertex._normal) << 1)) >> 1) ^
-                   (hash<glm::vec2>()(vertex._texCoords) << 1);
+            return ((hash<glm::vec3>()(vertex.position) ^
+                   (hash<glm::vec3>()(vertex.normal) << 1)) >> 1) ^
+                   (hash<glm::vec2>()(vertex.texCoords) << 1);
         }
     };
 }
@@ -48,9 +48,9 @@ class Mesh
     public:
         // PUBLIC ATTRIBUTS
         
-        std::vector<Vertex> _vertices;
-        std::vector<unsigned int> _indices;
-        std::vector<Texture> _textures;
+        std::vector<Vertex> vertices;
+        std::vector<unsigned int> indices;
+        std::vector<Texture> textures;
 
         // CONSTRUCTORS
         /* basic constructor */

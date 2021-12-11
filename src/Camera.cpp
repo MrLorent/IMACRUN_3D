@@ -8,10 +8,10 @@ Camera::Camera()
     // TRACKBALL
      _distance(2),
      _xAngle(M_PI / 6),    /* horizontal */
-     _yAngle(0),    /* vertical */
+     _yAngle(M_PI),    /* vertical */
     // FREELY
      _position(glm::vec3(0.f, 1.f, 0.f)),
-     _phi(M_PI),    /* horizontal */
+     _phi(0),    /* horizontal */
      _theta(0.f)    /* vertical */
 {
     computeDirectionVectors();

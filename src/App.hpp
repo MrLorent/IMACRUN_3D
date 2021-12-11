@@ -1,8 +1,7 @@
 #pragma once
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include <ft2build.h>
-#include FT_FREETYPE_H
+
 
 #include "Game.hpp"
 
@@ -21,10 +20,10 @@ class App
     public:
         // PUBLIC ATTRIBUTS
 
-        short unsigned int _currentScreen;
+        short unsigned int currentScreen;
 
-        glm::mat4 _projectionMatrix;
-        Game _game;
+        glm::mat4 projectionMatrix;
+        Game game;
 
         // CONSTRUCTORS
         /* Basic constructor*/
