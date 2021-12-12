@@ -2,15 +2,9 @@
 #define GAME_HPP
 
 #include "Camera.hpp"
+#include "Player.hpp"
 #include "Map.hpp"
 #include "GameRenderer.hpp"
-
-struct Player
-{
-    glm::vec3 position;
-
-    Player():position(glm::vec3(0.f)){}
-};
 
 class Game
 {

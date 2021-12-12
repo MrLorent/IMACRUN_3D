@@ -20,7 +20,7 @@ void Game::runGame(glm::mat4& projectionMatrix)
     _renderer.render(
         projectionMatrix,
         _camera.getViewMatrix(),
-        _player.position,
+        _player.getPosition(),
         _map
     );
 }
