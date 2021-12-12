@@ -20,29 +20,30 @@ struct Character {
 struct Shader{
     glimac::Program program;
     Shader(){}
-    Shader(const glimac::FilePath& applicationPath):
-        program(glimac::loadProgram(applicationPath.dirPath() + "src/shaders/text.vs.glsl",
-                              applicationPath.dirPath() + "src/shaders/text.fs.glsl")) {
-        
-    }
+    Shader(const glimac::FilePath& applicationPath)
+    :program(glimac::loadProgram(
+        applicationPath.dirPath() + "src/shaders/text.vs.glsl",
+        applicationPath.dirPath() + "src/shaders/text.fs.glsl")
+    )
+    {}
 };
 
 class Text
 {
-private:
-    std::map<char, Character> _alphabet;
-    FT_Library _ft;
-    FT_Face _font;
-    GLuint _vao;
-    GLuint _vbo; 
-    
-    
-    unsigned int _window_width, _window_height;
-public:
-    Text(){};
-    Text(const std::string fontName, const unsigned int fontSize, glimac::FilePath name);
-    //~Text();
-    void draw(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color, unsigned int window_width, const unsigned int window_height);
+    private:
+        std::map<char, Character> _alphabet;
+        FT_Library _ft;
+        FT_Face _font;
+        GLuint _vao;
+        GLuint _vbo; 
+        
+        
+        unsigned int _window_width, _window_height;
+    public:
+        Text(){};
+        Text(const std::string fontName, const unsigned int fontSize, glimac::FilePath name);
+        //~Text();
+        void draw(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color, unsigned int window_width, const unsigned int window_height);
 
-    Shader shader;
+        Shader shader;
 };
