@@ -28,7 +28,7 @@ void GameRenderer::load3DModels()
     _player = Model(params);
 
     // LOADING OF THE TILE MODEL
-    params.fileName = "box/box.obj";
+    params.fileName = "Cobblestones/CobbleStones.obj";
     params.vsShader = "triangle.vs.glsl";
     params.fsShader = "triangle.fs.glsl";
 
