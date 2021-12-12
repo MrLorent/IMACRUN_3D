@@ -33,32 +33,28 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             _running = false;
             break;
         case 'C': case 'c':
-            if(action!=0)
-            {
-                _camera.switchMode();
-            }
+            if(action!=0) _camera.switchMode(); 
+            break;
+        case 65: // 'Q'
+            if(action!=0) _player.goLeft();
+            break;
+        case 68:
+            if(action!=0) _player.goRight();
+            break;
         case 262: //Fleche droite
-            if(action!=0){
-                _camera.rotateHorizontaly(-2.*float(1));
-            }
+            if(action!=0) _camera.rotateHorizontaly(-2.*float(1));
             break;
 
         case 263: //Fleche gauche
-            if(action!=0){
-                _camera.rotateHorizontaly(2.*float(1));
-            }
+            if(action!=0) _camera.rotateHorizontaly(2.*float(1));
             break;
 
         case 264: //Fleche bas
-            if(action!=0){
-                _camera.rotateVerticaly(-2.*float(1));
-            }
+            if(action!=0) _camera.rotateVerticaly(-2.*float(1));
             break;
         
         case 265: //Fleche haut
-            if(action!=0){
-                _camera.rotateVerticaly(2.*float(1));
-            }
+            if(action!=0) _camera.rotateVerticaly(2.*float(1));
             break;
         default:
             std::cout << key << std::endl;

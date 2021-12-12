@@ -1,6 +1,7 @@
 #pragma once
 #define PLAYER_HPP
 
+#include <iostream>
 #include "glm/glm.hpp"
 
 class Player
@@ -9,8 +10,12 @@ class Player
         glm::vec3 _position;
     public:
         Player();
+        // ~Player();
 
         // GETTER
         glm::vec3 getPosition();
-        // ~Player();
+
+        // SETTER
+        void goLeft();
+        void goRight();
 };

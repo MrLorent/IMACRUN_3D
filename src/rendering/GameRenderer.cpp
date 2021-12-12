@@ -97,7 +97,6 @@ void GameRenderer::render(
                     break;
                 case Map::HOLE:
                     break;
-                
                 default:
                     break;
             }
