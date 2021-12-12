@@ -38,8 +38,9 @@ void GameRenderer::load3DModels()
 void GameRenderer::render(
     glm::mat4 projectionMatrix,
     glm::mat4 viewMatrix,
-    glm::vec3 playerPosition,
-    Map& map
+    Player& player,
+    Map& map,
+    bool paused
 )
 {
     // DRAW THE PLAYER
@@ -55,7 +56,7 @@ void GameRenderer::render(
     /* put the player model at the right position */
     MVMatrix = glm::translate(
         MVMatrix,
-        playerPosition
+        player.getPosition()
     );
 
     /* Move the player model according to the camera */
@@ -76,7 +77,7 @@ void GameRenderer::render(
         MVMatrix,
         zTranslation
     );
-    for(unsigned int i=map.getIndex(); i<map.getIndex()+_renderingLength; ++i)
+    for(unsigned int i=map.getIndex()-1; i<map.getIndex()+_renderingLength; ++i)
     {
         for(unsigned short int k=0; k<map.getMapWidth(); ++k){
             switch (map[map.getMapWidth() * i + k])
@@ -121,11 +122,13 @@ void GameRenderer::render(
         }
     }
 
-    _caseSubdivisionsIndex++;
+    if(!paused && player.isALive())
+    {
+        _caseSubdivisionsIndex++;
 
-    if(_caseSubdivisionsIndex == _caseSubdivisions){
-        map.incrementIndex();
-        _caseSubdivisionsIndex = 0;
+        if(_caseSubdivisionsIndex == _caseSubdivisions){
+            map.incrementIndex();
+            _caseSubdivisionsIndex = 0;
+        }
     }
-    
 }

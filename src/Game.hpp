@@ -12,8 +12,12 @@ private:
     Map _map;
     Player _player;
     GameRenderer _renderer;
+
+    void checkPlayerPosition();
+
 public:
     bool _running;
+    bool _paused;
     Camera _camera;
     
     Game(){}

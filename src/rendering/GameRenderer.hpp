@@ -6,6 +6,7 @@
 
 #include "Model.hpp"
 #include "Map.hpp"
+#include "Player.hpp"
 
 class GameRenderer
 {
@@ -36,7 +37,8 @@ public:
     void render(
         glm::mat4 projectionMatrix,
         glm::mat4 viewMatrix,
-        glm::vec3 playerPosition,
-        Map& map
+        Player& player,
+        Map& map,
+        bool paused
     );
 };

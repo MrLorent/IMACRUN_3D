@@ -3,7 +3,8 @@
 Game::Game(glimac::FilePath applicationPath)
     :_camera(Camera()),
      _renderer(GameRenderer(applicationPath)),
-     _running(false)
+     _running(false),
+     _paused(false)
 {
 }
 
@@ -16,13 +17,35 @@ void Game::initGame()
 
 void Game::runGame(glm::mat4& projectionMatrix)
 {
+    checkPlayerPosition();
+
     // RENDERING
     _renderer.render(
         projectionMatrix,
         _camera.getViewMatrix(),
-        _player.getPosition(),
-        _map
+        _player,
+        _map,
+        _paused
     );
+}
+
+void Game::checkPlayerPosition()
+{
+    const char currentCase = _map[_map.getIndex() * _map.getMapWidth() + 2 - _player.getPosition().x];
+    
+    switch (currentCase)
+    {
+    case Map::FLOOR:
+        break;
+    case Map::WALL:
+        _player.die();
+        break;
+    case Map::HOLE:
+        _player.die();
+        break;
+    default:
+        break;
+    }
 }
 
 void Game::key_callback(int key, int scancode, int action, int mods)
@@ -32,7 +55,14 @@ void Game::key_callback(int key, int scancode, int action, int mods)
         case 256: //ECHAP
             _running = false;
             break;
-        case 'C': case 'c':
+        case 80: // 'P'
+            if(action!=0)
+            {
+                if(_paused) _paused = false;
+                else _paused = true;
+            }
+            break;
+        case 67: // 'C'
             if(action!=0) _camera.switchMode(); 
             break;
         case 65: // 'Q'
