@@ -6,8 +6,6 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
      _caseSubdivisions(75.f),
      _caseSubdivisionsIndex(0),
      _rotationDirection(0),
-     _isRotating(false),
-     _currentRotationDirection(0),
      _rotatingIndex(0)
 {
     X_TRANSLATE_MATRICES = {
@@ -19,18 +17,17 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     };
 }
 
-void GameRenderer::rotateMap(glm::mat4& MVMatrix){
+void GameRenderer::rotateMap(glm::mat4& MVMatrix, Player& player){
     if(_rotatingIndex == _caseSubdivisions)
     {
-        _isRotating = false;
-        _currentRotationDirection = 0;
+        player._turning = 0;
         _rotatingIndex = 0;
     }
     else
     {
         MVMatrix = glm::rotate(
             MVMatrix,
-            float(M_PI/2 * _rotatingIndex/_caseSubdivisions * _currentRotationDirection),
+            float(M_PI/2 * _rotatingIndex/_caseSubdivisions * player._turning),
             glm::vec3(0.f, 1.f, 0.f)
         );
         _rotatingIndex++;
@@ -56,23 +53,13 @@ void GameRenderer::load3DModels()
     _floor = Model(params);
 }
 
-void GameRenderer::initMapRotation(int direction)
-{
-    _isRotating = true;
-    _currentRotationDirection = direction;
-}
-
 void GameRenderer::render(
     glm::mat4 projectionMatrix,
-    glm::mat4 viewMatrix,
-    Player& player,
-    Map& map,
-    bool paused,
-    bool inTurn,
-    unsigned short int& distanceFromWall
+    Game& game
 )
 {
     // DRAW THE PLAYER
+    Player& player = game.getPlayer();
     /* Place the Player Model into the scene */
 
     /* turn back the model from the camera */
@@ -89,15 +76,16 @@ void GameRenderer::render(
     );
 
     /* Move the player model according to the camera */
-    MVMatrix = viewMatrix * MVMatrix;
+    MVMatrix = game._camera.getViewMatrix() * MVMatrix;
 
     _player.draw(projectionMatrix, MVMatrix);
 
     // DRAW THE MAP
+    Map& map = game.getMap();
     MVMatrix = X_TRANSLATE_MATRICES[0];
-    if(_isRotating) rotateMap(MVMatrix);
+    if(player._turning != 0) rotateMap(MVMatrix, player);
     /* Move the scene according to the camera */
-    MVMatrix = viewMatrix * MVMatrix;
+    MVMatrix = game._camera.getViewMatrix() * MVMatrix;
     glm::vec3 zTranslation = glm::vec3(
         0.0,
         0.0,
@@ -152,12 +140,12 @@ void GameRenderer::render(
         }
     }
 
-    if(!paused && player.isALive())
+    if(!game._paused && player.isALive())
     {
         _caseSubdivisionsIndex++;
 
         if(_caseSubdivisionsIndex == _caseSubdivisions){
-            map.incrementIndex(inTurn, distanceFromWall);
+            map.incrementIndex((game._isInLeftTurn || game._isInRightTurn), game._distanceFromWall);
             _caseSubdivisionsIndex = 0;
         }
     }

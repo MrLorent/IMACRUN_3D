@@ -4,14 +4,12 @@
 #include "Camera.hpp"
 #include "Player.hpp"
 #include "Map.hpp"
-#include "GameRenderer.hpp"
 
 class Game
 {
 private:
     Map _map;
     Player _player;
-    GameRenderer _renderer;
 
     void checkPlayerPosition();
 
@@ -25,11 +23,16 @@ public:
     
     Camera _camera;
     
-    Game(){}
-    Game(glimac::FilePath applicationPath);
+    Game();
+
+    //  GETTERS
+    Player& getPlayer();
+    Map& getMap();
+
+    //  METHODS
 
     void initGame();
-    void runGame(glm::mat4& projectionMatrix);
+    void runGame();
 
     void key_callback(int key, int scancode, int action, int mods);
     void mouse_button_callback(int button, int action, int mods);

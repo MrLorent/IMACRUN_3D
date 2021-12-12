@@ -10,7 +10,8 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string pa
     
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
-    _game = Game(glimac::FilePath(_applicationPath));
+    _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
+
     _text = Text("Arial.ttf", 48, glimac::FilePath(_applicationPath));
 }
 
@@ -33,7 +34,8 @@ void App::render()
         if(_game._running)
         {
             glClearColor(0.f, 0.f, 0.f, 1.f);
-            _game.runGame(_projectionMatrix);
+            _game.runGame();
+            _gameRenderer.render(_projectionMatrix, _game);
         }
         else
         {
@@ -66,6 +68,7 @@ void App::key_callback(int key, int scancode, int action, int mods)
             if(!_game._running)
             {
                 _game.initGame();
+                _gameRenderer.load3DModels();
                 _game._running = true;
             }
             break;

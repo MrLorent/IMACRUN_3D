@@ -1,8 +1,7 @@
 #include "Game.hpp"
 
-Game::Game(glimac::FilePath applicationPath)
+Game::Game()
     :_camera(Camera()),
-     _renderer(GameRenderer(applicationPath)),
      _running(false),
      _paused(false),
      _isInLeftTurn(false),
@@ -11,27 +10,26 @@ Game::Game(glimac::FilePath applicationPath)
 {
 }
 
+//  GETTERS
+Player& Game::getPlayer()
+{
+    return _player;
+}
+
+Map& Game::getMap()
+{
+    return _map;
+}
+
 void Game::initGame()
 {
-    _renderer.load3DModels();
     _map = Map();
     _player = Player();
 }
 
-void Game::runGame(glm::mat4& projectionMatrix)
+void Game::runGame()
 {
     checkPlayerPosition();
-
-    // RENDERING
-    _renderer.render(
-        projectionMatrix,
-        _camera.getViewMatrix(),
-        _player,
-        _map,
-        _paused,
-        (_isInLeftTurn || _isInRightTurn),
-        _distanceFromWall
-    );
 }
 
 void Game::checkPlayerPosition()
@@ -92,7 +90,7 @@ void Game::key_callback(int key, int scancode, int action, int mods)
         case 65: // 'Q'
             if(action!=0){
                 if(_isInLeftTurn){
-                    _renderer.initMapRotation(Player::LEFT);
+                    _player._turning = Player::LEFT;
                     _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                 }
                 else _player.goLeft();
@@ -101,7 +99,7 @@ void Game::key_callback(int key, int scancode, int action, int mods)
         case 68:
             if(action!=0){
                 if(_isInRightTurn){
-                    _renderer.initMapRotation(Player::RIGHT);
+                    _player._turning = Player::RIGHT;
                     _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                 }
                 else _player.goRight();

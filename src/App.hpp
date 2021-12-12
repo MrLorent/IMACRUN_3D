@@ -30,6 +30,7 @@ class App
         /* Game elements */
         short unsigned int _currentScreen;
         Game _game;
+        GameRenderer _gameRenderer;
 
         Text _text;
     public:

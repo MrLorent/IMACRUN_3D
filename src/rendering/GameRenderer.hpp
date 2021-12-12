@@ -5,8 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Model.hpp"
-#include "Map.hpp"
-#include "Player.hpp"
+#include "Game.hpp"
 
 class GameRenderer
 {
@@ -21,8 +20,6 @@ private:
     unsigned int _caseSubdivisionsIndex;
     short int _rotationDirection;
 
-    bool _isRotating;
-    bool _currentRotationDirection;
     unsigned int _rotatingIndex;
 
     /* 3D Models */
@@ -31,7 +28,7 @@ private:
     Model _floor;
 
     // PRIVATE METHODS
-    void rotateMap(glm::mat4& MVMatrix);
+    void rotateMap(glm::mat4& MVMatrix, Player& player);
 
 public:
     GameRenderer(){}
@@ -42,11 +39,6 @@ public:
 
     void render(
         glm::mat4 projectionMatrix,
-        glm::mat4 viewMatrix,
-        Player& player,
-        Map& map,
-        bool paused,
-        bool inTurn,
-        unsigned short int& distanceFromWall
+        Game& game
     );
 };

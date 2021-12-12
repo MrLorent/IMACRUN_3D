@@ -2,7 +2,8 @@
 
 Player::Player()
     :_position(glm::vec3(0.f, 0.f, 0.f)),
-     _isALive(true)
+     _isALive(true),
+     _turning(0)
 {
 }
 
