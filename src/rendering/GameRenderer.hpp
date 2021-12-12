@@ -10,14 +10,10 @@
 class GameRenderer
 {
 private:
-    std::vector<glm::mat4> X_TRANSLATE_MATRICES;
-    
     // ATTRIBUTS
 
     glimac::FilePath _applicationPath;
     unsigned int _renderingLength;
-    float _caseSubdivisions;
-    unsigned int _caseSubdivisionsIndex;
     short int _rotationDirection;
 
     unsigned int _rotatingIndex;
@@ -28,7 +24,7 @@ private:
     Model _floor;
 
     // PRIVATE METHODS
-    void rotateMap(glm::mat4& MVMatrix, Player& player);
+    void rotateMap(glm::mat4& MVMatrix, Player& player, unsigned int caseSubdivisions);
 
 public:
     GameRenderer(){}

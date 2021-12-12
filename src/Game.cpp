@@ -4,21 +4,11 @@ Game::Game()
     :_camera(Camera()),
      _running(false),
      _paused(false),
-     _isInLeftTurn(false),
-     _isInRightTurn(false),
-     _distanceFromWall(0)
+     _caseSubdivisions(75.f),
+     _caseSubdivisionsIndex(0),
+     _turn(0),
+     _distanceFromWall(3)
 {
-}
-
-//  GETTERS
-Player& Game::getPlayer()
-{
-    return _player;
-}
-
-Map& Game::getMap()
-{
-    return _map;
 }
 
 void Game::initGame()
@@ -30,6 +20,17 @@ void Game::initGame()
 void Game::runGame()
 {
     checkPlayerPosition();
+
+    if(!_paused && _player.isALive())
+    {
+        _caseSubdivisionsIndex++;
+
+        if(_caseSubdivisionsIndex == _caseSubdivisions){
+            _map.incrementIndex();
+            _caseSubdivisionsIndex = 0;
+            if(_turn != 0) _distanceFromWall--;
+        }
+    }
 }
 
 void Game::checkPlayerPosition()
@@ -50,23 +51,13 @@ void Game::checkPlayerPosition()
         break;
     }
 
-    if(!_isInLeftTurn && (_map[_map.getIndex() * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL))
+    if(_turn == 0 && (_map[_map.getIndex() * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL))
     {
-        _isInLeftTurn = true;
-        _distanceFromWall = 3;
-    }else if(_isInLeftTurn && (_map[_map.getIndex() * _map.getMapWidth() + _map.getMapWidth()-1] == Map::WALL))
-    {
-        _isInLeftTurn = false;
-        _distanceFromWall = 0;
+        _turn = Player::LEFT;
     }
-    if(!_isInRightTurn && (_map[_map.getIndex() * _map.getMapWidth()] != Map::WALL))
+    else if(_turn == 0 && (_map[_map.getIndex() * _map.getMapWidth()] != Map::WALL))
     {
-        _isInRightTurn = true;
-        _distanceFromWall = 3;
-    }else if(_isInRightTurn && (_map[_map.getIndex() * _map.getMapWidth()] == Map::WALL))
-    {
-        _isInRightTurn = false;
-        _distanceFromWall = 0;
+        _turn = Player::RIGHT;
     }
 }
 
@@ -89,18 +80,22 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             break;
         case 65: // 'Q'
             if(action!=0){
-                if(_isInLeftTurn){
+                if(_turn == Player::LEFT){
                     _player._turning = Player::LEFT;
+                    _turn = 0; /* The user passed the turn obstacle */
                     _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
+                    _distanceFromWall = 3;
                 }
                 else _player.goLeft();
             }
             break;
         case 68:
             if(action!=0){
-                if(_isInRightTurn){
+                if(_turn == Player::RIGHT){
                     _player._turning = Player::RIGHT;
+                    _turn = 0; /* The user passed the turn obstacle */
                     _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
+                    _distanceFromWall = 3;
                 }
                 else _player.goRight();
             }

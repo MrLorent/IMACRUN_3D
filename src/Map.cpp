@@ -95,11 +95,10 @@ unsigned short int Map::getMapWidth()
     return _mapWidth;
 }
 
-void Map::incrementIndex(bool inTurn, unsigned short int& distanceFromWall)
+void Map::incrementIndex()
 {
     if(_index < _map.size()){
         _index++;
-        if(inTurn) distanceFromWall--;
     }
 }
 

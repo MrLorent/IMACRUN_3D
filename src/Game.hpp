@@ -7,35 +7,35 @@
 
 class Game
 {
-private:
-    Map _map;
-    Player _player;
+    friend class GameRenderer;
 
-    void checkPlayerPosition();
+    private:
+        Map _map;
+        Player _player;
 
-public:
-    bool _running;
-    bool _paused;
+        void checkPlayerPosition();
 
-    bool _isInLeftTurn;
-    bool _isInRightTurn;
-    short unsigned int _distanceFromWall;
-    
-    Camera _camera;
-    
-    Game();
+    public:
+        bool _running;
+        bool _paused;
 
-    //  GETTERS
-    Player& getPlayer();
-    Map& getMap();
+        float _caseSubdivisions;
+        unsigned int _caseSubdivisionsIndex;
 
-    //  METHODS
+        short int _turn;
+        short unsigned int _distanceFromWall;
+        
+        Camera _camera;
+        
+        Game();
 
-    void initGame();
-    void runGame();
+        //  METHODS
 
-    void key_callback(int key, int scancode, int action, int mods);
-    void mouse_button_callback(int button, int action, int mods);
-    void scroll_callback(double xoffset, double yoffset);
-    void cursor_position_callback(double xpos, double ypos);
+        void initGame();
+        void runGame();
+
+        void key_callback(int key, int scancode, int action, int mods);
+        void mouse_button_callback(int button, int action, int mods);
+        void scroll_callback(double xoffset, double yoffset);
+        void cursor_position_callback(double xpos, double ypos);
 };

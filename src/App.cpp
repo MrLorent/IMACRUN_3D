@@ -1,7 +1,8 @@
 #include "App.hpp"
 #include "Text.hpp"
 
-App::App(GLFWwindow* window, int window_width, int window_height, std::string path):_applicationPath(path)
+App::App(GLFWwindow* window, int window_width, int window_height, std::string path)
+    :_applicationPath(path)
 {
     /* Initialization of the window size */
     size_callback(window, window_width, window_height);
@@ -10,6 +11,8 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string pa
     
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
+
+    /* Initialisation of the game renderer */
     _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
 
     _text = Text("Arial.ttf", 48, glimac::FilePath(_applicationPath));
@@ -22,18 +25,19 @@ Game& App::getGame()
     return _game;
 }
 
+// METHODS
+
+/* Graphics */
 void App::render()
 {
     switch (_currentScreen)
     {
     case PRINCIPAL_MENU:
-        //glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
         _text.draw(_text.shader, "abcdefghijkl", float(_width/2.), float(_height/2.), 1.0f, glm::vec3(1.000f, 1.f, 1.f), _width, _height);
         break;
     case GAME:
         if(_game._running)
         {
-            glClearColor(0.f, 0.f, 0.f, 1.f);
             _game.runGame();
             _gameRenderer.render(_projectionMatrix, _game);
         }

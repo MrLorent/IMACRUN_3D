@@ -3,22 +3,13 @@
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
      _renderingLength(15), // nb ligne to draw
-     _caseSubdivisions(75.f),
-     _caseSubdivisionsIndex(0),
      _rotationDirection(0),
      _rotatingIndex(0)
 {
-    X_TRANSLATE_MATRICES = {
-        glm::translate(glm::mat4(1.f),glm::vec3(-2.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(-1.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(0.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(1.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(2.f,0.f,0.f))
-    };
 }
 
-void GameRenderer::rotateMap(glm::mat4& MVMatrix, Player& player){
-    if(_rotatingIndex == _caseSubdivisions)
+void GameRenderer::rotateMap(glm::mat4& MVMatrix, Player& player, unsigned int caseSubdivisions){
+    if(_rotatingIndex == caseSubdivisions)
     {
         player._turning = 0;
         _rotatingIndex = 0;
@@ -27,7 +18,7 @@ void GameRenderer::rotateMap(glm::mat4& MVMatrix, Player& player){
     {
         MVMatrix = glm::rotate(
             MVMatrix,
-            float(M_PI/2 * _rotatingIndex/_caseSubdivisions * player._turning),
+            float(M_PI/2 * _rotatingIndex/caseSubdivisions * player._turning),
             glm::vec3(0.f, 1.f, 0.f)
         );
         _rotatingIndex++;
@@ -59,7 +50,7 @@ void GameRenderer::render(
 )
 {
     // DRAW THE PLAYER
-    Player& player = game.getPlayer();
+    Player& player = game._player;
     /* Place the Player Model into the scene */
 
     /* turn back the model from the camera */
@@ -81,20 +72,19 @@ void GameRenderer::render(
     _player.draw(projectionMatrix, MVMatrix);
 
     // DRAW THE MAP
-    Map& map = game.getMap();
-    MVMatrix = X_TRANSLATE_MATRICES[0];
-    if(player._turning != 0) rotateMap(MVMatrix, player);
+    Map& map = game._map;
+    MVMatrix = glm::translate(
+        glm::mat4(1.f),
+        glm::vec3(
+            -2.f, /* Place of the first left wall */
+            0.f,
+            -1-game._caseSubdivisionsIndex/game._caseSubdivisions
+        )
+    );
+    if(player._turning != 0) rotateMap(MVMatrix, player, game._caseSubdivisions);
     /* Move the scene according to the camera */
     MVMatrix = game._camera.getViewMatrix() * MVMatrix;
-    glm::vec3 zTranslation = glm::vec3(
-        0.0,
-        0.0,
-        -1-_caseSubdivisionsIndex/_caseSubdivisions
-    );
-    MVMatrix = glm::translate(
-        MVMatrix,
-        zTranslation
-    );
+    
     for(unsigned int i=map.getIndex()-1; i<map.getIndex()+_renderingLength; ++i)
     {
         for(unsigned short int k=0; k<map.getMapWidth(); ++k){
@@ -137,16 +127,6 @@ void GameRenderer::render(
             );
         }else{
             MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, 1.f));
-        }
-    }
-
-    if(!game._paused && player.isALive())
-    {
-        _caseSubdivisionsIndex++;
-
-        if(_caseSubdivisionsIndex == _caseSubdivisions){
-            map.incrementIndex((game._isInLeftTurn || game._isInRightTurn), game._distanceFromWall);
-            _caseSubdivisionsIndex = 0;
         }
     }
 }
