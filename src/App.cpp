@@ -11,7 +11,7 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string na
     /* Initialization of the navigation */
     currentScreen = PRINCIPAL_MENU;
     game = Game(glimac::FilePath(_name));
-    _text=Text("Arial.ttf", 48, glimac::FilePath(_name));
+    _text = Text("Arial.ttf", 48, glimac::FilePath(_name));
 }
 
 void App::render()

@@ -5,29 +5,33 @@
 
 
 #include "Game.hpp"
+#include "GameRenderer.hpp"
 #include "Text.hpp"
-
-// MENU NAVIGATION
-const short unsigned int PRINCIPAL_MENU = 0;
-const short unsigned int GAME = 1;
-const short unsigned int LOAD_MENU = 2;
-const short unsigned int SCORES = 3;
-const short unsigned int SCORE_INPUT = 4;
 
 class App
 {
     private:
+        // CONSTANTS
+        /* Navigation Menu */
+        static constexpr short unsigned int PRINCIPAL_MENU = 0;
+        static constexpr short unsigned int GAME = 1;
+        static constexpr short unsigned int LOAD_MENU = 2;
+        static constexpr short unsigned int SCORES = 3;
+        static constexpr short unsigned int SCORE_INPUT = 4;
+        
         int _width;
         int _height;
         std::string _name;
         Text _text;
     public:
+
         // PUBLIC ATTRIBUTS
 
         short unsigned int currentScreen;
 
         glm::mat4 projectionMatrix;
         Game game;
+
 
         // CONSTRUCTORS
         /* Basic constructor*/
