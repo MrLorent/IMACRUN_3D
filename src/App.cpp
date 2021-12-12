@@ -20,7 +20,7 @@ void App::render()
     {
     case PRINCIPAL_MENU:
         //glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
-        _text.draw(_text.shader, "abcdefghijkl", float(_width/2.), float(_height/2.), 1.0f, glm::vec3(1.000f, 1.f, 1.f), _width, _height);
+        _text.draw("Tanguy gros BG", 50.f, 50.f, 1.0f, glm::vec3(182.f/255.f, 102.f/255.f, 210.f/255.f), _width, _height);
         break;
     case GAME:
         if(game._running)

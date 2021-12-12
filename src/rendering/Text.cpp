@@ -59,13 +59,30 @@ Text::Text(const std::string fontName, const unsigned int fontSize, glimac::File
     FT_Done_Face(_font);
     FT_Done_FreeType(_ft);
 
-    glGenVertexArrays(1, &_vao);
+    //Create and bind vao,vbo and ibo
     glGenBuffers(1, &_vbo);
-    glBindVertexArray(_vao);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glGenBuffers(1,&_ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
+    std::vector<uint32_t> indices;
+    for(int i=1; i<2; i++){
+        indices.push_back(i);
+        indices.push_back(i+1);
+        indices.push_back(i+2);
+    }
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3*2 * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    glGenVertexArrays(1, &_vao);
+    glBindVertexArray(_vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
+    const GLuint VERTEX = 0;
+    glEnableVertexAttribArray(VERTEX);
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    glVertexAttribPointer(VERTEX, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
@@ -75,9 +92,10 @@ Text::Text(const std::string fontName, const unsigned int fontSize, glimac::File
 // {
 // }
 
-void Text::draw(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color, const unsigned int window_width, const unsigned int window_height){
+void Text::draw(std::string text, float x, float y, float scale, glm::vec3 color, const unsigned int window_width, const unsigned int window_height){
     _window_width=window_width;
     _window_height=window_height; 
+
     // activate corresponding render state	
     shader.program.use();
 
