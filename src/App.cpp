@@ -1,7 +1,7 @@
 #include "App.hpp"
 #include "Text.hpp"
 
-App::App(GLFWwindow* window, int window_width, int window_height, std::string name):_name(name)
+App::App(GLFWwindow* window, int window_width, int window_height, std::string path):_applicationPath(path)
 {
     /* Initialization of the window size */
     size_callback(window, window_width, window_height);
@@ -9,28 +9,35 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string na
     _height = window_height;
     
     /* Initialization of the navigation */
-    currentScreen = PRINCIPAL_MENU;
-    game = Game(glimac::FilePath(_name));
-    _text = Text("Arial.ttf", 48, glimac::FilePath(_name));
+    _currentScreen = PRINCIPAL_MENU;
+    _game = Game(glimac::FilePath(_applicationPath));
+    _text = Text("Arial.ttf", 48, glimac::FilePath(_applicationPath));
+}
+
+// GETTERS
+
+Game& App::getGame()
+{
+    return _game;
 }
 
 void App::render()
 {
-    switch (currentScreen)
+    switch (_currentScreen)
     {
     case PRINCIPAL_MENU:
         //glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
         _text.draw(_text.shader, "abcdefghijkl", float(_width/2.), float(_height/2.), 1.0f, glm::vec3(1.000f, 1.f, 1.f), _width, _height);
         break;
     case GAME:
-        if(game._running)
+        if(_game._running)
         {
             glClearColor(0.f, 0.f, 0.f, 1.f);
-            game.runGame(projectionMatrix);
+            _game.runGame(_projectionMatrix);
         }
         else
         {
-            currentScreen = PRINCIPAL_MENU;
+            _currentScreen = PRINCIPAL_MENU;
         }
         break;
     case LOAD_MENU:
@@ -52,24 +59,24 @@ void App::key_callback(int key, int scancode, int action, int mods)
     switch (key)
         {
         case 320: // "0" NUM PAD
-            currentScreen = PRINCIPAL_MENU;
+            _currentScreen = PRINCIPAL_MENU;
             break;
         case 71: // "1" NUM PAD
-            currentScreen = GAME;
-            if(!game._running)
+            _currentScreen = GAME;
+            if(!_game._running)
             {
-                game.initGame();
-                game._running = true;
+                _game.initGame();
+                _game._running = true;
             }
             break;
         case 322: // "2" NUM PAD
-            currentScreen = LOAD_MENU;
+            _currentScreen = LOAD_MENU;
             break;
         case 323: // "3" NUM PAD
-            currentScreen = SCORES;
+            _currentScreen = SCORES;
             break;
         case 324: // "4" NUM PAD
-            currentScreen = SCORE_INPUT;
+            _currentScreen = SCORE_INPUT;
             break;
 
         default:
@@ -94,7 +101,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
 {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
-    projectionMatrix = glm::perspectiveFov(
+    _projectionMatrix = glm::perspectiveFov(
         glm::radians(70.0f),
         float(width),
         float(height),
