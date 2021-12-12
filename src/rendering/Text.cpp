@@ -3,17 +3,17 @@
 Text::Text(const std::string fontName, const unsigned int fontSize, glimac::FilePath path):shader(path)
 {
     if (FT_Init_FreeType(&_ft))
-        {
-            std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-        }
+    {
+        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+    }
 
     if (FT_New_Face(_ft, ("./assets/fonts/"+fontName).c_str() , 0, &_font))
     {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;  
-    }else{
-
+    }
+    else
+    {
         FT_Set_Pixel_Sizes(_font, 0, fontSize); 
-        
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
     
