@@ -21,24 +21,32 @@ private:
     unsigned int _caseSubdivisionsIndex;
     short int _rotationDirection;
 
+    bool _isRotating;
+    bool _currentRotationDirection;
+    unsigned int _rotatingIndex;
+
     /* 3D Models */
     Model _player;
     Model _wall;
     Model _floor;
 
     // PRIVATE METHODS
+    void rotateMap(glm::mat4& MVMatrix);
 
 public:
     GameRenderer(){}
     GameRenderer(glimac::FilePath applicationPath);
 
     void load3DModels();
+    void initMapRotation(int direction);
 
     void render(
         glm::mat4 projectionMatrix,
         glm::mat4 viewMatrix,
         Player& player,
         Map& map,
-        bool paused
+        bool paused,
+        bool inTurn,
+        unsigned short int& distanceFromWall
     );
 };

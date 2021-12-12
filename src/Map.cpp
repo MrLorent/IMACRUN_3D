@@ -95,8 +95,15 @@ unsigned short int Map::getMapWidth()
     return _mapWidth;
 }
 
-void Map::incrementIndex()
+void Map::incrementIndex(bool inTurn, unsigned short int& distanceFromWall)
 {
-    if(_index < _map.size())
+    if(_index < _map.size()){
         _index++;
+        if(inTurn) distanceFromWall--;
+    }
+}
+
+void Map::setIndex(const int newIndex)
+{
+    _index = newIndex;
 }

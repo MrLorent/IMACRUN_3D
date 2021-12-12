@@ -18,6 +18,11 @@ private:
 public:
     bool _running;
     bool _paused;
+
+    bool _isInLeftTurn;
+    bool _isInRightTurn;
+    short unsigned int _distanceFromWall;
+    
     Camera _camera;
     
     Game(){}

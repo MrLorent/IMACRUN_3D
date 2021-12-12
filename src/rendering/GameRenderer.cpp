@@ -5,7 +5,10 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
      _renderingLength(15), // nb ligne to draw
      _caseSubdivisions(75.f),
      _caseSubdivisionsIndex(0),
-     _rotationDirection(0)
+     _rotationDirection(0),
+     _isRotating(false),
+     _currentRotationDirection(0),
+     _rotatingIndex(0)
 {
     X_TRANSLATE_MATRICES = {
         glm::translate(glm::mat4(1.f),glm::vec3(-2.f,0.f,0.f)),
@@ -14,6 +17,24 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
         glm::translate(glm::mat4(1.f),glm::vec3(1.f,0.f,0.f)),
         glm::translate(glm::mat4(1.f),glm::vec3(2.f,0.f,0.f))
     };
+}
+
+void GameRenderer::rotateMap(glm::mat4& MVMatrix){
+    if(_rotatingIndex == _caseSubdivisions)
+    {
+        _isRotating = false;
+        _currentRotationDirection = 0;
+        _rotatingIndex = 0;
+    }
+    else
+    {
+        MVMatrix = glm::rotate(
+            MVMatrix,
+            float(M_PI/2 * _rotatingIndex/_caseSubdivisions * _currentRotationDirection),
+            glm::vec3(0.f, 1.f, 0.f)
+        );
+        _rotatingIndex++;
+    }
 }
 
 void GameRenderer::load3DModels()
@@ -35,12 +56,20 @@ void GameRenderer::load3DModels()
     _floor = Model(params);
 }
 
+void GameRenderer::initMapRotation(int direction)
+{
+    _isRotating = true;
+    _currentRotationDirection = direction;
+}
+
 void GameRenderer::render(
     glm::mat4 projectionMatrix,
     glm::mat4 viewMatrix,
     Player& player,
     Map& map,
-    bool paused
+    bool paused,
+    bool inTurn,
+    unsigned short int& distanceFromWall
 )
 {
     // DRAW THE PLAYER
@@ -66,6 +95,7 @@ void GameRenderer::render(
 
     // DRAW THE MAP
     MVMatrix = X_TRANSLATE_MATRICES[0];
+    if(_isRotating) rotateMap(MVMatrix);
     /* Move the scene according to the camera */
     MVMatrix = viewMatrix * MVMatrix;
     glm::vec3 zTranslation = glm::vec3(
@@ -127,7 +157,7 @@ void GameRenderer::render(
         _caseSubdivisionsIndex++;
 
         if(_caseSubdivisionsIndex == _caseSubdivisions){
-            map.incrementIndex();
+            map.incrementIndex(inTurn, distanceFromWall);
             _caseSubdivisionsIndex = 0;
         }
     }

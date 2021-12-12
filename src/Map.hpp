@@ -28,7 +28,8 @@ public:
     unsigned int getIndex();
     unsigned short int getMapWidth();
 
-    void incrementIndex();
+    void incrementIndex(bool inTurn, unsigned short int& distanceFromWall);
+    void setIndex(const int newIndex);
 };
 
 
