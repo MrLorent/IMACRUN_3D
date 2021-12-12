@@ -56,11 +56,19 @@ void Game::checkPlayerPosition()
     {
         _isInLeftTurn = true;
         _distanceFromWall = 3;
+    }else if(_isInLeftTurn && (_map[_map.getIndex() * _map.getMapWidth() + _map.getMapWidth()-1] == Map::WALL))
+    {
+        _isInLeftTurn = false;
+        _distanceFromWall = 0;
     }
     if(!_isInRightTurn && (_map[_map.getIndex() * _map.getMapWidth()] != Map::WALL))
     {
         _isInRightTurn = true;
         _distanceFromWall = 3;
+    }else if(_isInRightTurn && (_map[_map.getIndex() * _map.getMapWidth()] == Map::WALL))
+    {
+        _isInRightTurn = false;
+        _distanceFromWall = 0;
     }
 }
 
