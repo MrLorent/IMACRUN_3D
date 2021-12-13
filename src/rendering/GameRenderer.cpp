@@ -9,17 +9,25 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
 }
 
 void GameRenderer::rotateMap(glm::mat4& MVMatrix, Player& player, unsigned int caseSubdivisions){
-    if(_rotatingIndex == caseSubdivisions)
+    if(_rotatingIndex > caseSubdivisions)
     {
         player._turning = 0;
         _rotatingIndex = 0;
     }
     else
     {
+        MVMatrix = glm::translate(
+            MVMatrix,
+            glm::vec3(0.f, 0.f, 1.f)
+        );
         MVMatrix = glm::rotate(
             MVMatrix,
-            float(M_PI/2 * _rotatingIndex/caseSubdivisions * player._turning),
+            float(M_PI/2 * 1/caseSubdivisions * player._turning),
             glm::vec3(0.f, 1.f, 0.f)
+        );
+        MVMatrix = glm::translate(
+            MVMatrix,
+            glm::vec3(0.f, 0.f, -1.f)
         );
         _rotatingIndex++;
     }

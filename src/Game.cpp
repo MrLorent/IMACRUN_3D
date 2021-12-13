@@ -35,7 +35,8 @@ void Game::runGame()
 
 void Game::checkPlayerPosition()
 {
-    const char currentCase = _map[_map.getIndex() * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
+    unsigned int playerIndex = _map.getIndex();
+    const char currentCase = _map[playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
     
     switch (currentCase)
     {
@@ -51,11 +52,11 @@ void Game::checkPlayerPosition()
         break;
     }
 
-    if(_turn == 0 && (_map[_map.getIndex() * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL))
+    if(_turn == 0 && (_map[playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL))
     {
         _turn = Player::LEFT;
     }
-    else if(_turn == 0 && (_map[_map.getIndex() * _map.getMapWidth()] != Map::WALL))
+    else if(_turn == 0 && (_map[playerIndex * _map.getMapWidth()] != Map::WALL))
     {
         _turn = Player::RIGHT;
     }
