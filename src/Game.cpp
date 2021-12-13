@@ -92,7 +92,7 @@ void Game::key_callback(int key, int scancode, int action, int mods)
                     _turn = 0; /* The user passed the turn obstacle */
                     _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                     _distanceFromWall = 3;
-                    _camera.rotateHorizontaly(90);
+                    _camera.rotateHorizontaly(-_player._turning * 90);
                     _player.setPosition(glm::vec3(0.f));
                 }
                 else _player.goLeft();
@@ -109,9 +109,10 @@ void Game::key_callback(int key, int scancode, int action, int mods)
                     _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 2] = 'w';
                     _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 3] = 'w';
                     _turn = 0; /* The user passed the turn obstacle */
+                    //xPlayerPosition
                     _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                     _distanceFromWall = 3;
-                    _camera.rotateHorizontaly(-90);
+                    _camera.rotateHorizontaly(-_player._turning * 90);
                     _player.setPosition(glm::vec3(0.f));
                 }
                 else _player.goRight();
