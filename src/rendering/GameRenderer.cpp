@@ -8,19 +8,16 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
 {
 }
 
-void GameRenderer::rotateMap(glm::mat4& MVMatrix, Player& player, unsigned int caseSubdivisions){
-    if(_rotatingIndex == caseSubdivisions)
+void GameRenderer::rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions){
+    if(_rotatingIndex > caseSubdivisions)
     {
+        cam.rotateHorizontaly(float(M_PI/2 * -player._turning));
         player._turning = 0;
         _rotatingIndex = 0;
     }
     else
     {
-        MVMatrix = glm::rotate(
-            MVMatrix,
-            float(M_PI/2 * _rotatingIndex/caseSubdivisions * player._turning),
-            glm::vec3(0.f, 1.f, 0.f)
-        );
+        cam.rotateHorizontaly(float(M_PI/2 * 1/caseSubdivisions * player._turning));
         _rotatingIndex++;
     }
 }
@@ -78,10 +75,10 @@ void GameRenderer::render(
         glm::vec3(
             -2.f, /* Place of the first left wall */
             0.f,
-            -1-game._caseSubdivisionsIndex/game._caseSubdivisions
+            -2-game._caseSubdivisionsIndex/game._caseSubdivisions
         )
     );
-    if(player._turning != 0) rotateMap(MVMatrix, player, game._caseSubdivisions);
+    if(player._turning != 0) rotateCamera(game._camera, player, game._caseSubdivisions);
     /* Move the scene according to the camera */
     MVMatrix = game._camera.getViewMatrix() * MVMatrix;
     
@@ -111,8 +108,11 @@ void GameRenderer::render(
             }
             MVMatrix = glm::translate(MVMatrix, glm::vec3(1.f, 0.f, 0.f));
         }
+
+        /* Detecting turns */
         if(map[map.getMapWidth() * i] != Map::WALL){ _rotationDirection = -1; } /* right turn */
         else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::WALL){ _rotationDirection = 1; } /* left turn*/
+        
         if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL){
             if(_rotationDirection == -1)
             {

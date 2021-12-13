@@ -6,7 +6,7 @@ const char& Map::operator[](const size_t& i) const
 }
 
 Map::Map()
-    :_index(1),
+    :_index(0),
      _mapWidth(5)
 {
     _map = {

@@ -4,7 +4,7 @@ Game::Game()
     :_camera(Camera()),
      _running(false),
      _paused(false),
-     _caseSubdivisions(75.f),
+     _caseSubdivisions(200.f),
      _caseSubdivisionsIndex(0),
      _turn(0),
      _distanceFromWall(3)
@@ -35,7 +35,8 @@ void Game::runGame()
 
 void Game::checkPlayerPosition()
 {
-    const char currentCase = _map[_map.getIndex() * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
+    unsigned int playerIndex = _map.getIndex()+1;
+    const char currentCase = _map[playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
     
     switch (currentCase)
     {
@@ -51,11 +52,11 @@ void Game::checkPlayerPosition()
         break;
     }
 
-    if(_turn == 0 && (_map[_map.getIndex() * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL))
+    if(_turn == 0 && (_map[playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL))
     {
         _turn = Player::LEFT;
     }
-    else if(_turn == 0 && (_map[_map.getIndex() * _map.getMapWidth()] != Map::WALL))
+    else if(_turn == 0 && (_map[playerIndex * _map.getMapWidth()] != Map::WALL))
     {
         _turn = Player::RIGHT;
     }
