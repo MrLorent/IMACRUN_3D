@@ -15,6 +15,7 @@ public:
     static constexpr char WALL = 'w';
     static constexpr char FLOOR = 'f';
     static constexpr char HOLE = 'h';
+    static constexpr char PASSED_TURN = 'p';
 
     // OPERATORS
     const char& operator[](const size_t& i) const;

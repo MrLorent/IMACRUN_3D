@@ -52,11 +52,11 @@ void Game::checkPlayerPosition()
         break;
     }
 
-    if(_turn == 0 && (_map[playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL))
+    if(_turn == 0 && (_map[playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL) && _map[playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::PASSED_TURN)
     {
         _turn = Player::LEFT;
     }
-    else if(_turn == 0 && (_map[playerIndex * _map.getMapWidth()] != Map::WALL))
+    else if(_turn == 0 && (_map[playerIndex * _map.getMapWidth()] != Map::WALL) && _map[playerIndex * _map.getMapWidth()] != Map::PASSED_TURN)
     {
         _turn = Player::RIGHT;
     }
@@ -83,17 +83,40 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             if(action!=0){
                 if(_turn == Player::LEFT){
                     _player._turning = Player::LEFT;
-                    _map[(_map.getIndex()+(3-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'f';
-                    _map[(_map.getIndex()+(2-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'f';
-                    _map[(_map.getIndex()+(1-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 1] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 2] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 3] = 'f';
+                    _map[(_map.getIndex()-(3-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
+                    _map[(_map.getIndex()-(2-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
+                    _map[(_map.getIndex()-(1-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
                     _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 1] = 'w';
                     _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 2] = 'w';
                     _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 3] = 'w';
 
+                    short int xPlayerPosition = _player.getPosition().x;
+                    switch (xPlayerPosition)
+                    {
+                    case Player::LEFT:
+                        if(_distanceFromWall == 3) _map.setIndex(_map.getIndex() + 2);
+                        else if(_distanceFromWall == 2 ) _map.setIndex(_map.getIndex() + 1);
+                        break;
+                    case Player::MIDDLE:
+                        if(_distanceFromWall == 3) _map.setIndex(_map.getIndex() + 1);
+                        else if(_distanceFromWall == 1) _map.setIndex(_map.getIndex() - 1);
+                        break;
+                    case Player::RIGHT:
+                        if(_distanceFromWall == 2) _map.setIndex(_map.getIndex() -1);
+                        else if(_distanceFromWall == 1) _map.setIndex(_map.getIndex() -2);
+                        break;
+                    
+                    default:
+                        break;
+                    }
+
                     _player.setPosition(glm::vec3(2 - _distanceFromWall, 0.f, 0.f));
 
                     _turn = 0; /* The user passed the turn obstacle */
-                    _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
+                    //_map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                     _distanceFromWall = 3;
                     _camera.rotateHorizontaly(-_player._turning * 90);
                 }
@@ -104,17 +127,39 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             if(action!=0){
                 if(_turn == Player::RIGHT){
                     _player._turning = Player::RIGHT;
-                    _map[(_map.getIndex()+(3-_distanceFromWall)) * _map.getMapWidth()] = 'f';
-                    _map[(_map.getIndex()+(2-_distanceFromWall)) * _map.getMapWidth()] = 'f';
-                    _map[(_map.getIndex()+(1-_distanceFromWall)) * _map.getMapWidth()] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 1] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 2] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 3] = 'f';
+                    _map[(_map.getIndex()-(3-_distanceFromWall)) * _map.getMapWidth()] = 'p';
+                    _map[(_map.getIndex()-(2-_distanceFromWall)) * _map.getMapWidth()] = 'p';
+                    _map[(_map.getIndex()-(1-_distanceFromWall)) * _map.getMapWidth()] = 'p';
                     _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 1] = 'w';
                     _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 2] = 'w';
                     _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 3] = 'w';
                     
+                    short int xPlayerPosition = _player.getPosition().x;
+                    switch (xPlayerPosition)
+                    {
+                    case Player::LEFT:
+                        if(_distanceFromWall == 2) _map.setIndex(_map.getIndex() -1);
+                        else if(_distanceFromWall == 1) _map.setIndex(_map.getIndex() -2);
+                        break;
+                    case Player::MIDDLE:
+                        if(_distanceFromWall == 3) _map.setIndex(_map.getIndex() + 1);
+                        else if(_distanceFromWall == 1) _map.setIndex(_map.getIndex() - 1);
+                        break;
+                    case Player::RIGHT:
+                        if(_distanceFromWall == 3) _map.setIndex(_map.getIndex() + 2);
+                        else if(_distanceFromWall == 2 ) _map.setIndex(_map.getIndex() + 1);
+                        break;
+                    
+                    default:
+                        break;
+                    }
                     _player.setPosition(glm::vec3(-2 + _distanceFromWall, 0.f, 0.f));
                     
                     _turn = 0; /* The user passed the turn obstacle */
-                    _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
+                    //_map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                     _distanceFromWall = 3;
                     _camera.rotateHorizontaly(-_player._turning * 90);
                 }

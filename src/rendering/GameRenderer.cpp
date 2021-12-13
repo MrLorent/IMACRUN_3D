@@ -92,6 +92,9 @@ void GameRenderer::render(
                 case Map::FLOOR:
                     _floor.draw(projectionMatrix, MVMatrix);
                     break;
+                case Map::PASSED_TURN:
+                    _floor.draw(projectionMatrix, MVMatrix);
+                    break;
                 case Map::WALL:
                     MVMatrix = glm::translate(
                         MVMatrix,
@@ -112,8 +115,8 @@ void GameRenderer::render(
         }
 
         /* Detecting turns */
-        if(map[map.getMapWidth() * i] != Map::WALL){ _rotationDirection = -1; } /* right turn */
-        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::WALL){ _rotationDirection = 1; } /* left turn*/
+        if(map[map.getMapWidth() * i] != Map::WALL && map[map.getMapWidth() * i] != Map::PASSED_TURN){ _rotationDirection = -1; } /* right turn */
+        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::WALL && map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::PASSED_TURN){ _rotationDirection = 1; } /* left turn*/
         
         if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL){
             if(_rotationDirection == -1)
