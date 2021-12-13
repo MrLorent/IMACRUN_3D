@@ -4,7 +4,7 @@ Game::Game()
     :_camera(Camera()),
      _running(false),
      _paused(false),
-     _caseSubdivisions(200.f),
+     _caseSubdivisions(75.f),
      _caseSubdivisionsIndex(0),
      _turn(0),
      _distanceFromWall(3)

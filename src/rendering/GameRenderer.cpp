@@ -9,7 +9,7 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
 }
 
 void GameRenderer::rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions){
-    if(_rotatingIndex > caseSubdivisions)
+    if(_rotatingIndex > caseSubdivisions * 2)
     {
         cam.rotateHorizontaly(float(M_PI/2 * -player._turning));
         player._turning = 0;
@@ -17,7 +17,7 @@ void GameRenderer::rotateCamera(Camera& cam, Player& player, unsigned int caseSu
     }
     else
     {
-        cam.rotateHorizontaly(float(90.f * 1/caseSubdivisions * player._turning));
+        cam.rotateHorizontaly(float(90.f * 1/(caseSubdivisions * 2) * player._turning));
         _rotatingIndex++;
     }
 }
