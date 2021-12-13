@@ -75,7 +75,7 @@ void GameRenderer::render(
         glm::vec3(
             -2.f, /* Place of the first left wall */
             0.f,
-            -2-game._caseSubdivisionsIndex/game._caseSubdivisions
+            -1-game._caseSubdivisionsIndex/game._caseSubdivisions
         )
     );
 
