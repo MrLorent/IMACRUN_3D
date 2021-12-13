@@ -24,7 +24,7 @@ private:
     Model _floor;
 
     // PRIVATE METHODS
-    void rotateMap(glm::mat4& MVMatrix, Player& player, unsigned int caseSubdivisions);
+    void rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions);
 
 public:
     GameRenderer(){}

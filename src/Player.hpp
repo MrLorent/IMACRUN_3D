@@ -25,6 +25,7 @@ class Player
         bool isALive();
 
         // SETTER
+        void setPosition(glm::vec3 newPosition);
         void goLeft();
         void goRight();
         void die();

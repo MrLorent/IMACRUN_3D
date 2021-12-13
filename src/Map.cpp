@@ -5,6 +5,11 @@ const char& Map::operator[](const size_t& i) const
     return _map[i];
 }
 
+char& Map::operator[](const size_t& i)
+{
+    return _map[i];
+}
+
 Map::Map()
     :_index(1),
      _mapWidth(5)

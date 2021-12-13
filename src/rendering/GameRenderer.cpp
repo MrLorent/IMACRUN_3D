@@ -8,7 +8,7 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
 {
 }
 
-void GameRenderer::rotateMap(glm::mat4& MVMatrix, Player& player, unsigned int caseSubdivisions){
+void GameRenderer::rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions){
     if(_rotatingIndex > caseSubdivisions)
     {
         player._turning = 0;
@@ -16,19 +16,7 @@ void GameRenderer::rotateMap(glm::mat4& MVMatrix, Player& player, unsigned int c
     }
     else
     {
-        MVMatrix = glm::translate(
-            MVMatrix,
-            glm::vec3(0.f, 0.f, 1.f)
-        );
-        MVMatrix = glm::rotate(
-            MVMatrix,
-            float(M_PI/2 * 1/caseSubdivisions * player._turning),
-            glm::vec3(0.f, 1.f, 0.f)
-        );
-        MVMatrix = glm::translate(
-            MVMatrix,
-            glm::vec3(0.f, 0.f, -1.f)
-        );
+        cam.rotateHorizontaly(float(90.f * 1/caseSubdivisions * player._turning));
         _rotatingIndex++;
     }
 }
@@ -89,7 +77,9 @@ void GameRenderer::render(
             -1-game._caseSubdivisionsIndex/game._caseSubdivisions
         )
     );
-    if(player._turning != 0) rotateMap(MVMatrix, player, game._caseSubdivisions);
+
+    if(player._turning != 0) rotateCamera(game._camera, player, game._caseSubdivisions);
+    
     /* Move the scene according to the camera */
     MVMatrix = game._camera.getViewMatrix() * MVMatrix;
     

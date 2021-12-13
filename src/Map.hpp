@@ -18,6 +18,7 @@ public:
 
     // OPERATORS
     const char& operator[](const size_t& i) const;
+    char& operator[](const size_t& i);
 
     // CONSTRUCTEURS
     Map();

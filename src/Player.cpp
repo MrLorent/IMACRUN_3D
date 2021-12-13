@@ -19,6 +19,11 @@ bool Player::isALive()
 }
 
 // SETTER
+void Player::setPosition(glm::vec3 newPosition)
+{
+    _position = newPosition;
+}
+
 void Player::goLeft()
 {
     if(_position.x != -1) _position.x -= 1;
