@@ -35,7 +35,7 @@ void Game::runGame()
 
 void Game::checkPlayerPosition()
 {
-    unsigned int playerIndex = _map.getIndex()+1;
+    unsigned int playerIndex = _map.getIndex();
     const char currentCase = _map[playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
     
     switch (currentCase)
@@ -83,9 +83,17 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             if(action!=0){
                 if(_turn == Player::LEFT){
                     _player._turning = Player::LEFT;
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 1] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 2] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 3] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 1] = 'w';
+                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 2] = 'w';
+                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 3] = 'w';
                     _turn = 0; /* The user passed the turn obstacle */
                     _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                     _distanceFromWall = 3;
+                    _camera.rotateHorizontaly(90);
+                    _player.setPosition(glm::vec3(0.f));
                 }
                 else _player.goLeft();
             }
@@ -94,9 +102,17 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             if(action!=0){
                 if(_turn == Player::RIGHT){
                     _player._turning = Player::RIGHT;
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 1] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 2] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 3] = 'f';
+                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 1] = 'w';
+                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 2] = 'w';
+                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 3] = 'w';
                     _turn = 0; /* The user passed the turn obstacle */
                     _map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                     _distanceFromWall = 3;
+                    _camera.rotateHorizontaly(-90);
+                    _player.setPosition(glm::vec3(0.f));
                 }
                 else _player.goRight();
             }

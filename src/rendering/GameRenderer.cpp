@@ -17,7 +17,7 @@ void GameRenderer::rotateCamera(Camera& cam, Player& player, unsigned int caseSu
     }
     else
     {
-        cam.rotateHorizontaly(float(M_PI/2 * 1/caseSubdivisions * player._turning));
+        cam.rotateHorizontaly(float(90.f * 1/caseSubdivisions * player._turning));
         _rotatingIndex++;
     }
 }
@@ -78,7 +78,9 @@ void GameRenderer::render(
             -2-game._caseSubdivisionsIndex/game._caseSubdivisions
         )
     );
+
     if(player._turning != 0) rotateCamera(game._camera, player, game._caseSubdivisions);
+    
     /* Move the scene according to the camera */
     MVMatrix = game._camera.getViewMatrix() * MVMatrix;
     
