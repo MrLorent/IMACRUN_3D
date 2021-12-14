@@ -75,7 +75,7 @@ void GameRenderer::render(
         glm::vec3(
             -2.f, /* Place of the first left wall */
             0.f,
-            -1-game._caseSubdivisionsIndex/game._caseSubdivisions
+            0.5-game._playerIndex-game._caseSubdivisionsIndex/game._caseSubdivisions
         )
     );
 
@@ -84,7 +84,7 @@ void GameRenderer::render(
     /* Move the scene according to the camera */
     MVMatrix = game._camera.getViewMatrix() * MVMatrix;
     
-    for(unsigned int i=map.getIndex()-1; i<map.getIndex()+_renderingLength; ++i)
+    for(unsigned int i=0; i<_renderingLength; ++i)
     {
         for(unsigned short int k=0; k<map.getMapWidth(); ++k){
             switch (map[map.getMapWidth() * i + k])

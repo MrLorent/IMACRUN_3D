@@ -2,13 +2,23 @@
 #define MAP_HPP
 
 #include <vector>
+#include <deque>
+#include <random>
+#include <iostream>
 
 class Map
 {
 private:
-    unsigned int _index;
     unsigned short int _mapWidth;
-    std::vector<char> _map;
+    std::deque<char> _map;
+    std::vector<std::vector<char>> _mapElements;
+    
+    unsigned _seed;
+    std::mt19937_64 _random;
+    std::uniform_int_distribution<int> _distribution;
+
+    void loadMapElements();
+    void initMap();
 
 public:
     // CONSTANTS
@@ -27,11 +37,13 @@ public:
     // DESTRUCTEURS
     ~Map();
 
-    unsigned int getIndex();
+    // GETTERS
+    size_t size();
     unsigned short int getMapWidth();
 
-    void incrementIndex();
-    void setIndex(const int newIndex);
+    // METHODS
+    void reloadMap();
+    void deleteFirstLigne();
 };
 
 

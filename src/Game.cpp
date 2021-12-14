@@ -2,6 +2,7 @@
 
 Game::Game()
     :_camera(Camera()),
+     _playerIndex(3),
      _running(false),
      _paused(false),
      _caseSubdivisions(75.f),
@@ -26,8 +27,18 @@ void Game::runGame()
         _caseSubdivisionsIndex++;
 
         if(_caseSubdivisionsIndex == _caseSubdivisions){
-            _map.incrementIndex();
+            if(_playerIndex == 3)
+            {
+                _map.deleteFirstLigne();
+            }else if(_playerIndex < 3){
+                _playerIndex++;
+            }else{
+                _playerIndex--;
+                _map.deleteFirstLigne();
+            }
             _caseSubdivisionsIndex = 0;
+            if(_map.size() < 80 && _map.size()%_map.getMapWidth() == 0) _map.reloadMap();
+
             if(_turn != 0) _distanceFromWall--;
         }
     }
@@ -35,8 +46,7 @@ void Game::runGame()
 
 void Game::checkPlayerPosition()
 {
-    unsigned int playerIndex = _map.getIndex();
-    const char currentCase = _map[playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
+    const char currentCase = _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
     
     switch (currentCase)
     {
@@ -52,11 +62,11 @@ void Game::checkPlayerPosition()
         break;
     }
 
-    if(_turn == 0 && (_map[playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL) && _map[playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::PASSED_TURN)
+    if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL) && _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::PASSED_TURN)
     {
         _turn = Player::LEFT;
     }
-    else if(_turn == 0 && (_map[playerIndex * _map.getMapWidth()] != Map::WALL) && _map[playerIndex * _map.getMapWidth()] != Map::PASSED_TURN)
+    else if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth()] != Map::WALL) && _map[_playerIndex * _map.getMapWidth()] != Map::PASSED_TURN)
     {
         _turn = Player::RIGHT;
     }
@@ -83,30 +93,30 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             if(action!=0){
                 if(_turn == Player::LEFT){
                     _player._turning = Player::LEFT;
-                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 1] = 'f';
-                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 2] = 'f';
-                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 3] = 'f';
-                    _map[(_map.getIndex()-(3-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
-                    _map[(_map.getIndex()-(2-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
-                    _map[(_map.getIndex()-(1-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
-                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 1] = 'w';
-                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 2] = 'w';
-                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 3] = 'w';
+                    _map[(_playerIndex+_distanceFromWall) * _map.getMapWidth() + 1] = 'f';
+                    _map[(_playerIndex+_distanceFromWall) * _map.getMapWidth() + 2] = 'f';
+                    _map[(_playerIndex+_distanceFromWall) * _map.getMapWidth() + 3] = 'f';
+                    _map[(_playerIndex-(3-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
+                    _map[(_playerIndex-(2-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
+                    _map[(_playerIndex-(1-_distanceFromWall)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
+                    _map[(_playerIndex+_distanceFromWall-5) * _map.getMapWidth() + 1] = 'w';
+                    _map[(_playerIndex+_distanceFromWall-5) * _map.getMapWidth() + 2] = 'w';
+                    _map[(_playerIndex+_distanceFromWall-5) * _map.getMapWidth() + 3] = 'w';
 
                     short int xPlayerPosition = _player.getPosition().x;
                     switch (xPlayerPosition)
                     {
                     case Player::LEFT:
-                        if(_distanceFromWall == 3) _map.setIndex(_map.getIndex() + 2);
-                        else if(_distanceFromWall == 2 ) _map.setIndex(_map.getIndex() + 1);
+                        if(_distanceFromWall == 3) _playerIndex = _playerIndex + 2;
+                        else if(_distanceFromWall == 2 ) _playerIndex = _playerIndex + 1;
                         break;
                     case Player::MIDDLE:
-                        if(_distanceFromWall == 3) _map.setIndex(_map.getIndex() + 1);
-                        else if(_distanceFromWall == 1) _map.setIndex(_map.getIndex() - 1);
+                        if(_distanceFromWall == 3) _playerIndex = _playerIndex + 1;
+                        else if(_distanceFromWall == 1) _playerIndex = _playerIndex - 1;
                         break;
                     case Player::RIGHT:
-                        if(_distanceFromWall == 2) _map.setIndex(_map.getIndex() -1);
-                        else if(_distanceFromWall == 1) _map.setIndex(_map.getIndex() -2);
+                        if(_distanceFromWall == 2) _playerIndex = _playerIndex -1;
+                        else if(_distanceFromWall == 1) _playerIndex = _playerIndex -2;
                         break;
                     
                     default:
@@ -127,30 +137,30 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             if(action!=0){
                 if(_turn == Player::RIGHT){
                     _player._turning = Player::RIGHT;
-                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 1] = 'f';
-                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 2] = 'f';
-                    _map[(_map.getIndex()+_distanceFromWall) * _map.getMapWidth() + 3] = 'f';
-                    _map[(_map.getIndex()-(3-_distanceFromWall)) * _map.getMapWidth()] = 'p';
-                    _map[(_map.getIndex()-(2-_distanceFromWall)) * _map.getMapWidth()] = 'p';
-                    _map[(_map.getIndex()-(1-_distanceFromWall)) * _map.getMapWidth()] = 'p';
-                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 1] = 'w';
-                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 2] = 'w';
-                    _map[(_map.getIndex()+_distanceFromWall-5) * _map.getMapWidth() + 3] = 'w';
+                    _map[(_playerIndex+_distanceFromWall) * _map.getMapWidth() + 1] = 'f';
+                    _map[(_playerIndex+_distanceFromWall) * _map.getMapWidth() + 2] = 'f';
+                    _map[(_playerIndex+_distanceFromWall) * _map.getMapWidth() + 3] = 'f';
+                    _map[(_playerIndex-(3-_distanceFromWall)) * _map.getMapWidth()] = 'p';
+                    _map[(_playerIndex-(2-_distanceFromWall)) * _map.getMapWidth()] = 'p';
+                    _map[(_playerIndex-(1-_distanceFromWall)) * _map.getMapWidth()] = 'p';
+                    _map[(_playerIndex+_distanceFromWall-5) * _map.getMapWidth() + 1] = 'w';
+                    _map[(_playerIndex+_distanceFromWall-5) * _map.getMapWidth() + 2] = 'w';
+                    _map[(_playerIndex+_distanceFromWall-5) * _map.getMapWidth() + 3] = 'w';
                     
                     short int xPlayerPosition = _player.getPosition().x;
                     switch (xPlayerPosition)
                     {
                     case Player::LEFT:
-                        if(_distanceFromWall == 2) _map.setIndex(_map.getIndex() -1);
-                        else if(_distanceFromWall == 1) _map.setIndex(_map.getIndex() -2);
+                        if(_distanceFromWall == 2) _playerIndex = _playerIndex -1;
+                        else if(_distanceFromWall == 1) _playerIndex = _playerIndex -2;
                         break;
                     case Player::MIDDLE:
-                        if(_distanceFromWall == 3) _map.setIndex(_map.getIndex() + 1);
-                        else if(_distanceFromWall == 1) _map.setIndex(_map.getIndex() - 1);
+                        if(_distanceFromWall == 3) _playerIndex = _playerIndex + 1;
+                        else if(_distanceFromWall == 1) _playerIndex = _playerIndex - 1;
                         break;
                     case Player::RIGHT:
-                        if(_distanceFromWall == 3) _map.setIndex(_map.getIndex() + 2);
-                        else if(_distanceFromWall == 2 ) _map.setIndex(_map.getIndex() + 1);
+                        if(_distanceFromWall == 3) _playerIndex = _playerIndex + 2;
+                        else if(_distanceFromWall == 2 ) _playerIndex = _playerIndex + 1;
                         break;
                     
                     default:

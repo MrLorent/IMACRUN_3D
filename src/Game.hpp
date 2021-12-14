@@ -12,6 +12,7 @@ class Game
     private:
         Map _map;
         Player _player;
+        short unsigned int _playerIndex;
 
         void checkPlayerPosition();
 
