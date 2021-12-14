@@ -75,7 +75,19 @@ void Model::loadModel(
     //Chargement du model 3D
     std::string inputfile = "./assets/models/"+filePath;
     tinyobj::ObjReaderConfig reader_config;
-    reader_config.mtl_search_path = "./assets/textures/"; // Path to material files
+      #ifdef _WIN32
+    const size_t lastSlashIndex = filePath.rfind('\\');
+    #else
+    const size_t lastSlashIndex = filePath.rfind('/');
+    #endif
+    std::string dirName;
+    
+    /* Get the path to the current file and the .obj file name */
+    if (std::string::npos != lastSlashIndex)
+    {
+        dirName = filePath.substr(0, lastSlashIndex);
+    }
+    //reader_config.mtl_search_path = "./assets/models/"+dirName;  // Path to material files
 
     tinyobj::ObjReader reader;
 
@@ -95,7 +107,8 @@ void Model::loadModel(
 
     auto& attrib = reader.GetAttrib();
     auto& shapes = reader.GetShapes();
-    auto& materials = reader.GetMaterials();
+   // auto& materials = reader.GetMaterials();
+
 
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
@@ -177,24 +190,27 @@ void Model::loadTextures(
     #endif
     std::string dirName;
     std::string objFile;
+    std::string extensionName;
     
     /* Get the path to the current file and the .obj file name */
     if (std::string::npos != lastSlashIndex)
     {
         objFile = filePath.substr(lastSlashIndex+1);
         dirName = filePath.substr(0, lastSlashIndex);
+   
     }
 
     // ON COMMENCE A UTILISE DIRENT.H
     DIR *dir;
     struct dirent *file;
 
-    if ((dir = opendir (("./assets/models/" + dirName).c_str())) != nullptr) {
+    if ((dir = opendir (("./assets/models/" + dirName+ "/textures").c_str())) != nullptr) {
         /* print all the files and directories within directory */
         while ((file = readdir (dir)) != nullptr) {
-            if(file->d_name != objFile)
-            {
-                textures.push_back(Texture(dirName + "/" + file->d_name));
+            extensionName = file->d_name;
+            extensionName = extensionName.substr(extensionName.rfind('.')+1);
+            if(extensionName.compare("png")==0 || extensionName.compare("jpg")==0){
+                textures.push_back(Texture(dirName + "/textures/" + file->d_name));
             }
         }
         closedir (dir);

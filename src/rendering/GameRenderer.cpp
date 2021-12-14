@@ -3,17 +3,23 @@
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
      _renderingLength(15), // nb ligne to draw
-     _caseSubdivisions(75.f),
-     _caseSubdivisionsIndex(0),
-     _rotationDirection(0)
+     _rotationDirection(0),
+     _rotatingIndex(0)
 {
-    X_TRANSLATE_MATRICES = {
-        glm::translate(glm::mat4(1.f),glm::vec3(-2.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(-1.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(0.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(1.f,0.f,0.f)),
-        glm::translate(glm::mat4(1.f),glm::vec3(2.f,0.f,0.f))
-    };
+}
+
+void GameRenderer::rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions){
+    if(_rotatingIndex > caseSubdivisions * 2)
+    {
+        cam.rotateHorizontaly(float(M_PI/2 * -player._turning));
+        player._turning = 0;
+        _rotatingIndex = 0;
+    }
+    else
+    {
+        cam.rotateHorizontaly(float(90.f * 1/(caseSubdivisions * 2) * player._turning));
+        _rotatingIndex++;
+    }
 }
 
 void GameRenderer::load3DModels()
@@ -31,18 +37,17 @@ void GameRenderer::load3DModels()
     params.fileName = "box/box.obj";
     params.vsShader = "triangle.vs.glsl";
     params.fsShader = "triangle.fs.glsl";
-
+ 
     _floor = Model(params);
 }
 
 void GameRenderer::render(
     glm::mat4 projectionMatrix,
-    glm::mat4 viewMatrix,
-    glm::vec3 playerPosition,
-    Map& map
+    Game& game
 )
 {
     // DRAW THE PLAYER
+    Player& player = game._player;
     /* Place the Player Model into the scene */
 
     /* turn back the model from the camera */
@@ -55,33 +60,39 @@ void GameRenderer::render(
     /* put the player model at the right position */
     MVMatrix = glm::translate(
         MVMatrix,
-        playerPosition
+        player.getPosition()
     );
 
     /* Move the player model according to the camera */
-    MVMatrix = viewMatrix * MVMatrix;
+    MVMatrix = game._camera.getViewMatrix() * MVMatrix;
 
     _player.draw(projectionMatrix, MVMatrix);
 
     // DRAW THE MAP
-    MVMatrix = X_TRANSLATE_MATRICES[0];
-    /* Move the scene according to the camera */
-    MVMatrix = viewMatrix * MVMatrix;
-    glm::vec3 zTranslation = glm::vec3(
-        0.0,
-        0.0,
-        -1-_caseSubdivisionsIndex/_caseSubdivisions
-    );
+    Map& map = game._map;
     MVMatrix = glm::translate(
-        MVMatrix,
-        zTranslation
+        glm::mat4(1.f),
+        glm::vec3(
+            -2.f, /* Place of the first left wall */
+            0.f,
+            0.5-game._playerIndex-game._caseSubdivisionsIndex/game._caseSubdivisions
+        )
     );
-    for(unsigned int i=map.getIndex(); i<map.getIndex()+_renderingLength; ++i)
+
+    if(player._turning != 0) rotateCamera(game._camera, player, game._caseSubdivisions);
+    
+    /* Move the scene according to the camera */
+    MVMatrix = game._camera.getViewMatrix() * MVMatrix;
+    
+    for(unsigned int i=0; i<_renderingLength; ++i)
     {
         for(unsigned short int k=0; k<map.getMapWidth(); ++k){
             switch (map[map.getMapWidth() * i + k])
             {
                 case Map::FLOOR:
+                    _floor.draw(projectionMatrix, MVMatrix);
+                    break;
+                case Map::PASSED_TURN:
                     _floor.draw(projectionMatrix, MVMatrix);
                     break;
                 case Map::WALL:
@@ -102,8 +113,11 @@ void GameRenderer::render(
             }
             MVMatrix = glm::translate(MVMatrix, glm::vec3(1.f, 0.f, 0.f));
         }
-        if(map[map.getMapWidth() * i] != Map::WALL){ _rotationDirection = -1; } /* right turn */
-        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::WALL){ _rotationDirection = 1; } /* left turn*/
+
+        /* Detecting turns */
+        if(map[map.getMapWidth() * i] != Map::WALL && map[map.getMapWidth() * i] != Map::PASSED_TURN){ _rotationDirection = -1; } /* right turn */
+        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::WALL && map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::PASSED_TURN){ _rotationDirection = 1; } /* left turn*/
+        
         if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL){
             if(_rotationDirection == -1)
             {
@@ -120,12 +134,4 @@ void GameRenderer::render(
             MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, 1.f));
         }
     }
-
-    _caseSubdivisionsIndex++;
-
-    if(_caseSubdivisionsIndex == _caseSubdivisions){
-        map.incrementIndex();
-        _caseSubdivisionsIndex = 0;
-    }
-    
 }

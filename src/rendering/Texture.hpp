@@ -10,6 +10,7 @@ class Texture
         // ATTRIBUTS
 
         GLuint _id;
+        std::string _type;
 
     public:
         // CONSTRUCTORS
@@ -28,7 +29,8 @@ class Texture
 
         // ACCESSORS
         
-        GLuint getId(){ return _id; }
+        inline GLuint getId(){ return _id; }
+        inline std::string getType(){return _type;}
 
         // METHODS
         

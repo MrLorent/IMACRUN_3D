@@ -5,20 +5,18 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Model.hpp"
-#include "Map.hpp"
+#include "Game.hpp"
 
 class GameRenderer
 {
 private:
-    std::vector<glm::mat4> X_TRANSLATE_MATRICES;
-    
     // ATTRIBUTS
 
     glimac::FilePath _applicationPath;
     unsigned int _renderingLength;
-    float _caseSubdivisions;
-    unsigned int _caseSubdivisionsIndex;
     short int _rotationDirection;
+
+    unsigned int _rotatingIndex;
 
     /* 3D Models */
     Model _player;
@@ -26,17 +24,17 @@ private:
     Model _floor;
 
     // PRIVATE METHODS
+    void rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions);
 
 public:
     GameRenderer(){}
     GameRenderer(glimac::FilePath applicationPath);
 
     void load3DModels();
+    void initMapRotation(int direction);
 
     void render(
         glm::mat4 projectionMatrix,
-        glm::mat4 viewMatrix,
-        glm::vec3 playerPosition,
-        Map& map
+        Game& game
     );
 };
