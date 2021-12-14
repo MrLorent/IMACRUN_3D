@@ -39,13 +39,19 @@ class Text
         GLuint _vbo; 
         GLuint _ibo;
         
-        
         unsigned int _window_width, _window_height;
+    
     public:
         Text(){};
         Text(const unsigned int fontSize, glimac::FilePath name);
         //~Text();
-        void draw(std::string text, glm::vec2 pos, glm::vec3 color, unsigned int window_width, const unsigned int window_height);
+        void draw(
+            std::string text,   /* Text to write */
+            glm::vec2 pos,      /* Position in screen, starting from bottom left */
+            glm::vec3 color,    /* Text color */
+            unsigned int window_width,
+            const unsigned int window_height
+        );
 
         Shader shader;
 };
