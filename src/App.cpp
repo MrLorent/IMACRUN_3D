@@ -1,13 +1,13 @@
 #include "App.hpp"
 #include "Text.hpp"
 
-App::App(GLFWwindow* window, int window_width, int window_height, std::string path)
+App::App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
     :_applicationPath(path)
 {
     /* Initialization of the window size */
-    size_callback(window, window_width, window_height);
-    _width = window_width;
-    _height = window_height;
+    size_callback(window, width, height);
+    _width = width;
+    _height = height;
     
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;

@@ -9,8 +9,7 @@ Game::Game()
      _caseSubdivisionsIndex(0),
      _turn(0),
      _distanceFromWall(3)
-{
-}
+{}
 
 void Game::initGame()
 {

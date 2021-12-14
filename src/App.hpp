@@ -19,6 +19,7 @@ class App
         static constexpr short unsigned int SCORES = 3;
         static constexpr short unsigned int SCORE_INPUT = 4;
 
+        // ATTRIBUTS
         /* Window parameters */
         int _width;
         int _height;
@@ -27,17 +28,19 @@ class App
         /* External parameters */
         std::string _applicationPath;
 
-        /* Game elements */
+        /* Application parameters */
         short unsigned int _currentScreen;
+        Text _text;
+
+        /* Game entities */
         Game _game;
         GameRenderer _gameRenderer;
 
-        Text _text;
     public:
         // CONSTRUCTORS
-        /* Basic constructor*/
+        /* Basic constructors*/
 
-        App(GLFWwindow* window, int window_width, int window_height, std::string path);
+        App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path);
         
         // GETTERS
         Game& getGame();

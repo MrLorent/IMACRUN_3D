@@ -5,8 +5,7 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
      _renderingLength(15), // nb ligne to draw
      _rotationDirection(0),
      _rotatingIndex(0)
-{
-}
+{}
 
 void GameRenderer::rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions){
     if(_rotatingIndex > caseSubdivisions * 2)
