@@ -37,7 +37,7 @@ void GameRenderer::load3DModels()
     params.fileName = "box/box.obj";
     params.vsShader = "triangle.vs.glsl";
     params.fsShader = "triangle.fs.glsl";
-
+ 
     _floor = Model(params);
 }
 

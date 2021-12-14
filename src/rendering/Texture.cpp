@@ -4,23 +4,26 @@
 /* basic constructors */
 
 Texture::Texture()
-    :_id(0){}
+    :_id(0),_type(""){}
 
 Texture::Texture(const std::string filePath)
     :_id(0)
 {
+    const size_t lastSlashIndex = filePath.rfind('/');
+    _type=filePath.substr(lastSlashIndex+1, _type.size()-4);
     if(filePath.find("/.") == std::string::npos)
     {
         load(filePath);
     }
 }
 
-/* move constructor */
+/* move constructor */ 
 
 Texture::Texture(Texture&& rhs) noexcept
-    :_id(rhs._id)
+    :_id(rhs._id),_type(rhs._type)
 {
     rhs._id = 0;
+    rhs._type ="";
 }
 
 // DESTRUCTOR
@@ -29,6 +32,7 @@ Texture::~Texture()
 {
     glDeleteTextures(1, &_id);
     _id = 0;
+    _type ="";
 }
 
 // METHODS

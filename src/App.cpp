@@ -12,10 +12,8 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string pa
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
 
-    /* Initialisation of the game renderer */
+    _text=Text(48, glimac::FilePath(_name));
     _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
-
-    _text = Text("Arial.ttf", 48, glimac::FilePath(_applicationPath));
 }
 
 // GETTERS
@@ -33,7 +31,8 @@ void App::render()
     switch (_currentScreen)
     {
     case PRINCIPAL_MENU:
-        _text.draw(_text.shader, "abcdefghijkl", float(_width/2.), float(_height/2.), 1.0f, glm::vec3(1.000f, 1.f, 1.f), _width, _height);
+        //glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
+        _text.draw("Tanguy gros BG", glm::vec2(50.f, 50.f), glm::vec3(182.f/255.f, 102.f/255.f, 210.f/255.f), _width, _height);
         break;
     case GAME:
         if(_game._running)
