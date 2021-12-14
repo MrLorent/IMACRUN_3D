@@ -1,13 +1,13 @@
 #include "Text.hpp"
 
-Text::Text(const std::string fontName, const unsigned int fontSize, glimac::FilePath path):shader(path)
+Text::Text( const unsigned int fontSize, glimac::FilePath path):shader(path)
 {
     if (FT_Init_FreeType(&_ft))
     {
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
     }
 
-    if (FT_New_Face(_ft, ("./assets/fonts/"+fontName).c_str() , 0, &_font))
+    if (FT_New_Face(_ft, "./assets/fonts/Arial.ttf" , 0, &_font))
     {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;  
     }
@@ -92,7 +92,7 @@ Text::Text(const std::string fontName, const unsigned int fontSize, glimac::File
 // {
 // }
 
-void Text::draw(std::string text, float x, float y, float scale, glm::vec3 color, const unsigned int window_width, const unsigned int window_height){
+void Text::draw(std::string text, glm::vec2 pos, glm::vec3 color, const unsigned int window_width, const unsigned int window_height){
     _window_width=window_width;
     _window_height=window_height; 
 
@@ -112,11 +112,11 @@ void Text::draw(std::string text, float x, float y, float scale, glm::vec3 color
     for (c = text.begin(); c != text.end(); c++) 
     {
         Character ch = _alphabet[*c];
-        float xpos = x + ch.Bearing.x * scale;
-        float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+        float xpos = pos.x + ch.Bearing.x;
+        float ypos = pos.y - (ch.Size.y - ch.Bearing.y);
 
-        float w = ch.Size.x * scale;
-        float h = ch.Size.y * scale;
+        float w = ch.Size.x;
+        float h = ch.Size.y;
         // update VBO for each character
         float vertices[6][4] = {
             { xpos,     ypos + h,   0.0f, 0.0f },            
@@ -143,7 +143,7 @@ void Text::draw(std::string text, float x, float y, float scale, glm::vec3 color
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        pos.x += (ch.Advance >> 6) ; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
         glDisable(GL_BLEND);
     }
     glBindVertexArray(0);

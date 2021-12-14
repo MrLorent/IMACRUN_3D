@@ -124,11 +124,15 @@ void Mesh::initVao()
 
 void Mesh::draw(glimac::Program& shaders)
 {
+
+
     for (size_t i=0; i < textures.size(); i++)
     {
-        glUniform1i(glGetUniformLocation(shaders.getGLId(), "uTexture"), i);
-        textures[i].bind(i);
+        glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
+        
+        glBindTexture(GL_TEXTURE_2D, textures[i].getId());
     }
+    glActiveTexture(GL_TEXTURE0);
 
     glBindVertexArray(_vao);
         glDrawElements(

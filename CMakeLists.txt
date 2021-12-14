@@ -16,10 +16,10 @@ set(EXECUTABLE_OUTPUT_PATH
     ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}
 )
 # Add header files
-file(GLOB_RECURSE HEADER_FILES 
+file(GLOB_RECURSE HEADER_FILES  
 	${CMAKE_SOURCE_DIR}/src/*.hpp
     ${CMAKE_SOURCE_DIR}/src/glimac/*.hpp
-    ${CMAKE_SOURCE_DIR}/src/rendering/*.hpp
+    ${CMAKE_SOURCE_DIR}/src/rendering/*.hpp 
 )
 
 # Add source files
