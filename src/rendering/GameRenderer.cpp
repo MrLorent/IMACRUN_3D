@@ -10,13 +10,15 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
 void GameRenderer::rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions){
     if(_rotatingIndex > caseSubdivisions * 2)
     {
-        cam.rotateHorizontaly(float(M_PI/2 * -player._turning));
+        if(cam._mode == Camera::TRACKBALL) cam.rotateHorizontaly(float(M_PI/2 * -player._turning));
+        else cam.rotateHorizontaly(float(M_PI/2 * player._turning));
         player._turning = 0;
         _rotatingIndex = 0;
     }
     else
     {
-        cam.rotateHorizontaly(float(90.f * 1/(caseSubdivisions * 2) * player._turning));
+        if(cam._mode == Camera::TRACKBALL) cam.rotateHorizontaly(float(90.f * 1/(caseSubdivisions * 2) * player._turning));
+        else cam.rotateHorizontaly(float(90.f * 1/(caseSubdivisions * 2) * -player._turning));
         _rotatingIndex++;
     }
 }

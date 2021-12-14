@@ -62,16 +62,11 @@ void Camera::computeDirectionVectors()
     );
 }
 
-void Camera::moveSide(float t)
+void Camera::setPosition(const glm::vec3 position)
 {
-    _position += t * _leftVector;
-    computeDirectionVectors();
-}
-
-void Camera::moveFront(float t)
-{
-    _position += t * _frontVector;
-    computeDirectionVectors();
+    _position.x = -position.x;
+    _position.y = position.y +1;
+    _position.z = -position.z;
 }
 
 // COMMON METHODS

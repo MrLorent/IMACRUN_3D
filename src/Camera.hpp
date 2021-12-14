@@ -4,9 +4,6 @@
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
-const short unsigned int TRACKBALL = 0;
-const short unsigned int FREELY = 1;
-
 class Camera
 {
 private:
@@ -28,6 +25,10 @@ private:
     void computeDirectionVectors();
 
 public:
+    // CONSTANTS
+    static constexpr short unsigned int TRACKBALL = 0;
+    static constexpr short unsigned int FREELY = 1;
+
     short unsigned int _mode;
 
     Camera();
@@ -41,8 +42,7 @@ public:
 
     // FREELY CAMERA
 
-    void moveSide(float t);
-    void moveFront(float t);
+    void setPosition(glm::vec3 position);
     
     // COMMON METHODS
 

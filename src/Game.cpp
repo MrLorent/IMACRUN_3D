@@ -5,7 +5,7 @@ Game::Game()
      _playerIndex(3),
      _running(false),
      _paused(false),
-     _caseSubdivisions(75.f),
+     _caseSubdivisions(150.f),
      _caseSubdivisionsIndex(0),
      _turn(0),
      _distanceFromWall(3)
@@ -125,11 +125,15 @@ void Game::key_callback(int key, int scancode, int action, int mods)
                     _player.setPosition(glm::vec3(2 - _distanceFromWall, 0.f, 0.f));
 
                     _turn = 0; /* The user passed the turn obstacle */
-                    //_map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                     _distanceFromWall = 3;
-                    _camera.rotateHorizontaly(-_player._turning * 90);
+                    if(_camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(-_player._turning * 90);
+                    else _camera.rotateHorizontaly(_player._turning * 90);
                 }
-                else _player.goLeft();
+                else
+                {
+                    _player.goLeft();
+                }
+                if(_camera._mode == Camera::FREELY) _camera.setPosition(_player.getPosition());
             }
             break;
         case 68:
@@ -168,27 +172,31 @@ void Game::key_callback(int key, int scancode, int action, int mods)
                     _player.setPosition(glm::vec3(-2 + _distanceFromWall, 0.f, 0.f));
                     
                     _turn = 0; /* The user passed the turn obstacle */
-                    //_map.setIndex(_map.getIndex() + _distanceFromWall + 1);
                     _distanceFromWall = 3;
-                    _camera.rotateHorizontaly(-_player._turning * 90);
+                    if(_camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(-_player._turning * 90);
+                    else _camera.rotateHorizontaly(_player._turning * 90);
                 }
-                else _player.goRight();
+                else
+                {
+                     _player.goRight();
+                }
+                if(_camera._mode == Camera::FREELY) _camera.setPosition(_player.getPosition());
             }
             break;
         case 262: //Fleche droite
-            if(action!=0) _camera.rotateHorizontaly(-2.*float(1));
+            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(-2.*float(1));
             break;
 
         case 263: //Fleche gauche
-            if(action!=0) _camera.rotateHorizontaly(2.*float(1));
+            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(2.*float(1));
             break;
 
         case 264: //Fleche bas
-            if(action!=0) _camera.rotateVerticaly(-2.*float(1));
+            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateVerticaly(-2.*float(1));
             break;
         
         case 265: //Fleche haut
-            if(action!=0) _camera.rotateVerticaly(2.*float(1));
+            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateVerticaly(2.*float(1));
             break;
         default:
             std::cout << key << std::endl;
