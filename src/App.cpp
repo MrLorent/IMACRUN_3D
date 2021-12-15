@@ -12,7 +12,7 @@ App::App(GLFWwindow* window, int window_width, int window_height, std::string pa
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
 
-    _text=Text(48, glimac::FilePath(_applicationPath));
+    _text=Text(48, glimac::FilePath(_applicationPath), "PTMono.ttc");
     _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
 }
 

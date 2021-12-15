@@ -11,6 +11,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+
+
 struct Character {
     unsigned int TextureID;  // ID handle of the glyph texture
     glm::ivec2   Size;       // Size of glyph
@@ -43,7 +45,7 @@ class Text
         unsigned int _window_width, _window_height;
     public:
         Text(){};
-        Text(const unsigned int fontSize, glimac::FilePath name);
+        Text(const unsigned int fontSize, glimac::FilePath name, std::string fontName="Arial.ttf");
         //~Text();
         void draw(std::string text, glm::vec2 pos, glm::vec3 color, unsigned int window_width, const unsigned int window_height);
 
