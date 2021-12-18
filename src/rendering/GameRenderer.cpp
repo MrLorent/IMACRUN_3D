@@ -119,7 +119,7 @@ void GameRenderer::render(
         if(map[map.getMapWidth() * i] != Map::WALL && map[map.getMapWidth() * i] != Map::PASSED_TURN){ _rotationDirection = -1; } /* right turn */
         else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::WALL && map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::PASSED_TURN){ _rotationDirection = 1; } /* left turn*/
         
-        if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL && i > game._playerIndex){
+        if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL && i >= game._playerIndex){
             if(_rotationDirection == -1)
             {
                 MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, -(map.getMapWidth()-1)));
