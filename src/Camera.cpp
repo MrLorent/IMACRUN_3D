@@ -5,6 +5,7 @@
 
 Camera::Camera()
     :_mode(TRACKBALL),
+     _turning(0),
     // TRACKBALL
      _distance(2),
      _xAngle(M_PI / 6),    /* horizontal */

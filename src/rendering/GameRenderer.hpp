@@ -24,7 +24,7 @@ private:
     Model _floor;
 
     // PRIVATE METHODS
-    void rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions);
+    void rotateCamera(Camera& cam, unsigned int caseSubdivisions);
 
 public:
     GameRenderer(){}

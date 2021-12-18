@@ -30,6 +30,7 @@ public:
     static constexpr short unsigned int FREELY = 1;
 
     short unsigned int _mode;
+    short int _turning;
 
     Camera();
     ~Camera();

@@ -76,14 +76,14 @@ void Game::passTurn()
 {
     if(_turn == LEFT)
     {
-        _player._turning = LEFT;
+        _camera._turning = RIGHT; /* Camera turns on opposite side */
         _map[(_playerIndex-(3-_wallDistance)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
         _map[(_playerIndex-(2-_wallDistance)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
         _map[(_playerIndex-(1-_wallDistance)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
     }
     else
     {
-        _player._turning = RIGHT;
+        _camera._turning = LEFT;
         _map[(_playerIndex-(3-_wallDistance)) * _map.getMapWidth()] = 'p';
         _map[(_playerIndex-(2-_wallDistance)) * _map.getMapWidth()] = 'p';
         _map[(_playerIndex-(1-_wallDistance)) * _map.getMapWidth()] = 'p';
@@ -96,57 +96,57 @@ void Game::passTurn()
     _map[(_playerIndex+_wallDistance-5) * _map.getMapWidth() + 2] = 'w';
     _map[(_playerIndex+_wallDistance-5) * _map.getMapWidth() + 3] = 'w';
 
-    short int xPlayerPosition = _player.getPosition().x;
-    switch (xPlayerPosition)
-    {
-    case Player::LEFT:
-        if(_player._turning == LEFT)
-        {
-            if(_wallDistance == 3) _playerIndex += 2;
-            else if(_wallDistance == 2 ) _playerIndex += 1;
-        }
-        else
-        {
-            if(_wallDistance == 2) _playerIndex -= 1;
-            else if(_wallDistance == 1) _playerIndex -= 2;
-        }
-        break;
-    case Player::MIDDLE:
-        if(_player._turning == LEFT)
-        {
-            if(_wallDistance == 3) _playerIndex += 1;
-            else if(_wallDistance == 1) _playerIndex -= 1;
-        }
-        else
-        {
-            if(_wallDistance == 3) _playerIndex += 1;
-            else if(_wallDistance == 1) _playerIndex -= 1;
-        }
-        break;
-    case Player::RIGHT:
-        if(_player._turning == LEFT)
-        {
-            if(_wallDistance == 2) _playerIndex -= 1;
-            else if(_wallDistance == 1) _playerIndex -= 2;
-        }
-        else
-        {
-            if(_wallDistance == 3) _playerIndex += 2;
-            else if(_wallDistance == 2 ) _playerIndex += 1;
-        }
-        break;
-    default:
-        break;
-    }
+    // short int xPlayerPosition = _player.getPosition().x;
+    // switch (xPlayerPosition)
+    // {
+    // case Player::LEFT:
+    //     if(_player._turning == LEFT)
+    //     {
+    //         if(_wallDistance == 3) _playerIndex += 2;
+    //         else if(_wallDistance == 2 ) _playerIndex += 1;
+    //     }
+    //     else
+    //     {
+    //         if(_wallDistance == 2) _playerIndex -= 1;
+    //         else if(_wallDistance == 1) _playerIndex -= 2;
+    //     }
+    //     break;
+    // case Player::MIDDLE:
+    //     if(_player._turning == LEFT)
+    //     {
+    //         if(_wallDistance == 3) _playerIndex += 1;
+    //         else if(_wallDistance == 1) _playerIndex -= 1;
+    //     }
+    //     else
+    //     {
+    //         if(_wallDistance == 3) _playerIndex += 1;
+    //         else if(_wallDistance == 1) _playerIndex -= 1;
+    //     }
+    //     break;
+    // case Player::RIGHT:
+    //     if(_player._turning == LEFT)
+    //     {
+    //         if(_wallDistance == 2) _playerIndex -= 1;
+    //         else if(_wallDistance == 1) _playerIndex -= 2;
+    //     }
+    //     else
+    //     {
+    //         if(_wallDistance == 3) _playerIndex += 2;
+    //         else if(_wallDistance == 2 ) _playerIndex += 1;
+    //     }
+    //     break;
+    // default:
+    //     break;
+    // }
 
-    _player.setPosition(glm::vec3(_player._turning * (-2 + _wallDistance), 0.f, 0.f));
+    _player.setPosition(glm::vec3(_turn * (-2 + _wallDistance), 0.f, 0.f));
+
+    if(_camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(_camera._turning * 90);
+    else _camera.rotateHorizontaly(_turn * 90);
 
     /* The user passed the turn obstacle */
     _turn = 0;
     _wallDistance = 3;
-
-    if(_camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(-_player._turning * 90);
-    else _camera.rotateHorizontaly(_player._turning * 90);
 }
 
 void Game::key_callback(int key, int scancode, int action, int mods)

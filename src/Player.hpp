@@ -15,8 +15,6 @@ class Player
         static constexpr int MIDDLE = 0;
         static constexpr int RIGHT = 1;
 
-        short int _turning;
-
         Player();
         // ~Player();
 
