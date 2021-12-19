@@ -3,9 +3,11 @@
 // CONSTRUCTOR
 /* basic constructor */
 
-Camera::Camera()
+Camera::Camera(short unsigned int caseSubdivisions)
     :_mode(TRACKBALL),
      _turning(0),
+     _rotationIndex(0),
+     _rotationDuration(caseSubdivisions * 2),
     // TRACKBALL
      _distance(2),
      _xAngle(M_PI / 6),    /* horizontal */
@@ -71,6 +73,35 @@ void Camera::setPosition(const glm::vec3 position)
 }
 
 // COMMON METHODS
+
+void Camera::takeTurn()
+{
+    if(_rotationIndex > _rotationDuration)
+    {
+        if(_mode == Camera::TRACKBALL)
+        {
+            _yAngle = M_PI;
+        }
+        else
+        {
+            _phi = 0;
+        }
+        _turning = 0;
+        _rotationIndex = 0;
+    }
+    else
+    {
+        if(_mode == Camera::TRACKBALL)
+        {
+            rotateHorizontaly(float(90.f * 1/_rotationDuration * -_turning));
+        }
+        else
+        {
+            rotateHorizontaly(float(90.f * 1/_rotationDuration * _turning));
+        }
+        _rotationIndex++;
+    }
+}
 
 void Camera::rotateHorizontaly(float degrees)
 {

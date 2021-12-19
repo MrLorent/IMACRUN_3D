@@ -7,6 +7,9 @@
 class Camera
 {
 private:
+    unsigned int _rotationIndex;
+    unsigned int _rotationDuration;
+
     // TRACKBALL ATTRIBUTS
     float _distance;
     float _xAngle;
@@ -32,7 +35,8 @@ public:
     short unsigned int _mode;
     short int _turning;
 
-    Camera();
+    Camera(){};
+    Camera(short unsigned int caseSubdivisions);
     ~Camera();
 
     void switchMode();
@@ -46,7 +50,7 @@ public:
     void setPosition(glm::vec3 position);
     
     // COMMON METHODS
-
+    void takeTurn();
     void rotateHorizontaly(float degrees);
     void rotateVerticaly(float degrees);
     glm::mat4 getViewMatrix() const;

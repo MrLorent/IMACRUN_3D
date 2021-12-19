@@ -1,19 +1,20 @@
 #include "Game.hpp"
 
 Game::Game()
-    :_camera(Camera()),
+    :_caseSubdivisions(75.f),
+     _caseSubdivisionsIndex(0),
+     _camera(Camera()),
      _defaultIndex(3),
      _playerIndex(_defaultIndex),
      _running(false),
      _paused(false),
-     _caseSubdivisions(75.f),
-     _caseSubdivisionsIndex(0),
      _turn(0),
      _wallDistance(3)
 {}
 
 void Game::initGame()
 {
+    _camera = Camera(_caseSubdivisions);
     _map = Map();
     _player = Player(_caseSubdivisions);
 }

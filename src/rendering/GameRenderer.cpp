@@ -82,7 +82,7 @@ void GameRenderer::render(
         )
     );
 
-    if(game._camera._turning != 0) rotateCamera(game._camera, game._caseSubdivisions);
+    if(game._camera._turning != 0) game._camera.takeTurn();
     
     /* Move the scene according to the camera */
     MVMatrix = game._camera.getViewMatrix() * MVMatrix;
