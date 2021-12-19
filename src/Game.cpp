@@ -6,7 +6,7 @@ Game::Game()
      _playerIndex(_defaultIndex),
      _running(false),
      _paused(false),
-     _caseSubdivisions(150.f),
+     _caseSubdivisions(75.f),
      _caseSubdivisionsIndex(0),
      _turn(0),
      _wallDistance(3)
@@ -15,7 +15,7 @@ Game::Game()
 void Game::initGame()
 {
     _map = Map();
-    _player = Player();
+    _player = Player(_caseSubdivisions);
 }
 
 void Game::runGame()
@@ -56,7 +56,8 @@ void Game::checkPlayerPosition()
         _player.die();
         break;
     case Map::HOLE:
-        _player.die();
+        if(_player.getPosition().y == 0)
+            _player.die();
         break;
     default:
         break;
@@ -96,48 +97,48 @@ void Game::passTurn()
     _map[(_playerIndex+_wallDistance-5) * _map.getMapWidth() + 2] = 'w';
     _map[(_playerIndex+_wallDistance-5) * _map.getMapWidth() + 3] = 'w';
 
-    // short int xPlayerPosition = _player.getPosition().x;
-    // switch (xPlayerPosition)
-    // {
-    // case Player::LEFT:
-    //     if(_player._turning == LEFT)
-    //     {
-    //         if(_wallDistance == 3) _playerIndex += 2;
-    //         else if(_wallDistance == 2 ) _playerIndex += 1;
-    //     }
-    //     else
-    //     {
-    //         if(_wallDistance == 2) _playerIndex -= 1;
-    //         else if(_wallDistance == 1) _playerIndex -= 2;
-    //     }
-    //     break;
-    // case Player::MIDDLE:
-    //     if(_player._turning == LEFT)
-    //     {
-    //         if(_wallDistance == 3) _playerIndex += 1;
-    //         else if(_wallDistance == 1) _playerIndex -= 1;
-    //     }
-    //     else
-    //     {
-    //         if(_wallDistance == 3) _playerIndex += 1;
-    //         else if(_wallDistance == 1) _playerIndex -= 1;
-    //     }
-    //     break;
-    // case Player::RIGHT:
-    //     if(_player._turning == LEFT)
-    //     {
-    //         if(_wallDistance == 2) _playerIndex -= 1;
-    //         else if(_wallDistance == 1) _playerIndex -= 2;
-    //     }
-    //     else
-    //     {
-    //         if(_wallDistance == 3) _playerIndex += 2;
-    //         else if(_wallDistance == 2 ) _playerIndex += 1;
-    //     }
-    //     break;
-    // default:
-    //     break;
-    // }
+    short int xPlayerPosition = _player.getPosition().x;
+    switch (xPlayerPosition)
+    {
+    case Player::LEFT:
+        if(_camera._turning == RIGHT)
+        {
+            if(_wallDistance == 3) _playerIndex += 2;
+            else if(_wallDistance == 2 ) _playerIndex += 1;
+        }
+        else
+        {
+            if(_wallDistance == 2) _playerIndex -= 1;
+            else if(_wallDistance == 1) _playerIndex -= 2;
+        }
+        break;
+    case Player::MIDDLE:
+        if(_camera._turning == RIGHT)
+        {
+            if(_wallDistance == 3) _playerIndex += 1;
+            else if(_wallDistance == 1) _playerIndex -= 1;
+        }
+        else
+        {
+            if(_wallDistance == 3) _playerIndex += 1;
+            else if(_wallDistance == 1) _playerIndex -= 1;
+        }
+        break;
+    case Player::RIGHT:
+        if(_camera._turning == RIGHT)
+        {
+            if(_wallDistance == 2) _playerIndex -= 1;
+            else if(_wallDistance == 1) _playerIndex -= 2;
+        }
+        else
+        {
+            if(_wallDistance == 3) _playerIndex += 2;
+            else if(_wallDistance == 2 ) _playerIndex += 1;
+        }
+        break;
+    default:
+        break;
+    }
 
     _player.setPosition(glm::vec3(_turn * (-2 + _wallDistance), 0.f, 0.f));
 
@@ -179,6 +180,9 @@ void Game::key_callback(int key, int scancode, int action, int mods)
                 else _player.goRight();
                 if(_camera._mode == Camera::FREELY) _camera.setPosition(_player.getPosition());
             }
+            break;
+        case 32: // SPACEBAR
+            _player._isJumping = true;
             break;
         case 262: //Fleche droite
             if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(-2.*float(1));

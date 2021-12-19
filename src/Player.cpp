@@ -1,8 +1,11 @@
 #include "Player.hpp"
 
-Player::Player()
+Player::Player(short unsigned int caseSubdivision)
     :_position(glm::vec3(0.f, 0.f, 0.f)),
-     _isALive(true)
+     _isALive(true),
+     _isJumping(false),
+     _jumpingIndex(0),
+     _jumpingTiming(caseSubdivision * 4.5)
 {}
 
 // GETTER
@@ -35,6 +38,23 @@ void Player::goRight()
 void Player::die()
 {
     _isALive = false;
+}
+
+// METHODS
+
+void Player::jump()
+{
+    if(_jumpingIndex == _jumpingTiming)
+    {
+        _position.y = 0;
+        _isJumping = false;
+        _jumpingIndex = 0;
+    }
+    else
+    {
+        _position.y = 1-(_jumpingIndex - float(_jumpingTiming/2)) * (_jumpingIndex - float(_jumpingTiming/2))/28000.f;
+        _jumpingIndex++;
+    }
 }
 
 // Player::~Player()

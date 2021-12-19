@@ -49,6 +49,8 @@ void GameRenderer::render(
 {
     // DRAW THE PLAYER
     Player& player = game._player;
+
+    if(player._isJumping) player.jump();
     /* Place the Player Model into the scene */
 
     /* turn back the model from the camera */
