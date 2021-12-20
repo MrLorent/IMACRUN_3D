@@ -12,6 +12,9 @@ Mesh& Mesh::operator=(Mesh&& rhs) noexcept
         _vbo    = rhs._vbo;             // Get the new vbo
         _ibo    = rhs._ibo;             // Get the new ibo
         _vao    = rhs._vao;             // Get the new vao
+        vertices = rhs.vertices;
+        indices = rhs.indices;
+        textures = std::move(rhs.textures);
         rhs._vbo = 0;                   // Make sure that rhs won't delete the _id we just copied
         rhs._ibo = 0;                   // Make sure that rhs won't delete the _id we just copied
         rhs._vao = 0;                   // Make sure that rhs won't delete the _id we just copied
@@ -44,13 +47,7 @@ Mesh::Mesh(
     initVao();
 }
 
-// DESTRUCTOR
-
-Mesh::~Mesh()
-{
-    glDeleteBuffers(1, &_vbo);
-    glDeleteVertexArrays(1, &_vao);
-}
+/* Move constructor */
 
 Mesh::Mesh(Mesh&& rhs) noexcept
     :vertices(rhs.vertices),
@@ -63,6 +60,14 @@ Mesh::Mesh(Mesh&& rhs) noexcept
    rhs._vbo = 0;
    rhs._ibo = 0;
    rhs._vao = 0;
+}
+
+// DESTRUCTOR
+
+Mesh::~Mesh()
+{
+    glDeleteBuffers(1, &_vbo);
+    glDeleteVertexArrays(1, &_vao);
 }
 
 // PRIVATE METHODS

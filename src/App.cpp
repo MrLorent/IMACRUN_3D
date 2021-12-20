@@ -14,6 +14,12 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
 
+    ScreenParams params = ScreenParams(
+        glimac::FilePath(path),
+        "textures/background.png"
+    );
+    _screen = Screen(params);
+
     _text=Text2D(48, glimac::FilePath(_applicationPath), "PTMono.ttc");
     _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
 }
@@ -26,6 +32,7 @@ void App::render()
     switch (_currentScreen)
     {
     case PRINCIPAL_MENU:
+        _screen.draw();
         _text.draw("Tanguy gros BG", glm::vec2(50.f, 50.f), glm::vec3(182.f/255.f, 102.f/255.f, 210.f/255.f), _width, _height);
         break;
     case GAME:

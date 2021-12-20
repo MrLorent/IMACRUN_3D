@@ -54,12 +54,12 @@ Texture::~Texture()
 bool Texture::load(const std::string& filePath)
 {
     std::unique_ptr<glimac::Image> image = glimac::loadImage(
-        "./assets/models/"+filePath
+        "./assets/"+filePath
     );
     
     if(image == nullptr)
     {
-        std::cout << "Couldn't load " << "./assets/Models/"+filePath << std::endl;
+        std::cout << "Couldn't load " << "./assets/"+filePath << std::endl;
         return false;
     }
 
