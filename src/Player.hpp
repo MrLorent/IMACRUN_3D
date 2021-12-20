@@ -9,15 +9,19 @@ class Player
     private:
         glm::vec3 _position;
         bool _isALive;
+
+        unsigned int _jumpingIndex;
+        unsigned int _jumpingTiming;
     public:
         // CONSTANTS
         static constexpr int LEFT = -1;
         static constexpr int MIDDLE = 0;
         static constexpr int RIGHT = 1;
 
-        short int _turning;
+        bool _isJumping;
 
-        Player();
+        Player(){}
+        Player(short unsigned int caseSubdivision);
         // ~Player();
 
         // GETTER
@@ -29,4 +33,7 @@ class Player
         void goLeft();
         void goRight();
         void die();
+
+        // METHOD
+        void jump();
 };

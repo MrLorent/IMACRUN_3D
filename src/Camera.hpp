@@ -4,12 +4,12 @@
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
-const short unsigned int TRACKBALL = 0;
-const short unsigned int FREELY = 1;
-
 class Camera
 {
 private:
+    unsigned int _rotationIndex;
+    unsigned int _rotationDuration;
+
     // TRACKBALL ATTRIBUTS
     float _distance;
     float _xAngle;
@@ -28,9 +28,15 @@ private:
     void computeDirectionVectors();
 
 public:
-    short unsigned int _mode;
+    // CONSTANTS
+    static constexpr short unsigned int TRACKBALL = 0;
+    static constexpr short unsigned int FREELY = 1;
 
-    Camera();
+    short unsigned int _mode;
+    short int _turning;
+
+    Camera(){};
+    Camera(short unsigned int caseSubdivisions);
     ~Camera();
 
     void switchMode();
@@ -41,11 +47,10 @@ public:
 
     // FREELY CAMERA
 
-    void moveSide(float t);
-    void moveFront(float t);
+    void setPosition(glm::vec3 position);
     
     // COMMON METHODS
-
+    void takeTurn();
     void rotateHorizontaly(float degrees);
     void rotateVerticaly(float degrees);
     glm::mat4 getViewMatrix() const;

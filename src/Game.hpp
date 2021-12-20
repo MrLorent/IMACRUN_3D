@@ -10,13 +10,23 @@ class Game
     friend class GameRenderer;
 
     private:
+        // ATTRIBUTS
+
+        Camera _camera;
         Map _map;
         Player _player;
+        const short unsigned int _defaultIndex;
         short unsigned int _playerIndex;
 
         void checkPlayerPosition();
+        void passTurn();
 
     public:
+        // CONSTANTS
+        static constexpr short int LEFT = -1;
+        static constexpr short int NONE = 0;
+        static constexpr short int RIGHT = 1;
+
         bool _running;
         bool _paused;
 
@@ -24,9 +34,7 @@ class Game
         unsigned int _caseSubdivisionsIndex;
 
         short int _turn;
-        short unsigned int _distanceFromWall;
-        
-        Camera _camera;
+        short unsigned int _wallDistance;
         
         Game();
 

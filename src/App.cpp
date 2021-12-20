@@ -1,26 +1,22 @@
 #include "App.hpp"
 #include "Text.hpp"
 
-App::App(GLFWwindow* window, int window_width, int window_height, std::string path)
+// CONSTRUCTORS
+/* basic constructors */
+
+App::App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
     :_applicationPath(path)
 {
     /* Initialization of the window size */
-    size_callback(window, window_width, window_height);
-    _width = window_width;
-    _height = window_height;
+    size_callback(window, width, height);
+    _width = width;
+    _height = height;
     
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
 
-    _text=Text(48, glimac::FilePath(_applicationPath));
+    _text = Text(48, glimac::FilePath(_applicationPath));
     _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
-}
-
-// GETTERS
-
-Game& App::getGame()
-{
-    return _game;
 }
 
 // METHODS
@@ -31,17 +27,18 @@ void App::render()
     switch (_currentScreen)
     {
     case PRINCIPAL_MENU:
-        //glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
         _text.draw("Tanguy gros BG", glm::vec2(50.f, 50.f), glm::vec3(182.f/255.f, 102.f/255.f, 210.f/255.f), _width, _height);
         break;
     case GAME:
         if(_game._running)
         {
+            /* Running game */
             _game.runGame();
             _gameRenderer.render(_projectionMatrix, _game);
         }
         else
         {
+            /* If the game just finises, we go back to menu */
             _currentScreen = PRINCIPAL_MENU;
         }
         break;
@@ -63,10 +60,10 @@ void App::key_callback(int key, int scancode, int action, int mods)
 {
     switch (key)
         {
-        case 320: // "0" NUM PAD
+        case 49: // "1"
             _currentScreen = PRINCIPAL_MENU;
             break;
-        case 71: // "1" NUM PAD
+        case 50: // "2"
             _currentScreen = GAME;
             if(!_game._running)
             {
@@ -75,16 +72,15 @@ void App::key_callback(int key, int scancode, int action, int mods)
                 _game._running = true;
             }
             break;
-        case 322: // "2" NUM PAD
+        case 51: // "3"
             _currentScreen = LOAD_MENU;
             break;
-        case 323: // "3" NUM PAD
+        case 323: // "4"
             _currentScreen = SCORES;
             break;
-        case 324: // "4" NUM PAD
+        case 324: // "5"
             _currentScreen = SCORE_INPUT;
             break;
-
         default:
             std::cout << key << std::endl;
             break;
@@ -114,7 +110,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
         0.1f,
         100.0f
     );
-    /* We store the size of the window just in case */
+
     _width = width;
     _height = height;
 }

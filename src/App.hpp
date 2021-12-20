@@ -19,6 +19,7 @@ class App
         static constexpr short unsigned int SCORES = 3;
         static constexpr short unsigned int SCORE_INPUT = 4;
 
+        // ATTRIBUTS
         /* Window parameters */
         int _width;
         int _height;
@@ -27,22 +28,31 @@ class App
         /* External parameters */
         std::string _applicationPath;
 
-        /* Game elements */
+        /* Application parameters */
         short unsigned int _currentScreen;
+        Text _text;
+
+        /* Game entities */
         Game _game;
         GameRenderer _gameRenderer;
 
-        Text _text;
     public:
         // CONSTRUCTORS
-        /* Basic constructor*/
+        /* Basic constructors*/
 
-        App(GLFWwindow* window, int window_width, int window_height, std::string path);
+        App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path);
         
         // GETTERS
-        Game& getGame();
+
+        inline Game& getGame() { return _game; }
+
+        // SETTERS
 
         // METHODS
+        /* Graphics */
+
+        void render();
+        
         /* Control managers */
 
         void key_callback(int key, int scancode, int action, int mods);
@@ -50,9 +60,4 @@ class App
         void scroll_callback(double xoffset, double yoffset);
         void cursor_position_callback(double xpos, double ypos);
         void size_callback(GLFWwindow* window, int width, int height);
-        void destroy();
-        
-        /* Graphics */
-
-        void render();
 };

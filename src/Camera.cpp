@@ -3,8 +3,11 @@
 // CONSTRUCTOR
 /* basic constructor */
 
-Camera::Camera()
+Camera::Camera(short unsigned int caseSubdivisions)
     :_mode(TRACKBALL),
+     _turning(0),
+     _rotationIndex(0),
+     _rotationDuration(caseSubdivisions * 2),
     // TRACKBALL
      _distance(2),
      _xAngle(M_PI / 6),    /* horizontal */
@@ -62,19 +65,43 @@ void Camera::computeDirectionVectors()
     );
 }
 
-void Camera::moveSide(float t)
+void Camera::setPosition(const glm::vec3 position)
 {
-    _position += t * _leftVector;
-    computeDirectionVectors();
-}
-
-void Camera::moveFront(float t)
-{
-    _position += t * _frontVector;
-    computeDirectionVectors();
+    _position.x = -position.x;
+    _position.y = position.y +1;
+    _position.z = -position.z;
 }
 
 // COMMON METHODS
+
+void Camera::takeTurn()
+{
+    if(_rotationIndex > _rotationDuration)
+    {
+        if(_mode == Camera::TRACKBALL)
+        {
+            _yAngle = M_PI;
+        }
+        else
+        {
+            _phi = 0;
+        }
+        _turning = 0;
+        _rotationIndex = 0;
+    }
+    else
+    {
+        if(_mode == Camera::TRACKBALL)
+        {
+            rotateHorizontaly(float(90.f * 1/_rotationDuration * -_turning));
+        }
+        else
+        {
+            rotateHorizontaly(float(90.f * 1/_rotationDuration * _turning));
+        }
+        _rotationIndex++;
+    }
+}
 
 void Camera::rotateHorizontaly(float degrees)
 {
