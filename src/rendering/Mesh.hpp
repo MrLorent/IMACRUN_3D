@@ -63,6 +63,7 @@ class Mesh
         // CONSTRUCTORS
         /* basic constructor */
         
+        Mesh();
         Mesh(
             const std::vector<Vertex>& vertices,
             const std::vector<unsigned int>& indices,

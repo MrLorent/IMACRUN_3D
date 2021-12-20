@@ -22,13 +22,20 @@ Mesh& Mesh::operator=(Mesh&& rhs) noexcept
 
 // CONSTRUCTORS
 /* basic constructors */
+Mesh::Mesh()
+    :_vbo(0), _ibo(0), _vao(0)
+{
+}
 
 Mesh::Mesh(
     const std::vector<Vertex>& vertices,
     const std::vector<unsigned int>& indices,
     std::vector<Texture>&& textures
 )
-    :vertices(vertices),
+    :_vbo(0),
+     _ibo(0),
+     _vao(0),
+     vertices(vertices),
      indices(indices),
      textures(std::move(textures))
 {
