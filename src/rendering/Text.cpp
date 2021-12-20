@@ -1,13 +1,13 @@
 #include "Text.hpp"
 
-Text::Text( const unsigned int fontSize, glimac::FilePath path):shader(path)
+Text::Text(const unsigned int fontSize, glimac::FilePath path, std::string fontName):shader(path)
 {
     if (FT_Init_FreeType(&_ft))
     {
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
     }
 
-    if (FT_New_Face(_ft, "./assets/fonts/Arial.ttf" , 0, &_font))
+    if (FT_New_Face(_ft, ("./assets/fonts/"+fontName).c_str() , 0, &_font))
     {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;  
     }
