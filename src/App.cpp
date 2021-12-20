@@ -1,5 +1,4 @@
 #include "App.hpp"
-#include "Text.hpp"
 
 // CONSTRUCTORS
 /* basic constructors */
@@ -15,7 +14,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     /* Initialization of the navigation */
     _currentScreen = PRINCIPAL_MENU;
 
-    _text=Text(48, glimac::FilePath(_applicationPath), "PTMono.ttc");
+    _text=Text2D(48, glimac::FilePath(_applicationPath), "PTMono.ttc");
     _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
 }
 

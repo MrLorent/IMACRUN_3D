@@ -1,5 +1,4 @@
 #include "App.hpp"
-#include "Text.hpp"
 
 //Dimension de la fenêtre
 int window_width  = 720;
