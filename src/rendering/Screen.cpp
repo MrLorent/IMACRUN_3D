@@ -26,25 +26,25 @@ Screen::Screen(ScreenParams params)
     std::vector<Vertex> vertices = {
         // TOP LEFT
         Vertex(
-            glm::vec3(-1.f, 1.f, 0.f),  // Top left of the screen
+            glm::vec3(-1.f, 1.f, 0.5f),  // Top left of the screen
             glm::vec3(0.f, 0.f, 1.f),   // normal of xy plan
             glm::vec2(0.f, 1.f)         // Top left of the texture image
         ),
         // TOP RIGHT
         Vertex(
-            glm::vec3(1.f, 1.f, 0.f),   // Top right of the screen
+            glm::vec3(1.f, 1.f, 0.5f),   // Top right of the screen
             glm::vec3(0.f, 0.f, 1.f),   // normal of xy plan
             glm::vec2(1.f, 1.f)         // Top right of the texture image
         ),
         // BOTTOM RIGHT
         Vertex(
-            glm::vec3(1.f, -1.f, 0.f),  // Bottom right of the screen
+            glm::vec3(1.f, -1.f, 0.5f),  // Bottom right of the screen
             glm::vec3(0.f, 0.f, 1.f),   // normal of xy plan
             glm::vec2(1.f, 0.f)         // Bottom right of the texture image
         ),
         // BOTTOM LEFT
         Vertex(
-            glm::vec3(-1.f, -1.f, 0.f), // Bottom left of the screen
+            glm::vec3(-1.f, -1.f, 0.5f), // Bottom left of the screen
             glm::vec3(0.f, 0.f, 1.f),   // normal of xy plan
             glm::vec2(0.f, 0.f)         // Bottom left of the texture image
         )
