@@ -25,13 +25,13 @@ struct Shader{
     Shader(){}
     Shader(const glimac::FilePath& applicationPath)
     :program(glimac::loadProgram(
-        applicationPath.dirPath() + "src/shaders/text.vs.glsl",
-        applicationPath.dirPath() + "src/shaders/text.fs.glsl")
+        applicationPath.dirPath() + "src/shaders/text2D.vs.glsl",
+        applicationPath.dirPath() + "src/shaders/text2D.fs.glsl")
     )
     {}
 };
 
-class Text
+class Text2D
 {
     private:
         std::map<char, Character> _alphabet;
@@ -44,9 +44,9 @@ class Text
         unsigned int _window_width, _window_height;
     
     public:
-        Text(){};
-        Text(const unsigned int fontSize, glimac::FilePath name, std::string fontName="Arial.ttf");
-        //~Text();
+        Text2D(){};
+        Text2D(const unsigned int fontSize, glimac::FilePath name, std::string fontName="Arial.ttf");
+        //~Text2D();
         void draw(
             std::string text,   /* Text to write */
             glm::vec2 pos,      /* Position in screen, starting from bottom left */

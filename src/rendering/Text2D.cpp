@@ -1,6 +1,6 @@
-#include "Text.hpp"
+#include "Text2D.hpp"
 
-Text::Text(const unsigned int fontSize, glimac::FilePath path, std::string fontName):shader(path)
+Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, std::string fontName):shader(path)
 {
     if (FT_Init_FreeType(&_ft))
     {
@@ -88,11 +88,11 @@ Text::Text(const unsigned int fontSize, glimac::FilePath path, std::string fontN
 }
 
 
-// Text::~Text()
+// Text2D::~Text2D()
 // {
 // }
 
-void Text::draw(std::string text, glm::vec2 pos, glm::vec3 color, const unsigned int window_width, const unsigned int window_height){
+void Text2D::draw(std::string text, glm::vec2 pos, glm::vec3 color, const unsigned int window_width, const unsigned int window_height){
     _window_width=window_width;
     _window_height=window_height; 
 

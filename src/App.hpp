@@ -6,7 +6,7 @@
 
 #include "Game.hpp"
 #include "GameRenderer.hpp"
-#include "Text.hpp"
+#include "Text2D.hpp"
 
 class App
 {
@@ -30,7 +30,7 @@ class App
 
         /* Application parameters */
         short unsigned int _currentScreen;
-        Text _text;
+        Text2D _text;
 
         /* Game entities */
         Game _game;
