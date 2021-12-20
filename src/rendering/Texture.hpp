@@ -21,7 +21,14 @@ class Texture
         
         /* move constructor */
         
+        Texture(const Texture&) = delete;            // We disable copying
+        Texture& operator=(const Texture&) = delete; // We disable copying
+        
         Texture(Texture&& rhs) noexcept;
+
+        /* Move assignment operator */
+        
+        Texture& operator=(Texture&& rhs) noexcept;
 
         // DESTRUCTOR
         

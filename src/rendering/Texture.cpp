@@ -26,6 +26,20 @@ Texture::Texture(Texture&& rhs) noexcept
     rhs._type ="";
 }
 
+/* Move assignment operator */
+
+Texture& Texture::operator=(Texture&& rhs) noexcept
+{
+    if (this != &rhs) // Make sure that we don't do silly things if we try to move an object to itself
+    {
+        glDeleteTextures(1, &_id); // Delete the previous texture
+        _id     = rhs._id;        // Get the new texture id
+        rhs._id = 0;              // Make sure that rhs won't delete the _id we just copied
+    }
+    
+    return *this; // move assignment must return a reference to this, so we do it
+}
+
 // DESTRUCTOR
 
 Texture::~Texture()
