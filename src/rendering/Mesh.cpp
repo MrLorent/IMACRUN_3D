@@ -1,5 +1,25 @@
 #include "Mesh.hpp"
 
+// OPERATORS
+/* Move assignment operator */
+
+Mesh& Mesh::operator=(Mesh&& rhs) noexcept
+{
+    if (this != &rhs) // Make sure that we don't do silly things if we try to move an object to itself
+    {
+        glDeleteBuffers(1, &_vbo);      // Delete the previous Mesh
+        glDeleteVertexArrays(1, &_vao); // Delete the previous Mesh
+        _vbo    = rhs._vbo;             // Get the new vbo
+        _ibo    = rhs._ibo;             // Get the new ibo
+        _vao    = rhs._vao;             // Get the new vao
+        rhs._vbo = 0;                   // Make sure that rhs won't delete the _id we just copied
+        rhs._ibo = 0;                   // Make sure that rhs won't delete the _id we just copied
+        rhs._vao = 0;                   // Make sure that rhs won't delete the _id we just copied
+    }
+    
+    return *this; // move assignment must return a reference to this, so we do it
+}
+
 // CONSTRUCTORS
 /* basic constructors */
 

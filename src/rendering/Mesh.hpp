@@ -52,6 +52,14 @@ class Mesh
         std::vector<unsigned int> indices;
         std::vector<Texture> textures;
 
+        // OPERATORS
+        /* Move assignment operator */
+
+        Mesh& operator=(Mesh&& rhs) noexcept;
+
+        /* Copy assignment operator */
+        Mesh& operator=(const Mesh&) = delete; // We disable copying
+
         // CONSTRUCTORS
         /* basic constructor */
         
@@ -60,6 +68,10 @@ class Mesh
             const std::vector<unsigned int>& indices,
             std::vector<Texture>&& textures
         );
+
+        /* Copy constructor */
+
+        Mesh(const Mesh&) = delete; // We disable copying
 
         /* move constructor */
 
