@@ -18,6 +18,13 @@ struct Vertex{
     bool operator==(const Vertex& other) const {
         return position == other.position && normal == other.normal && texCoords == other.texCoords;
     }
+
+    // CONSTRUCTOR
+
+    Vertex(){}
+    Vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t)
+        :position(p), normal(n), texCoords(t)
+    {}
 };
 
 namespace std {
