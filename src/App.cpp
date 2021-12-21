@@ -4,7 +4,7 @@
 /* basic constructors */
 
 App::App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
-    :_applicationPath(path)
+    :_applicationPath(glimac::FilePath(path))
 {
     /* Initialization of the window size */
     size_callback(window, width, height);
@@ -57,9 +57,9 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     _screens.push_back(Screen(buttons));
 
     _currentScreen = PRINCIPAL_MENU;
+    _menuRenderer = MenuRenderer(_applicationPath);
 
-    _text=Text2D(48, glimac::FilePath(_applicationPath), "PTMono.ttc");
-    _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
+    _gameRenderer = GameRenderer(_applicationPath);
 }
 
 // METHODS
@@ -80,17 +80,7 @@ void App::render()
             _gameRenderer.render(_projectionMatrix, _game);
         }
     }else{
-        float labelheight = 50.f;
-    
-        for(size_t i=_screens[_currentScreen].getNbButtons(); i > 0; --i)
-        {
-            if((i-1) == _screens[_currentScreen].getCurrentButtonIndex()){
-                _text.draw(_screens[_currentScreen][i-1].label, glm::vec2(50.f, labelheight), glm::vec3(255.f, 255.f, 255.f), _width, _height);
-            }else{
-                _text.draw(_screens[_currentScreen][i-1].label, glm::vec2(50.f, labelheight), glm::vec3(182.f/255.f, 102.f/255.f, 210.f/255.f), _width, _height);
-            }
-            labelheight += 100.f;
-        }
+        _menuRenderer.render(_screens, _currentScreen, _width, _height);
     }
 }
 

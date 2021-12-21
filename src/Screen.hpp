@@ -23,7 +23,6 @@ private:
     short unsigned int _currentButton;
 public:
     // OPERATORS
-    const Button& operator[](const size_t& i) const;
 
     // CONSTRUCTORS
     /* basic constructors */
@@ -35,9 +34,11 @@ public:
     ~Screen();
 
     // GETTER
-    inline size_t getNbButtons() { return _buttons.size(); }
-    inline short unsigned int getCurrentButtonIndex() { return _currentButton; }
+    inline size_t getNumberOfButtons() { return _buttons.size(); }
+    inline short unsigned int getButtonIndex() { return _currentButton; }
     inline short unsigned int getCurrentButtonLink() { return _buttons[_currentButton].link; }
+
+    Button getButtonAt(short unsigned int index) { return _buttons[index]; }
 
     // SETTER
     void setCurrentButton(const short unsigned int index);

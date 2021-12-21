@@ -1,10 +1,6 @@
 #include "Screen.hpp"
 
 // OPERATORS
-const Button& Screen::operator[](const size_t& i) const
-{
-    return _buttons[i];
-}
 
 // CONSTRUCTORS
 /* basic constructor */

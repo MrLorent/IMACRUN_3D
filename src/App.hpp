@@ -4,10 +4,10 @@
 #include <GLFW/glfw3.h>
 
 
+#include "Screen.hpp"
+#include "MenuRenderer.hpp"
 #include "Game.hpp"
 #include "GameRenderer.hpp"
-#include "Screen.hpp"
-#include "Text2D.hpp"
 
 class App
 {
@@ -27,12 +27,12 @@ class App
         glm::mat4 _projectionMatrix;
 
         /* External parameters */
-        std::string _applicationPath;
+        glimac::FilePath _applicationPath;
 
         /* Application parameters */
         std::vector<Screen> _screens;
         short unsigned int _currentScreen;
-        Text2D _text;
+        MenuRenderer _menuRenderer;
 
         /* Game entities */
         Game _game;
