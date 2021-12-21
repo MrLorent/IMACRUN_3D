@@ -33,7 +33,7 @@ class App
     public:
         // CONSTANTS
         /* Navigation menu */
-        static constexpr short unsigned int PRINCIPAL_MENU = 0;
+        static constexpr short unsigned int MAIN_MENU = 0;
         static constexpr short unsigned int GAME = 1;
         static constexpr short unsigned int LOAD_MENU = 2;
         static constexpr short unsigned int SCORES = 3;

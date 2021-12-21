@@ -8,7 +8,6 @@ class Player
 {
     private:
         glm::vec3 _position;
-        bool _isALive;
 
         unsigned int _jumpingIndex;
         unsigned int _jumpingTiming;
@@ -26,13 +25,11 @@ class Player
 
         // GETTER
         glm::vec3 getPosition();
-        bool isALive();
 
         // SETTER
         void setPosition(glm::vec3 newPosition);
         void goLeft();
         void goRight();
-        void die();
 
         // METHOD
         void jump();

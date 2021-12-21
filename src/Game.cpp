@@ -3,17 +3,24 @@
 Game::Game()
     :_caseSubdivisions(75.f),
      _caseSubdivisionsIndex(0),
-     _camera(Camera()),
      _defaultIndex(3),
      _playerIndex(_defaultIndex),
      _running(false),
      _paused(false),
+     _finished(false),
      _turn(0),
      _wallDistance(3)
 {}
 
+bool Game::isRunning()
+{
+    return _running && !_paused && !_finished;
+}
+
 void Game::initGame()
 {
+    _playerIndex = _defaultIndex;
+    _turn = 0;
     _camera = Camera(_caseSubdivisions);
     _map = Map();
     _player = Player(_caseSubdivisions);
@@ -23,7 +30,7 @@ void Game::runGame()
 {
     checkPlayerPosition();
 
-    if(!_paused && _player.isALive())
+    if(!_paused && !_finished)
     {
         _caseSubdivisionsIndex++;
 
@@ -54,11 +61,15 @@ void Game::checkPlayerPosition()
     case Map::FLOOR:
         break;
     case Map::WALL:
-        _player.die();
+        _finished = true;
+        _paused = true;
         break;
     case Map::HOLE:
         if(_player.getPosition().y == 0)
-            _player.die();
+        {
+            _finished = true;
+            _paused = true;
+        }
         break;
     default:
         break;

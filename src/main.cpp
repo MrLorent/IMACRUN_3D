@@ -61,7 +61,8 @@ int main(int argc, char** argv)
     /* Hook input callbacks */
     /* Keyboard */ 
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods){
-        if(get_app(window).getGame()._running)
+
+        if(get_app(window).getGame().isRunning())
         {
             get_app(window).getGame().key_callback(key, scancode, action, mods);
         }
@@ -72,7 +73,7 @@ int main(int argc, char** argv)
     });
     /* Mouse Buttons */
     glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods){
-        if(get_app(window).getGame()._running)
+        if(get_app(window).getGame().isRunning())
         {
             get_app(window).getGame().mouse_button_callback(button, action, mods);
         }
@@ -84,7 +85,7 @@ int main(int argc, char** argv)
 
     /* Mouse scroll */
     glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset){
-        if(get_app(window).getGame()._running)
+        if(get_app(window).getGame().isRunning())
         {
             get_app(window).getGame().scroll_callback(xoffset, yoffset);
         }
@@ -96,7 +97,7 @@ int main(int argc, char** argv)
 
     /* Cursor position */
     glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos){
-        if(get_app(window).getGame()._running)
+        if(get_app(window).getGame().isRunning())
         {
             get_app(window).getGame().cursor_position_callback(xpos, ypos);
         }

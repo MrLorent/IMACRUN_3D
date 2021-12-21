@@ -26,7 +26,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     buttons = {
         Button("Reprendre", GAME),
         Button("Recommencer", GAME),
-        Button("Menu Principal", PRINCIPAL_MENU)
+        Button("Menu Principal", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
 
@@ -35,7 +35,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     // LOAD MENU
     buttons = {
         Button("Valider", GAME),
-        Button("Retour", PRINCIPAL_MENU)
+        Button("Retour", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
 
@@ -43,7 +43,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     // SCORES
     buttons = {
-        Button("Retour", PRINCIPAL_MENU)
+        Button("Retour", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
 
@@ -51,12 +51,12 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     // SCORE INPUT
     buttons = {
-        Button("Valider", PRINCIPAL_MENU),
-        Button("Retour", PRINCIPAL_MENU)
+        Button("Valider", MAIN_MENU),
+        Button("Retour", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
 
-    _menuIndex = PRINCIPAL_MENU;
+    _menuIndex = MAIN_MENU;
     _menuRenderer = MenuRenderer(_applicationPath);
 
     _gameRenderer = GameRenderer(_applicationPath);
@@ -67,9 +67,19 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 /* Graphics */
 void App::render()
 {
-    if(_menuIndex == GAME){
-        if(!_game._running)
+    switch (_menuIndex)
+    {
+    case MAIN_MENU:
+        _menuRenderer.render(_menuList, _menuIndex, _width, _height);
+        break;
+    case GAME:
+        if(_game._finished || _game._paused)
         {
+            _menuRenderer.render(_menuList, _menuIndex, _width, _height);
+        }
+        else if(!_game._running)
+        {
+            /* Initiate game */
             _game.initGame();
             _gameRenderer.load3DModels();
             _game._running = true;
@@ -79,8 +89,15 @@ void App::render()
             _game.runGame();
             _gameRenderer.render(_projectionMatrix, _game);
         }
-    }else{
+        break;
+    
+    default:
         _menuRenderer.render(_menuList, _menuIndex, _width, _height);
+        break;
+    }
+    if(_menuIndex == GAME){
+        
+    }else{
     }
 }
 
@@ -97,13 +114,30 @@ void App::key_callback(int key, int scancode, int action, int mods)
         case 257: // Enter
             if(action !=0)
             {
-                short unsigned int previous = _menuIndex;
+                const short unsigned int PREVIOUS_MENU = _menuIndex;
+                const short unsigned int BUTTON_CLICKED = _menuList[PREVIOUS_MENU].getButtonIndex();
                 _menuIndex = _menuList[_menuIndex].getCurrentButtonLink();
-                _menuList[previous].setCurrentButton(0);
+                _menuList[PREVIOUS_MENU].setCurrentButton(0);
+
+                switch (PREVIOUS_MENU)
+                {
+                case GAME: 
+                    _game._paused = false;
+                    if(BUTTON_CLICKED != 0)
+                    { // "RECOMMENCER" || "SAUVEGARDER" || "RETOUR AU MENU"
+                        _game._running = false;
+                        _game._finished = false;
+                        std::cout << "finished: " << _game._finished << std::endl;
+                        std::cout << "paused: " << _game._paused << std::endl;
+                    }
+                    break;
+                default:
+                    break;
+                }
             }
             break;
         case 49: // "1"
-            _menuIndex = PRINCIPAL_MENU;
+            _menuIndex = MAIN_MENU;
             break;
         case 50: // "2"
             _menuIndex = GAME;
