@@ -210,7 +210,7 @@ void Model::loadTextures(
             extensionName = file->d_name;
             extensionName = extensionName.substr(extensionName.rfind('.')+1);
             if(extensionName.compare("png")==0 || extensionName.compare("jpg")==0){
-                textures.push_back(Texture(dirName + "/textures/" + file->d_name));
+                textures.push_back(Texture("models/" + dirName + "/textures/" + file->d_name));
             }
         }
         closedir (dir);

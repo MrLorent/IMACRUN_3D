@@ -6,6 +6,7 @@
 
 #include "Game.hpp"
 #include "GameRenderer.hpp"
+#include "Screen.hpp"
 #include "Text2D.hpp"
 
 class App
@@ -29,6 +30,7 @@ class App
         std::string _applicationPath;
 
         /* Application parameters */
+        std::vector<Screen> _screens;
         short unsigned int _currentScreen;
         Text2D _text;
 

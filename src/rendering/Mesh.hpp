@@ -18,6 +18,13 @@ struct Vertex{
     bool operator==(const Vertex& other) const {
         return position == other.position && normal == other.normal && texCoords == other.texCoords;
     }
+
+    // CONSTRUCTOR
+
+    Vertex(){}
+    Vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t)
+        :position(p), normal(n), texCoords(t)
+    {}
 };
 
 namespace std {
@@ -52,14 +59,27 @@ class Mesh
         std::vector<unsigned int> indices;
         std::vector<Texture> textures;
 
+        // OPERATORS
+        /* Move assignment operator */
+
+        Mesh& operator=(Mesh&& rhs) noexcept;
+
+        /* Copy assignment operator */
+        Mesh& operator=(const Mesh&) = delete; // We disable copying
+
         // CONSTRUCTORS
         /* basic constructor */
         
+        Mesh();
         Mesh(
             const std::vector<Vertex>& vertices,
             const std::vector<unsigned int>& indices,
             std::vector<Texture>&& textures
         );
+
+        /* Copy constructor */
+
+        Mesh(const Mesh&) = delete; // We disable copying
 
         /* move constructor */
 
