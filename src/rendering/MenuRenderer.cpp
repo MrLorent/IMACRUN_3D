@@ -26,6 +26,12 @@ void MenuRenderer::render(
     )
 {
     Menu current_menu = menu_list[menu_index];
+    glm::mat4 projectionMatrix = glm::ortho(
+        0.0f,
+        static_cast<float>(window_width),
+        0.0f,
+        static_cast<float>(window_height)
+    );
 
     /* Draw the buttons */
     glm::vec3 text_color(1.f);
@@ -42,8 +48,7 @@ void MenuRenderer::render(
             current_menu.getButtonAt(i-1).label,
             glm::vec2(50.f, margin_bottom),
             text_color,
-            window_width,
-            window_height
+            projectionMatrix
         );
 
         margin_bottom += 50.f;

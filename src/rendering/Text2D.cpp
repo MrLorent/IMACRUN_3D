@@ -92,18 +92,29 @@ Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, std::string f
 // {
 // }
 
-void Text2D::draw(std::string text, glm::vec2 pos, glm::vec3 color, const unsigned int window_width, const unsigned int window_height){
-    _window_width=window_width;
-    _window_height=window_height; 
+void Text2D::draw(std::string text, glm::vec2 pos, glm::vec3 color, glm::mat4 projectionMatrix){
 
     // activate corresponding render state	
     shader.program.use();
 
-     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(_window_width), 0.0f, static_cast<float>(_window_height));
-    glUniformMatrix4fv(glGetUniformLocation(shader.program.getGLId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    /* Send the projection matrix to the shader */
+    GLint uProjectionMatrix = glGetUniformLocation(shader.program.getGLId(), "uProjectionMatrix");
+    glUniformMatrix4fv(
+        uProjectionMatrix,
+        1,
+        GL_FALSE,
+        glm::value_ptr(projectionMatrix)
+    );
 
+    /* Send the color to the fragment shader */
+    GLint uTextColor = glGetUniformLocation(shader.program.getGLId(), "uTextColor");
+    glUniform3f(
+        uTextColor,
+        color.x,
+        color.y,
+        color.z
+    );
 
-    glUniform3f(glGetUniformLocation(shader.program.getGLId(), "textColor"), color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(_vao);
 
