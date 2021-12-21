@@ -12,13 +12,51 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     _height = height;
     
     /* Initialization of the navigation */
-    _currentScreen = PRINCIPAL_MENU;
+    // MAIN MENU
+    std::vector<Button> buttons = {
+        Button("Nouvelle Partie", GAME),
+        Button("Charger Partie", LOAD_MENU),
+        Button("Scores", SCORES)
+    };
+    _screens.push_back(Screen(buttons));
+    
+    buttons.empty();
 
-    ScreenParams params = ScreenParams(
-        glimac::FilePath(path),
-        "textures/background.png"
-    );
-    _screen = Screen(params);
+    // GAME PAUSED MENU
+    buttons = {
+        Button("Reprendre", GAME),
+        Button("Recommencer", GAME),
+        Button("Menu Principal", PRINCIPAL_MENU)
+    };
+    _screens.push_back(Screen(buttons));
+
+    buttons.empty();
+
+    // LOAD MENU
+    buttons = {
+        Button("Valider", GAME),
+        Button("Retour", PRINCIPAL_MENU)
+    };
+    _screens.push_back(Screen(buttons));
+
+    buttons.empty();
+
+    // SCORES
+    buttons = {
+        Button("Retour", PRINCIPAL_MENU)
+    };
+    _screens.push_back(Screen(buttons));
+
+    buttons.empty();
+
+    // SCORE INPUT
+    buttons = {
+        Button("Valider", PRINCIPAL_MENU),
+        Button("Retour", PRINCIPAL_MENU)
+    };
+    _screens.push_back(Screen(buttons));
+
+    _currentScreen = PRINCIPAL_MENU;
 
     _text=Text2D(48, glimac::FilePath(_applicationPath), "PTMono.ttc");
     _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
@@ -29,36 +67,30 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 /* Graphics */
 void App::render()
 {
-    switch (_currentScreen)
-    {
-    case PRINCIPAL_MENU:
-        _screen.draw();
-        _text.draw("Tanguy gros BG", glm::vec2(50.f, 50.f), glm::vec3(182.f/255.f, 102.f/255.f, 210.f/255.f), _width, _height);
-        break;
-    case GAME:
-        if(_game._running)
+    if(_currentScreen == GAME){
+        if(!_game._running)
+        {
+            _game.initGame();
+            _gameRenderer.load3DModels();
+            _game._running = true;
+        }else
         {
             /* Running game */
             _game.runGame();
             _gameRenderer.render(_projectionMatrix, _game);
         }
-        else
+    }else{
+        float labelheight = 50.f;
+    
+        for(size_t i=_screens[_currentScreen].getNbButtons(); i > 0; --i)
         {
-            /* If the game just finises, we go back to menu */
-            _currentScreen = PRINCIPAL_MENU;
+            if((i-1) == _screens[_currentScreen].getCurrentButtonIndex()){
+                _text.draw(_screens[_currentScreen][i-1].label, glm::vec2(50.f, labelheight), glm::vec3(255.f, 255.f, 255.f), _width, _height);
+            }else{
+                _text.draw(_screens[_currentScreen][i-1].label, glm::vec2(50.f, labelheight), glm::vec3(182.f/255.f, 102.f/255.f, 210.f/255.f), _width, _height);
+            }
+            labelheight += 100.f;
         }
-        break;
-    case LOAD_MENU:
-        glClearColor(1.f, 0.f, 0.f, 1.f);
-        break;
-    case SCORES:
-        glClearColor(0.f, 1.f, 0.0f, 1.f);
-        break;
-    case SCORE_INPUT:
-        glClearColor(0.f, 0.f, 1.f, 1.f);
-        break;
-    default:
-        break;
     }
 }
 
@@ -66,17 +98,25 @@ void App::key_callback(int key, int scancode, int action, int mods)
 {
     switch (key)
         {
+        case 264: // up arrow
+            if(action != 0) _screens[_currentScreen].changeCurrentButton(1);
+            break;
+        case 265: // down arrow
+            if(action != 0) _screens[_currentScreen].changeCurrentButton(-1);
+            break;
+        case 257: // Enter
+            if(action !=0)
+            {
+                short unsigned int previous = _currentScreen;
+                _currentScreen = _screens[_currentScreen].getCurrentButtonLink();
+                _screens[previous].setCurrentButton(0);
+            }
+            break;
         case 49: // "1"
             _currentScreen = PRINCIPAL_MENU;
             break;
         case 50: // "2"
             _currentScreen = GAME;
-            if(!_game._running)
-            {
-                _game.initGame();
-                _gameRenderer.load3DModels();
-                _game._running = true;
-            }
             break;
         case 51: // "3"
             _currentScreen = LOAD_MENU;
