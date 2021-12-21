@@ -14,9 +14,9 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     /* Initialization of the navigation */
     // MAIN MENU
     std::vector<Button> buttons = {
-        Button("Nouvelle Partie", GAME),
-        Button("Charger Partie", LOAD_MENU),
-        Button("Scores", SCORES)
+        Button("Nouvelle Partie", MenuRenderer::GAME),
+        Button("Charger Partie", MenuRenderer::LOAD_MENU),
+        Button("Scores", MenuRenderer::SCORES)
     };
     _screens.push_back(Screen(buttons));
     
@@ -24,9 +24,9 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     // GAME PAUSED MENU
     buttons = {
-        Button("Reprendre", GAME),
-        Button("Recommencer", GAME),
-        Button("Menu Principal", PRINCIPAL_MENU)
+        Button("Reprendre", MenuRenderer::GAME),
+        Button("Recommencer", MenuRenderer::GAME),
+        Button("Menu Principal", MenuRenderer::PRINCIPAL_MENU)
     };
     _screens.push_back(Screen(buttons));
 
@@ -34,8 +34,8 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     // LOAD MENU
     buttons = {
-        Button("Valider", GAME),
-        Button("Retour", PRINCIPAL_MENU)
+        Button("Valider", MenuRenderer::GAME),
+        Button("Retour", MenuRenderer::PRINCIPAL_MENU)
     };
     _screens.push_back(Screen(buttons));
 
@@ -43,7 +43,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     // SCORES
     buttons = {
-        Button("Retour", PRINCIPAL_MENU)
+        Button("Retour", MenuRenderer::PRINCIPAL_MENU)
     };
     _screens.push_back(Screen(buttons));
 
@@ -51,12 +51,12 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     // SCORE INPUT
     buttons = {
-        Button("Valider", PRINCIPAL_MENU),
-        Button("Retour", PRINCIPAL_MENU)
+        Button("Valider", MenuRenderer::PRINCIPAL_MENU),
+        Button("Retour", MenuRenderer::PRINCIPAL_MENU)
     };
     _screens.push_back(Screen(buttons));
 
-    _currentScreen = PRINCIPAL_MENU;
+    _currentScreen = MenuRenderer::PRINCIPAL_MENU;
     _menuRenderer = MenuRenderer(_applicationPath);
 
     _gameRenderer = GameRenderer(_applicationPath);
@@ -67,7 +67,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 /* Graphics */
 void App::render()
 {
-    if(_currentScreen == GAME){
+    if(_currentScreen == MenuRenderer::GAME){
         if(!_game._running)
         {
             _game.initGame();
@@ -103,19 +103,19 @@ void App::key_callback(int key, int scancode, int action, int mods)
             }
             break;
         case 49: // "1"
-            _currentScreen = PRINCIPAL_MENU;
+            _currentScreen = MenuRenderer::PRINCIPAL_MENU;
             break;
         case 50: // "2"
-            _currentScreen = GAME;
+            _currentScreen = MenuRenderer::GAME;
             break;
         case 51: // "3"
-            _currentScreen = LOAD_MENU;
+            _currentScreen = MenuRenderer::LOAD_MENU;
             break;
         case 323: // "4"
-            _currentScreen = SCORES;
+            _currentScreen = MenuRenderer::SCORES;
             break;
         case 324: // "5"
-            _currentScreen = SCORE_INPUT;
+            _currentScreen = MenuRenderer::SCORE_INPUT;
             break;
         default:
             std::cout << key << std::endl;
