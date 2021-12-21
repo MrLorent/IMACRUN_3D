@@ -86,6 +86,11 @@ void Map::initMap()
     }
 }
 
+void Map::empty()
+{
+    _map.empty();
+}
+
 void Map::reloadMap()
 {
     int randomIndex = _distribution(_random);

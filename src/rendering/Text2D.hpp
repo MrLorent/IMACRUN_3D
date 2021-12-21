@@ -51,8 +51,7 @@ class Text2D
             std::string text,   /* Text to write */
             glm::vec2 pos,      /* Position in screen, starting from bottom left */
             glm::vec3 color,    /* Text color */
-            unsigned int window_width,
-            const unsigned int window_height
+            glm::mat4 projectionMatrix
         );
 
         Shader shader;

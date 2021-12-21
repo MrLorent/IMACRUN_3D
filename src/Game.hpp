@@ -29,6 +29,7 @@ class Game
 
         bool _running;
         bool _paused;
+        bool _finished;
 
         float _caseSubdivisions;
         unsigned int _caseSubdivisionsIndex;
@@ -39,6 +40,7 @@ class Game
         Game();
 
         //  METHODS
+        bool isRunning();
 
         void initGame();
         void runGame();

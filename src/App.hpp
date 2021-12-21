@@ -4,22 +4,14 @@
 #include <GLFW/glfw3.h>
 
 
+#include "Menu.hpp"
+#include "MenuRenderer.hpp"
 #include "Game.hpp"
 #include "GameRenderer.hpp"
-#include "Screen.hpp"
-#include "Text2D.hpp"
 
 class App
 {
     private:
-        // CONSTANTS
-        /* Navigation menu */
-        static constexpr short unsigned int PRINCIPAL_MENU = 0;
-        static constexpr short unsigned int GAME = 1;
-        static constexpr short unsigned int LOAD_MENU = 2;
-        static constexpr short unsigned int SCORES = 3;
-        static constexpr short unsigned int SCORE_INPUT = 4;
-
         // ATTRIBUTS
         /* Window parameters */
         int _width;
@@ -27,18 +19,25 @@ class App
         glm::mat4 _projectionMatrix;
 
         /* External parameters */
-        std::string _applicationPath;
+        glimac::FilePath _applicationPath;
 
         /* Application parameters */
-        std::vector<Screen> _screens;
-        short unsigned int _currentScreen;
-        Text2D _text;
+        std::vector<Menu> _menuList;
+        short unsigned int _menuIndex;
+        MenuRenderer _menuRenderer;
 
         /* Game entities */
         Game _game;
         GameRenderer _gameRenderer;
 
     public:
+        // CONSTANTS
+        /* Navigation menu */
+        static constexpr short unsigned int MAIN_MENU = 0;
+        static constexpr short unsigned int GAME = 1;
+        static constexpr short unsigned int LOAD_MENU = 2;
+        static constexpr short unsigned int SCORES = 3;
+        static constexpr short unsigned int SCORE_INPUT = 4;
         // CONSTRUCTORS
         /* Basic constructors*/
 

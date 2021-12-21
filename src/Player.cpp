@@ -2,7 +2,6 @@
 
 Player::Player(short unsigned int caseSubdivision)
     :_position(glm::vec3(0.f, 0.f, 0.f)),
-     _isALive(true),
      _isJumping(false),
      _jumpingIndex(0),
      _jumpingTiming(caseSubdivision * 4.5)
@@ -12,11 +11,6 @@ Player::Player(short unsigned int caseSubdivision)
 glm::vec3 Player::getPosition()
 {
     return _position;
-}
-
-bool Player::isALive()
-{
-    return _isALive;
 }
 
 // SETTER
@@ -33,11 +27,6 @@ void Player::goLeft()
 void Player::goRight()
 {
     if(_position.x != 1) _position.x += 1;
-}
-
-void Player::die()
-{
-    _isALive = false;
 }
 
 // METHODS

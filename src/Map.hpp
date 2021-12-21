@@ -18,7 +18,6 @@ private:
     std::uniform_int_distribution<int> _distribution;
 
     void loadMapElements();
-    void initMap();
 
 public:
     // CONSTANTS
@@ -42,6 +41,8 @@ public:
     unsigned short int getMapWidth();
 
     // METHODS
+    void initMap();
+    void empty();
     void reloadMap();
     void deleteFirstLigne();
 };
