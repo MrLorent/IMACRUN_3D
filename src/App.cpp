@@ -18,7 +18,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
         Button("Charger Partie", MenuRenderer::LOAD_MENU),
         Button("Scores", MenuRenderer::SCORES)
     };
-    _screens.push_back(Screen(buttons));
+    _menuList.push_back(Menu(buttons));
     
     buttons.empty();
 
@@ -28,7 +28,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
         Button("Recommencer", MenuRenderer::GAME),
         Button("Menu Principal", MenuRenderer::PRINCIPAL_MENU)
     };
-    _screens.push_back(Screen(buttons));
+    _menuList.push_back(Menu(buttons));
 
     buttons.empty();
 
@@ -37,7 +37,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
         Button("Valider", MenuRenderer::GAME),
         Button("Retour", MenuRenderer::PRINCIPAL_MENU)
     };
-    _screens.push_back(Screen(buttons));
+    _menuList.push_back(Menu(buttons));
 
     buttons.empty();
 
@@ -45,7 +45,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     buttons = {
         Button("Retour", MenuRenderer::PRINCIPAL_MENU)
     };
-    _screens.push_back(Screen(buttons));
+    _menuList.push_back(Menu(buttons));
 
     buttons.empty();
 
@@ -54,9 +54,9 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
         Button("Valider", MenuRenderer::PRINCIPAL_MENU),
         Button("Retour", MenuRenderer::PRINCIPAL_MENU)
     };
-    _screens.push_back(Screen(buttons));
+    _menuList.push_back(Menu(buttons));
 
-    _currentScreen = MenuRenderer::PRINCIPAL_MENU;
+    _menuIndex = MenuRenderer::PRINCIPAL_MENU;
     _menuRenderer = MenuRenderer(_applicationPath);
 
     _gameRenderer = GameRenderer(_applicationPath);
@@ -67,7 +67,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 /* Graphics */
 void App::render()
 {
-    if(_currentScreen == MenuRenderer::GAME){
+    if(_menuIndex == MenuRenderer::GAME){
         if(!_game._running)
         {
             _game.initGame();
@@ -80,7 +80,7 @@ void App::render()
             _gameRenderer.render(_projectionMatrix, _game);
         }
     }else{
-        _menuRenderer.render(_screens, _currentScreen, _width, _height);
+        _menuRenderer.render(_menuList, _menuIndex, _width, _height);
     }
 }
 
@@ -89,33 +89,33 @@ void App::key_callback(int key, int scancode, int action, int mods)
     switch (key)
         {
         case 264: // up arrow
-            if(action != 0) _screens[_currentScreen].changeCurrentButton(1);
+            if(action != 0) _menuList[_menuIndex].changeCurrentButton(1);
             break;
         case 265: // down arrow
-            if(action != 0) _screens[_currentScreen].changeCurrentButton(-1);
+            if(action != 0) _menuList[_menuIndex].changeCurrentButton(-1);
             break;
         case 257: // Enter
             if(action !=0)
             {
-                short unsigned int previous = _currentScreen;
-                _currentScreen = _screens[_currentScreen].getCurrentButtonLink();
-                _screens[previous].setCurrentButton(0);
+                short unsigned int previous = _menuIndex;
+                _menuIndex = _menuList[_menuIndex].getCurrentButtonLink();
+                _menuList[previous].setCurrentButton(0);
             }
             break;
         case 49: // "1"
-            _currentScreen = MenuRenderer::PRINCIPAL_MENU;
+            _menuIndex = MenuRenderer::PRINCIPAL_MENU;
             break;
         case 50: // "2"
-            _currentScreen = MenuRenderer::GAME;
+            _menuIndex = MenuRenderer::GAME;
             break;
         case 51: // "3"
-            _currentScreen = MenuRenderer::LOAD_MENU;
+            _menuIndex = MenuRenderer::LOAD_MENU;
             break;
         case 323: // "4"
-            _currentScreen = MenuRenderer::SCORES;
+            _menuIndex = MenuRenderer::SCORES;
             break;
         case 324: // "5"
-            _currentScreen = MenuRenderer::SCORE_INPUT;
+            _menuIndex = MenuRenderer::SCORE_INPUT;
             break;
         default:
             std::cout << key << std::endl;

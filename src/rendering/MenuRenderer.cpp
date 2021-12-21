@@ -19,27 +19,27 @@ MenuRenderer::MenuRenderer(glimac::FilePath applicationPath)
 // METHODS
 
 void MenuRenderer::render(
-    std::vector<Screen> screen_list,
-    short unsigned int screen_index,
+    std::vector<Menu> menu_list,
+    short unsigned int menu_index,
     unsigned int window_width,
     unsigned int window_height
     )
 {
-    Screen current_screen = screen_list[screen_index];
+    Menu current_menu = menu_list[menu_index];
 
     /* Draw the buttons */
     glm::vec3 text_color(1.f);
     float margin_bottom = 50.f;
-    for(unsigned int i = current_screen.getNumberOfButtons(); i > 0; --i)
+    for(unsigned int i = current_menu.getNumberOfButtons(); i > 0; --i)
     {
-        if((i-1) == current_screen.getButtonIndex()){
+        if((i-1) == current_menu.getButtonIndex()){
             text_color = glm::vec3(1.f,1.f,0.f);
         }else{
             text_color = glm::vec3(1.f);
         }
 
         _PTMono.draw(
-            current_screen.getButtonAt(i-1).label,
+            current_menu.getButtonAt(i-1).label,
             glm::vec2(50.f, margin_bottom),
             text_color,
             window_width,

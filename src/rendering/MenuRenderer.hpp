@@ -1,7 +1,7 @@
 #pragma once
 #define MENU_RENDERER_HPP
 
-#include "Screen.hpp"
+#include "Menu.hpp"
 #include "Text2D.hpp"
 
 class MenuRenderer
@@ -17,7 +17,7 @@ public:
     static constexpr short unsigned int LOAD_MENU = 2;
     static constexpr short unsigned int SCORES = 3;
     static constexpr short unsigned int SCORE_INPUT = 4;
-    
+
     // CONSTRUCTORS
     /* basic constructors */
 
@@ -30,8 +30,8 @@ public:
 
     // METHODS
     void render(
-        std::vector<Screen> screen_list,
-        short unsigned int screen_index,
+        std::vector<Menu> menu_list,
+        short unsigned int menu_index,
         unsigned int window_width,
         unsigned int window_height
     );

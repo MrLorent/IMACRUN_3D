@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 
-#include "Screen.hpp"
+#include "Menu.hpp"
 #include "MenuRenderer.hpp"
 #include "Game.hpp"
 #include "GameRenderer.hpp"
@@ -22,8 +22,8 @@ class App
         glimac::FilePath _applicationPath;
 
         /* Application parameters */
-        std::vector<Screen> _screens;
-        short unsigned int _currentScreen;
+        std::vector<Menu> _menuList;
+        short unsigned int _menuIndex;
         MenuRenderer _menuRenderer;
 
         /* Game entities */

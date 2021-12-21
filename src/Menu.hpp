@@ -1,5 +1,5 @@
 #pragma once
-#define SCREEN_HPP
+#define MENU_HPP
 
 #include <iostream>
 #include <string>
@@ -16,7 +16,7 @@ struct Button
 };
 
 
-class Screen
+class Menu
 {
 private:
     std::vector<Button> _buttons;
@@ -27,11 +27,11 @@ public:
     // CONSTRUCTORS
     /* basic constructors */
     
-    Screen(std::vector<Button> buttons);
+    Menu(std::vector<Button> buttons);
     
     // DESTRUCTOR
 
-    ~Screen();
+    ~Menu();
 
     // GETTER
     inline size_t getNumberOfButtons() { return _buttons.size(); }
