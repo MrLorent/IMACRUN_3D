@@ -2,8 +2,10 @@
 #define MODEL_H
 
 #include <dirent.h>
+#include <tiny_obj_loader.h>
 #include "Mesh.hpp"
 #include "FilePath.hpp"
+
 
 struct ModelParams
 {
@@ -42,6 +44,7 @@ class Model
         std::vector<Mesh> _meshes;
         glimac::Program _shaders;
 
+        GLint _uMMatrix;
         GLint _uMVPMatrix;
         GLint _uMVMatrix;
         GLint _uNormalMatrix;
@@ -58,7 +61,8 @@ class Model
         void loadTextures(
             glimac::FilePath appPath,
             std::string filePath,
-            std::vector<Texture>& textures
+            Textures& textures,
+            tinyobj::material_t material
         );
 
     public:
@@ -72,6 +76,7 @@ class Model
         
         void draw(
             glm::mat4 &ProjMatrix,
-            glm::mat4 &MVMatrix
+            glm::mat4 &MVMatrix,
+            glm::mat4 const & MMatrix
         );
 };

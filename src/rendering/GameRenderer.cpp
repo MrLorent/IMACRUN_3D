@@ -28,16 +28,16 @@ void GameRenderer::load3DModels()
     ModelParams params(_applicationPath);
 
     // LOADING OF THE PLAYER MODEL
-    params.fileName = "knight/alliance.obj";
-    params.vsShader = "triangle.vs.glsl";
-    params.fsShader = "triangle.fs.glsl";
+    params.fileName = "Cobblestones/CobbleStones.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
 
     _player = Model(params);
 
     // LOADING OF THE TILE MODEL
-    params.fileName = "box/box.obj";
-    params.vsShader = "triangle.vs.glsl";
-    params.fsShader = "triangle.fs.glsl";
+    params.fileName = "Cobblestones/CobbleStones.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
  
     _floor = Model(params);
 }
@@ -66,10 +66,12 @@ void GameRenderer::render(
         player.getPosition()
     );
 
+    
+    auto MMatrix=MVMatrix;
     /* Move the player model according to the camera */
     MVMatrix = game._camera.getViewMatrix() * MVMatrix;
 
-    _player.draw(projectionMatrix, MVMatrix);
+    _player.draw(projectionMatrix, MVMatrix, MMatrix);
 
     // DRAW THE MAP
     Map& map = game._map;
@@ -82,8 +84,14 @@ void GameRenderer::render(
         )
     );
 
+    //ARRETER DE TRICHER, AVOIR LES CASES QUI BOUGENT VRAIMENT.
+    //PLayer.position soit une vrai position dans le monde
+
+
     if(game._camera._turning != 0) game._camera.takeTurn();
     
+    MMatrix=MVMatrix;
+
     /* Move the scene according to the camera */
     MVMatrix = game._camera.getViewMatrix() * MVMatrix;
     
@@ -93,22 +101,22 @@ void GameRenderer::render(
             switch (map[map.getMapWidth() * i + k])
             {
                 case Map::FLOOR:
-                    _floor.draw(projectionMatrix, MVMatrix);
+                    _floor.draw(projectionMatrix, MVMatrix,MMatrix);
                     break;
                 case Map::PASSED_TURN:
-                    _floor.draw(projectionMatrix, MVMatrix);
+                    _floor.draw(projectionMatrix, MVMatrix, MMatrix);
                     break;
                 case Map::WALL:
-                    MVMatrix = glm::translate(
-                        MVMatrix,
-                        glm::vec3(0.f,1.f,0.f)
-                    );
-                    _floor.draw(projectionMatrix, MVMatrix);
-                    MVMatrix = glm::translate(
-                        MVMatrix,
-                        glm::vec3(0.f,-1.f,0.f)
-                    );
-                    break;
+                    // MVMatrix = glm::translate(
+                    //     MVMatrix,
+                    //     glm::vec3(0.f,1.f,0.f)
+                    // );
+                    // _floor.draw(projectionMatrix, MVMatrix);
+                    // MVMatrix = glm::translate(
+                    //     MVMatrix,
+                    //     glm::vec3(0.f,-1.f,0.f)
+                    // );
+                    break; 
                 case Map::HOLE:
                     break;
                 default:

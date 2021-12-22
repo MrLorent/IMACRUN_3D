@@ -1,6 +1,4 @@
 #define TINYOBJLOADER_IMPLEMENTATION
-#include <tiny_obj_loader.h>
-
 #include "Model.hpp"
 
 // CONSTRUCTORS
@@ -19,15 +17,26 @@ Model::Model(ModelParams params)
     _uMVPMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVPMatrix");
     _uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
     _uNormalMatrix = glGetUniformLocation(_shaders.getGLId(), "uNormalMatrix");
+    _uMMatrix = glGetUniformLocation(_shaders.getGLId(), "uMMatrix");
+
 }
 
 void Model::draw(
     glm::mat4 &ProjMatrix,
-    glm::mat4 &MVMatrix)
+    glm::mat4 &MVMatrix,
+    glm::mat4 const &MMatrix)
 {
     /* Link the shaders of the model */
     _shaders.use();
-    
+
+   // Model MATRIX
+    glUniformMatrix4fv(
+        _uMMatrix,
+        1,
+        GL_FALSE,
+        glm::value_ptr(MMatrix)
+    );
+
     // MV MATRIX
     glUniformMatrix4fv(
         _uMVMatrix,
@@ -69,7 +78,7 @@ void Model::loadModel(
     // VARIABLES TEMPORAIRES
     std::vector<Vertex> tmpVertices;
     std::vector<unsigned int> tmpIndices;
-    std::vector<Texture> tmpTextures;
+    Textures tmpTextures;
     std::unordered_map<Vertex, uint32_t> uniqueVertices;
  
     //Chargement du model 3D
@@ -87,7 +96,8 @@ void Model::loadModel(
     {
         dirName = filePath.substr(0, lastSlashIndex);
     }
-    //reader_config.mtl_search_path = "./assets/models/"+dirName;  // Path to material files
+     reader_config.mtl_search_path = "./assets/models/"+dirName; 
+    //reader_config.mtl_search_path = "/Users/admin/Documents/Cours/A2/projet/IMACRUN_3D/assets/models/"+dirName;  // Path to material files
 
     tinyobj::ObjReader reader;
 
@@ -107,7 +117,7 @@ void Model::loadModel(
 
     auto& attrib = reader.GetAttrib();
     auto& shapes = reader.GetShapes();
-   // auto& materials = reader.GetMaterials();
+    auto& materials = reader.GetMaterials();
 
 
     // Loop over shapes
@@ -134,11 +144,13 @@ void Model::loadModel(
                 );
 
                 // NORMAL
-                vertex.normal = glm::vec3(
-                    tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
-                    tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
-                    tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
-                );
+                if (idx.normal_index >= 0) {
+                    vertex.normal = glm::vec3(
+                        tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
+                        tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
+                        tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
+                    );
+                }
 
                 // TEXTURE_COORDINATES
                 if (idx.texcoord_index >= 0)
@@ -172,15 +184,16 @@ void Model::loadModel(
     }
 
     // CHARGEMENT DES TEXTURES
-    loadTextures(appPath, filePath, tmpTextures);
+    loadTextures(appPath, filePath, tmpTextures, materials[0]);
     
     _meshes.push_back(std::move(Mesh(tmpVertices, tmpIndices, std::move(tmpTextures))));
 }
 
-void Model::loadTextures(
+void Model::loadTextures( 
     glimac::FilePath appPath,
     std::string filePath,
-    std::vector<Texture>& textures
+    Textures& textures,
+    tinyobj::material_t material 
 )
 {
     #ifdef _WIN32
@@ -189,32 +202,13 @@ void Model::loadTextures(
     const size_t lastSlashIndex = filePath.rfind('/');
     #endif
     std::string dirName;
-    std::string objFile;
-    std::string extensionName;
     
     /* Get the path to the current file and the .obj file name */
     if (std::string::npos != lastSlashIndex)
     {
-        objFile = filePath.substr(lastSlashIndex+1);
         dirName = filePath.substr(0, lastSlashIndex);
-   
     }
-
-    // ON COMMENCE A UTILISE DIRENT.H
-    DIR *dir;
-    struct dirent *file;
-
-    if ((dir = opendir (("./assets/models/" + dirName+ "/textures").c_str())) != nullptr) {
-        /* print all the files and directories within directory */
-        while ((file = readdir (dir)) != nullptr) {
-            extensionName = file->d_name;
-            extensionName = extensionName.substr(extensionName.rfind('.')+1);
-            if(extensionName.compare("png")==0 || extensionName.compare("jpg")==0){
-                textures.push_back(Texture("models/" + dirName + "/textures/" + file->d_name));
-            }
-        }
-        closedir (dir);
-    }else{
-        std::cout << "Error: fail to open " << dirName << " directory" << std::endl;
-    }
+                textures.diffuse=Texture("models/" + dirName +"/"+ material.diffuse_texname);
+                textures.specular=Texture("models/" + dirName + "/"+ material.specular_texname);
+                textures.shininess=material.shininess;
 }

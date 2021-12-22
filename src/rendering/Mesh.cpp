@@ -29,16 +29,16 @@ Mesh::Mesh()
     :_vbo(0), _ibo(0), _vao(0)
 {
 }
-
+ 
 Mesh::Mesh(
     const std::vector<Vertex>& vertices,
     const std::vector<unsigned int>& indices,
-    std::vector<Texture>&& textures
+    Textures&& textures
 )
     :_vbo(0),
      _ibo(0),
-     _vao(0),
-     vertices(vertices),
+     _vao(0),  
+     vertices(vertices), 
      indices(indices),
      textures(std::move(textures))
 {
@@ -155,23 +155,29 @@ void Mesh::initVao()
 // PUBLIC METHODS
 
 void Mesh::draw(glimac::Program& shaders)
+
 {
+    shaders.use();  
+    bindTexture(0, textures.diffuse.getId(), "uTextureDiffuse", shaders.getGLId());
+    bindTexture(1, textures.specular.getId(), "uTextureSpecular", shaders.getGLId());
+    glUniform1f(glGetUniformLocation(shaders.getGLId(), "uShininess"), textures.shininess);
 
-
-    for (size_t i=0; i < textures.size(); i++)
-    {
-        glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
-        
-        glBindTexture(GL_TEXTURE_2D, textures[i].getId());
-    }
     glActiveTexture(GL_TEXTURE0);
-
+  
     glBindVertexArray(_vao);
         glDrawElements(
-            GL_TRIANGLES,
+            GL_TRIANGLES,  
             indices.size(),
-            GL_UNSIGNED_INT,
-            0
+            GL_UNSIGNED_INT, 
+            0 
         );
     glBindVertexArray(0);
+}
+
+void Mesh::bindTexture(int index, GLint textureId, const char* uniformName, const GLuint shadersId) const{
+     glActiveTexture(GL_TEXTURE0 + index); // activate proper texture unit before binding
+        glBindTexture(GL_TEXTURE_2D, textureId);
+
+        auto textureLocation = glGetUniformLocation(shadersId, uniformName);
+        glUniform1i(textureLocation, index);
 }
