@@ -3,7 +3,6 @@
 in vec3 vPosition_vs; 
 in vec3 vNormal_vs; 
 in vec2 vTexCoords;
-in vec3 vWorldPosition;
 
 out vec3 fFragColor;
 
@@ -12,6 +11,11 @@ uniform sampler2D uTextureDiffuse;
 uniform sampler2D uTextureSpecular;
 uniform float uShininess;
 uniform mat4 uMVMatrix;
+
+uniform vec3 uLightPos1; // In MVMatrix
+uniform vec3 uLightPos2;
+uniform vec3 uLightPos3;
+uniform vec3 uLightPos4;
 
 
 //Lumière directionnelle
@@ -31,8 +35,12 @@ vec3 Light(vec3 direction, vec3 color){
 
 
 void main() {
-    //vec3 LightPos= LightPosition *
-    float dist= distance(vPosition_vs, LightPosition);
-    //fFragColor= Light(LightDirection,LightColor);+ Light(normalize(LightPosition - vWorldPosition), LightPonctualColor/(dist*dist));
-    fFragColor=Light(normalize(LightPosition - vWorldPosition), LightPonctualColor/(dist*dist));
+    float dist = distance(vPosition_vs, uLightPos1);
+    fFragColor = Light(normalize(uLightPos1 - vPosition_vs), LightPonctualColor/(dist*dist));
+    // dist = distance(vPosition_vs, uLightPos2);
+    // fFragColor += Light(normalize(uLightPos2 - vPosition_vs), LightPonctualColor/(dist*dist));
+    // dist = distance(vPosition_vs, uLightPos3);
+    // fFragColor += Light(normalize(uLightPos3 - vPosition_vs), LightPonctualColor/(dist*dist));
+    // dist = distance(vPosition_vs, uLightPos4);
+    // fFragColor += Light(normalize(uLightPos4 - vPosition_vs), LightPonctualColor/(dist*dist));
 }

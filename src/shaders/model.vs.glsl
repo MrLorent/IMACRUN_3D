@@ -30,7 +30,7 @@ void main() {
     vTexCoords = aVertexTexCoords;
 
     //Calcul pour les lumieres ponctuelles
-    vWorldPosition = vec3(uMMatrix * vertexPosition);
+    vWorldPosition = vec3(uVMatrix * uMMatrix * vertexPosition);
 
     // Calcul de la position projetée
     gl_Position = uMVPMatrix * vertexPosition;

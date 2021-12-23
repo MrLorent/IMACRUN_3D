@@ -15,8 +15,9 @@ private:
     glimac::FilePath _applicationPath;
     unsigned int _renderingLength;
     short int _rotationDirection;
-
     unsigned int _rotatingIndex;
+
+    std::deque<glm::vec3> currentLights;
 
     /* 3D Models */
     Model _player;

@@ -66,15 +66,20 @@ void GameRenderer::render(
         player.getPosition()
     );
 
-    auto VMatrix=game._camera.getViewMatrix();
+    auto VMatrix = game._camera.getViewMatrix();
 
     /* Move the player model according to the camera */
    // MVMatrix = game._camera.getViewMatrix() * MVMatrix;
 
-    _player.draw(projectionMatrix, VMatrix, MMatrix);
+    _player.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
 
     // DRAW THE MAP
     Map& map = game._map;
+    for(size_t i=0; i<map.firstLights.size(); ++i)
+    {
+        currentLights.push_back(map.firstLights[i]);
+    }
+
     MMatrix = glm::translate(
         glm::mat4(1.f),
         glm::vec3(
@@ -98,10 +103,10 @@ void GameRenderer::render(
             switch (map[map.getMapWidth() * i + k])
             {
                 case Map::FLOOR:
-                    _floor.draw(projectionMatrix, VMatrix,MMatrix);
+                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::PASSED_TURN:
-                    _floor.draw(projectionMatrix, VMatrix, MMatrix);
+                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::WALL:
                     // MVMatrix = glm::translate(
@@ -119,7 +124,8 @@ void GameRenderer::render(
                         MMatrix,
                         glm::vec3(0.f,1.f,0.f)
                     );
-                    _floor.draw(projectionMatrix, VMatrix, MMatrix);
+                    _floor.MMatrixLight = MMatrix;
+                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
                     MMatrix = glm::translate(
                         MMatrix,
                         glm::vec3(0.f,-1.f,0.f)

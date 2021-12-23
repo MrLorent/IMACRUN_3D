@@ -1,6 +1,7 @@
 #pragma once
 #define MODEL_H
 
+#include <deque>
 #include <dirent.h>
 #include <tiny_obj_loader.h>
 #include "Mesh.hpp"
@@ -49,6 +50,12 @@ class Model
         //GLint _uMVMatrix;
         GLint _uVMatrix;
         GLint _uNormalMatrix;
+
+        // LIGHTS
+        GLint _uLightPos1;
+        GLint _uLightPos2;
+        GLint _uLightPos3;
+        GLint _uLightPos4;
         
         // PRIVATE METHODS
 
@@ -78,6 +85,9 @@ class Model
         void draw(
             glm::mat4 &ProjMatrix,
             glm::mat4 &MVMatrix,
-            glm::mat4 const & MMatrix
+            glm::mat4 const & MMatrix,
+            std::deque<glm::vec3> lights
         );
+
+        static glm::mat4 MMatrixLight;
 };
