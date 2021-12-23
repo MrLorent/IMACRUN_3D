@@ -123,8 +123,8 @@ void GameRenderer::render(
         }
 
         /* Detecting turns */
-        if(map[map.getMapWidth() * i] != Map::WALL && map[map.getMapWidth() * i] != Map::PASSED_TURN){ _rotationDirection = -1; } /* right turn */
-        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::WALL && map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::PASSED_TURN){ _rotationDirection = 1; } /* left turn*/
+        if(map[map.getMapWidth() * i] == Map::FLOOR){ _rotationDirection = -1; } /* right turn */
+        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] == Map::FLOOR){ _rotationDirection = 1; } /* left turn*/
         
         if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL && i >= game._playerIndex){
             if(_rotationDirection == -1)
