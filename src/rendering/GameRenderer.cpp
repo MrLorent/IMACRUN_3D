@@ -114,6 +114,17 @@ void GameRenderer::render(
                     //     glm::vec3(0.f,-1.f,0.f)
                     // );
                     break; 
+                case Map::LIGHT:
+                    MMatrix = glm::translate(
+                        MMatrix,
+                        glm::vec3(0.f,1.f,0.f)
+                    );
+                    _floor.draw(projectionMatrix, VMatrix, MMatrix);
+                    MMatrix = glm::translate(
+                        MMatrix,
+                        glm::vec3(0.f,-1.f,0.f)
+                    );
+                    break;
                 case Map::HOLE:
                     break;
                 default:

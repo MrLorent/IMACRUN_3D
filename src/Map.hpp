@@ -22,6 +22,7 @@ private:
 public:
     // CONSTANTS
     static constexpr char WALL = 'w';
+    static constexpr char LIGHT = 'l';
     static constexpr char FLOOR = 'f';
     static constexpr char HOLE = 'h';
     static constexpr char PASSED_TURN = 'p';

@@ -74,9 +74,21 @@ void Map::loadMapElements()
 
 void Map::initMap()
 {
-    for(int i=0; i<_mapElements[0].size() * 2; ++i){
-        _map.push_back(_mapElements[0][i%_mapElements[0].size()]);
-    }
+    _map = {
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','l'
+    };
+    // for(int i=0; i<_mapElements[0].size() * 2; ++i){
+    //     _map.push_back(_mapElements[0][i%_mapElements[0].size()]);
+    // }
     while(_map.size() < 20 * _mapWidth)
     {
         int randomIndex = _distribution(_random);
