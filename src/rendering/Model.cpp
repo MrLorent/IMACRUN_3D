@@ -15,7 +15,8 @@ Model::Model(ModelParams params)
     
     /* Link the matrix attribut to the shaders matrix */
     _uMVPMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVPMatrix");
-    _uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
+    //_uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
+    _uVMatrix = glGetUniformLocation(_shaders.getGLId(), "uVMatrix");
     _uNormalMatrix = glGetUniformLocation(_shaders.getGLId(), "uNormalMatrix");
     _uMMatrix = glGetUniformLocation(_shaders.getGLId(), "uMMatrix");
 
@@ -23,7 +24,7 @@ Model::Model(ModelParams params)
 
 void Model::draw(
     glm::mat4 &ProjMatrix,
-    glm::mat4 &MVMatrix,
+    glm::mat4 &VMatrix,
     glm::mat4 const &MMatrix)
 {
     /* Link the shaders of the model */
@@ -37,12 +38,12 @@ void Model::draw(
         glm::value_ptr(MMatrix)
     );
 
-    // MV MATRIX
+    // V MATRIX
     glUniformMatrix4fv(
-        _uMVMatrix,
+        _uVMatrix,
         1,
         GL_FALSE,
-        glm::value_ptr(MVMatrix)
+        glm::value_ptr(VMatrix)
     );
     
     // MVPMATRIX
@@ -50,7 +51,7 @@ void Model::draw(
         _uMVPMatrix,
         1,
         GL_FALSE,
-        glm::value_ptr(ProjMatrix*MVMatrix)
+        glm::value_ptr(ProjMatrix*VMatrix*MMatrix)
     );
     
     // NORMAL MATRIX
@@ -58,7 +59,7 @@ void Model::draw(
         _uNormalMatrix,
         1,
         GL_FALSE,
-        glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))) // Normal Matrix = glm::transpose(glm::inverse(MVMatrix))
+        glm::value_ptr(glm::transpose(glm::inverse(VMatrix*MMatrix))) // Normal Matrix = glm::transpose(glm::inverse(MVMatrix))
     );
 
     /* Draw all the meshes that compose the model */

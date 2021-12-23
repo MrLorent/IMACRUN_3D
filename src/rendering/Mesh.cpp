@@ -89,11 +89,11 @@ void Mesh::initVbo()
 }
 
 void Mesh::initIbo()
-{
+{ 
     glGenBuffers(1, &_ibo);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
         
-        glBufferData(
+        glBufferData( 
             GL_ELEMENT_ARRAY_BUFFER,
             indices.size() * sizeof(GLuint),
             indices.data(),
@@ -154,9 +154,9 @@ void Mesh::initVao()
 
 // PUBLIC METHODS
 
-void Mesh::draw(glimac::Program& shaders)
+void Mesh::draw(glimac::Program& shaders) 
 
-{
+{ 
     shaders.use();  
     bindTexture(0, textures.diffuse.getId(), "uTextureDiffuse", shaders.getGLId());
     bindTexture(1, textures.specular.getId(), "uTextureSpecular", shaders.getGLId());
@@ -175,7 +175,7 @@ void Mesh::draw(glimac::Program& shaders)
 }
 
 void Mesh::bindTexture(int index, GLint textureId, const char* uniformName, const GLuint shadersId) const{
-     glActiveTexture(GL_TEXTURE0 + index); // activate proper texture unit before binding
+        glActiveTexture(GL_TEXTURE0 + index); // activate proper texture unit before binding
         glBindTexture(GL_TEXTURE_2D, textureId);
 
         auto textureLocation = glGetUniformLocation(shadersId, uniformName);

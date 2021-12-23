@@ -46,7 +46,8 @@ class Model
 
         GLint _uMMatrix;
         GLint _uMVPMatrix;
-        GLint _uMVMatrix;
+        //GLint _uMVMatrix;
+        GLint _uVMatrix;
         GLint _uNormalMatrix;
         
         // PRIVATE METHODS

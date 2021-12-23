@@ -7,7 +7,8 @@ layout(location = 2) in vec2 aVertexTexCoords; // Coordonnées de texture du som
 
 // Matrices de transformations reçues en uniform
 uniform mat4 uMVPMatrix;
-uniform mat4 uMVMatrix;
+//uniform mat4 uMVMatrix;
+uniform mat4 uVMatrix;
 uniform mat4 uNormalMatrix;
 uniform mat4 uMMatrix;
 
@@ -24,12 +25,12 @@ void main() {
     vec4 vertexNormal = vec4(aVertexNormal, 0);
 
     // Calcul des valeurs de sortie
-    vPosition_vs = vec3(uMVMatrix * vertexPosition);
+    vPosition_vs = vec3(uVMatrix * uMMatrix * vertexPosition);
     vNormal_vs = vec3(uNormalMatrix * vertexNormal);
     vTexCoords = aVertexTexCoords;
 
     //Calcul pour les lumieres ponctuelles
-    vWorldPosition = vec3(uMVMatrix * vertexPosition);
+    vWorldPosition = vec3(uMMatrix * vertexPosition);
 
     // Calcul de la position projetée
     gl_Position = uMVPMatrix * vertexPosition;

@@ -54,46 +54,43 @@ void GameRenderer::render(
     /* Place the Player Model into the scene */
 
     /* turn back the model from the camera */
-    glm::mat4 MVMatrix = glm::rotate(
+    glm::mat4 MMatrix = glm::rotate(
         glm::mat4(1.f),
         float(M_PI),
         glm::vec3(0.f,1.f,0.f)
     );
 
     /* put the player model at the right position */
-    MVMatrix = glm::translate(
-        MVMatrix,
+    MMatrix = glm::translate(
+        MMatrix,
         player.getPosition()
     );
 
-    
-    auto MMatrix=MVMatrix;
-    /* Move the player model according to the camera */
-    MVMatrix = game._camera.getViewMatrix() * MVMatrix;
+    auto VMatrix=game._camera.getViewMatrix();
 
-    _player.draw(projectionMatrix, MVMatrix, MMatrix);
+    /* Move the player model according to the camera */
+   // MVMatrix = game._camera.getViewMatrix() * MVMatrix;
+
+    _player.draw(projectionMatrix, VMatrix, MMatrix);
 
     // DRAW THE MAP
     Map& map = game._map;
-    MVMatrix = glm::translate(
+    MMatrix = glm::translate(
         glm::mat4(1.f),
         glm::vec3(
             -2.f, /* Place of the first left wall */
             0.f,
             0.5-game._playerIndex-game._caseSubdivisionsIndex/game._caseSubdivisions
-        )
+        ) 
     );
 
-    //ARRETER DE TRICHER, AVOIR LES CASES QUI BOUGENT VRAIMENT.
-    //PLayer.position soit une vrai position dans le monde
-
-
     if(game._camera._turning != 0) game._camera.takeTurn();
-    
-    MMatrix=MVMatrix;
+
+    VMatrix= game._camera.getViewMatrix();
+
 
     /* Move the scene according to the camera */
-    MVMatrix = game._camera.getViewMatrix() * MVMatrix;
+    //MVMatrix = game._camera.getViewMatrix() * MVMatrix;
     
     for(unsigned int i=0; i<_renderingLength; ++i)
     {
@@ -101,10 +98,10 @@ void GameRenderer::render(
             switch (map[map.getMapWidth() * i + k])
             {
                 case Map::FLOOR:
-                    _floor.draw(projectionMatrix, MVMatrix,MMatrix);
+                    _floor.draw(projectionMatrix, VMatrix,MMatrix);
                     break;
                 case Map::PASSED_TURN:
-                    _floor.draw(projectionMatrix, MVMatrix, MMatrix);
+                    _floor.draw(projectionMatrix, VMatrix, MMatrix);
                     break;
                 case Map::WALL:
                     // MVMatrix = glm::translate(
@@ -122,7 +119,7 @@ void GameRenderer::render(
                 default:
                     break;
             }
-            MVMatrix = glm::translate(MVMatrix, glm::vec3(1.f, 0.f, 0.f));
+            MMatrix = glm::translate(MMatrix, glm::vec3(1.f, 0.f, 0.f));
         }
 
         /* Detecting turns */
@@ -132,17 +129,17 @@ void GameRenderer::render(
         if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL && i >= game._playerIndex){
             if(_rotationDirection == -1)
             {
-                MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, -(map.getMapWidth()-1)));
+                MMatrix = glm::translate(MMatrix, glm::vec3(-map.getMapWidth(), 0.f, -(map.getMapWidth()-1)));
             }else{
-                MVMatrix = glm::translate(MVMatrix, glm::vec3(0.f, 0.f, 0.f));
+                MMatrix = glm::translate(MMatrix, glm::vec3(0.f, 0.f, 0.f));
             }
-            MVMatrix = glm::rotate(
-                MVMatrix,
+            MMatrix = glm::rotate(
+                MMatrix,
                 float(M_PI/2*_rotationDirection),
                 glm::vec3(0.f, 1.f, 0.f)
             );
         }else{
-            MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, 1.f));
+            MMatrix = glm::translate(MMatrix, glm::vec3(-map.getMapWidth(), 0.f, 1.f));
         }
     }
 }
