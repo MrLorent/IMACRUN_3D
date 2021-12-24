@@ -28,7 +28,7 @@ void GameRenderer::load3DModels()
     ModelParams params(_applicationPath);
 
     // LOADING OF THE PLAYER MODEL
-    params.fileName = "Cobblestones/CobbleStones.obj";
+    params.fileName = "bottle/bottle.obj";
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl";
 
@@ -40,6 +40,34 @@ void GameRenderer::load3DModels()
     params.fsShader = "model.fs.glsl";
  
     _floor = Model(params);
+
+    //LOADING OF THE FENCE MODEL
+    params.fileName = "fence/fence.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
+ 
+    _wall = Model(params);
+
+    //LOADING OF THE BARREL MODEL
+    params.fileName = "barrel/barrel.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
+ 
+    _barrel = Model(params);
+
+    //LOADING OF THE LIGHT MODEL
+    params.fileName = "lantern/lantern.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
+ 
+    _light = Model(params);
+
+    //LOADING OF THE BOTTLE MODEL
+    params.fileName = "bottle/bottle.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
+ 
+    _bottle = Model(params);
 }
 
 void GameRenderer::render(
@@ -83,23 +111,53 @@ void GameRenderer::render(
                     _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::WALL:
-                    // MVMatrix = glm::translate(
-                    //     MVMatrix,
-                    //     glm::vec3(0.f,1.f,0.f)
-                    // );
-                    // _floor.draw(projectionMatrix, MVMatrix);
-                    // MVMatrix = glm::translate(
-                    //     MVMatrix,
-                    //     glm::vec3(0.f,-1.f,0.f)
-                    // );
+                    if(k==0){
+                        MMatrix = glm::translate(
+                            MMatrix,
+                            glm::vec3(0.4f,0.f,0.f)
+                        );                    
+
+                        _wall.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+
+                        MMatrix = glm::translate(
+                            MMatrix,
+                            glm::vec3(-0.4f,0.f,0.f)
+                        );
+                    }else if(k%4==0){
+                        
+                        MMatrix = glm::translate(
+                            MMatrix,
+                            glm::vec3(-0.4f,0.1f,0.f)
+                        );
+                      
+                          MMatrix = glm::rotate(
+                            MMatrix,
+                            glm::pi<float>(),
+                            glm::vec3(0.f, 1.f, 0.f)
+                        );
+
+                        _wall.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+
+                        MMatrix = glm::rotate(
+                            MMatrix,
+                            glm::pi<float>(),
+                            glm::vec3(0.f, 1.f, 0.f)
+                        );
+
+                        MMatrix = glm::translate(
+                            MMatrix,
+                            glm::vec3(0.4f,-0.1f,0.f)
+                        );
+                    }
+                        
                     break; 
-                case Map::LIGHT:
+                case Map::LIGHT: //Mal positionnée
                     MMatrix = glm::translate(
                         MMatrix,
                         glm::vec3(0.f,1.f,0.f)
                     );
-                    _floor.MMatrixLight = MMatrix;
-                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    _light.MMatrixLight = MMatrix;
+                    _light.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
                     MMatrix = glm::translate(
                         MMatrix,
                         glm::vec3(0.f,-1.f,0.f)
@@ -107,9 +165,42 @@ void GameRenderer::render(
                     break;
                 case Map::HOLE:
                     break;
+                case Map::BAREL:
+                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    MMatrix = glm::translate(
+                        MMatrix,
+                        glm::vec3(0.f,0.5f,0.f)
+                    );
+                    _barrel.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    MMatrix = glm::translate(
+                        MMatrix,
+                        glm::vec3(0.f,-0.5f,0.f)
+                    );
+                    break;
+                case Map::COLLECTIBLE:
+
+                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    MMatrix = glm::translate(
+                        MMatrix,
+                        glm::vec3(0.f,0.5f,0.f)
+                    );
+                    MMatrix=glm::scale(
+                        MMatrix,
+                        glm::vec3(0.25,0.25,0.25)
+                    );
+                    _bottle.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    MMatrix=glm::scale(
+                        MMatrix,
+                        glm::vec3(4,4,4)
+                    );
+                    MMatrix = glm::translate(
+                        MMatrix,
+                        glm::vec3(0.f,-0.5f,0.f)
+                    );
                 default:
                     break;
             }
+           
             MMatrix = glm::translate(MMatrix, glm::vec3(1.f, 0.f, 0.f));
         }
 
@@ -126,12 +217,13 @@ void GameRenderer::render(
             }
             MMatrix = glm::rotate(
                 MMatrix,
-                float(M_PI/2*_rotationDirection),
+                glm::pi<float>()/2*_rotationDirection,
                 glm::vec3(0.f, 1.f, 0.f)
             );
         }else{
             MMatrix = glm::translate(MMatrix, glm::vec3(-map.getMapWidth(), 0.f, 1.f));
         }
+
     }
 
     // DRAW THE PLAYER
@@ -156,7 +248,6 @@ void GameRenderer::render(
     VMatrix = game._camera.getViewMatrix();
 
     /* Move the player model according to the camera */
-   // MVMatrix = game._camera.getViewMatrix() * MVMatrix;
 
     _player.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
 }

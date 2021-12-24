@@ -23,6 +23,9 @@ private:
     Model _player;
     Model _wall;
     Model _floor;
+    Model _barrel;
+    Model _light;
+    Model _bottle;
 
     // PRIVATE METHODS
     void rotateCamera(Camera& cam, unsigned int caseSubdivisions);
