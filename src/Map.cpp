@@ -1,4 +1,7 @@
 #include "Map.hpp"
+#include <iostream>
+#include <fstream>
+#include <cstring>
 
 const char& Map::operator[](const size_t& i) const
 {
@@ -26,6 +29,47 @@ Map::~Map()
 
 void Map::loadMapElements()
 {
+    std::ifstream file("./assets/map/map_elements.txt");
+      if(file) {
+        //L'ouverture s'est bien passée, on peut donc lire
+        //On commence à lire le fichier
+        /*int roadLength;
+        file >> roadLength;
+        std::cout << "\nLongueur route : " << roadLength << std::endl ;*/
+
+        std::vector<char> line ;
+        //std::string line;
+        //char cases[6];
+        char caractere;
+        int j=0;
+        while ( j!=25 ) {  
+            std::cout << "\nLigne : " ;
+            for (unsigned int i = 0 ; i != 5 ; i ++){ 
+                //std::getline(file, line); 
+                //char caseu;
+                file.get(caractere); 
+                //std::strcpy(cases, line.c_str());
+                //cases[i] = line[i];
+                line.push_back(caractere);
+                std::cout << line[j] << " - " ;
+                j++;
+            }
+            
+            //std::cout << std::endl ;
+            _mapElements.push_back(line);
+            //file.seekg(2+5*j, iostream::beg);
+            //std::cout << _map[0,1] << " ";
+        }
+        std::cout << std::endl ;
+        std::cout << "La map a ete chargée." << std::endl;
+        remove("map_elements2.txt");
+    }else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+    }
+}
+    
+/*
     std::vector<char> floor = {
         'w','f','f','f','w',
         'w','f','f','f','w',
@@ -33,54 +77,17 @@ void Map::loadMapElements()
         'w','f','f','f','w',
         'w','f','f','f','w'
     };
-    _mapElements.push_back(floor);
-
-    std::vector<char> leftHole = {
-        'w','f','f','f','w',
-        'w','f','h','h','w',
-        'w','f','h','h','w',
-        'w','f','h','h','w',
-        'w','f','f','f','w'
-    };
-    _mapElements.push_back(leftHole);
-
-    std::vector<char> rightHole = {
-        'w','f','f','f','w',
-        'w','h','h','f','w',
-        'w','h','h','f','w',
-        'w','h','h','f','w',
-        'w','f','f','f','w'
-    };
-    _mapElements.push_back(rightHole);
-
-    std::vector<char> leftTurn = {
-        'w','f','f','f','w',
-        'w','f','f','f','f',
-        'w','f','f','f','f',
-        'w','f','f','f','f',
-        'w','w','w','w','w'
-    };
-    _mapElements.push_back(leftTurn);
-
-    std::vector<char> rightTurn = {
-        'w','f','f','f','w',
-        'f','f','f','f','w',
-        'f','f','f','f','w',
-        'f','f','f','f','w',
-        'w','w','w','w','w'
-    };
-    _mapElements.push_back(rightTurn);
-}
+*/
 
 void Map::initMap()
 {
-    for(int i=0; i<_mapElements[0].size() * 2; ++i){
+    for(unsigned int i=0; i<_mapElements[0].size() * 2; ++i){
         _map.push_back(_mapElements[0][i%_mapElements[0].size()]);
     }
     while(_map.size() < 20 * _mapWidth)
     {
         int randomIndex = _distribution(_random);
-        for(int i=0; i<_mapElements[randomIndex].size(); ++i){
+        for(unsigned int i=0; i<_mapElements[randomIndex].size(); ++i){
             _map.push_back(_mapElements[randomIndex][i]);
         }
     }
@@ -94,7 +101,7 @@ void Map::empty()
 void Map::reloadMap()
 {
     int randomIndex = _distribution(_random);
-    for(int i=0; i<_mapElements[randomIndex].size(); ++i){
+    for(unsigned int i=0; i<_mapElements[randomIndex].size(); ++i){
         _map.push_back(_mapElements[randomIndex][i]);
     }
 }

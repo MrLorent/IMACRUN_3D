@@ -37,7 +37,7 @@ int main(int argc, char** argv)
         glfwTerminate();
         return -1;
     }
-
+ 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
@@ -46,12 +46,12 @@ int main(int argc, char** argv)
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
+ 
     /* Set the OpenGL environnement */
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
-
-
+     
+  
     /* Create the App */
     App app(window, window_width, window_height, argv[0]);
 
@@ -82,7 +82,7 @@ int main(int argc, char** argv)
             get_app(window).mouse_button_callback(button, action, mods);
         }
     });
-
+ 
     /* Mouse scroll */
     glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset){
         if(get_app(window).getGame().isRunning())
@@ -94,7 +94,7 @@ int main(int argc, char** argv)
             get_app(window).scroll_callback(xoffset, yoffset);
         }
     });
-
+ 
     /* Cursor position */
     glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos){
         if(get_app(window).getGame().isRunning())
