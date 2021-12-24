@@ -19,8 +19,8 @@ uniform vec3 uLightPos4;
 
 
 //Lumière directionnelle
-const vec3 LightDirection = normalize(vec3(0.1, 0.8, 0.2));
-const vec3 LightColor= vec3(0.2, 0.1, 1.)*1.4;
+const vec3 LightDirection = normalize(vec3(0.8, 0.8, 0.2));
+const vec3 LightColor= vec3(0.2, 0.1, 1.)*2;
 
 //Lumiere ponctuelle
 const vec3 LightPosition = vec3(0., 1., 5.);
@@ -36,7 +36,8 @@ vec3 Light(vec3 direction, vec3 color){
 
 void main() {
     float dist = distance(vPosition_vs, uLightPos1);
-    fFragColor = Light(normalize(uLightPos1 - vPosition_vs), LightPonctualColor/(dist*dist));
+    fFragColor = Light(LightDirection, LightColor);
+    fFragColor += Light(normalize(uLightPos1 - vPosition_vs), LightPonctualColor/(dist*dist));
     // dist = distance(vPosition_vs, uLightPos2);
     // fFragColor += Light(normalize(uLightPos2 - vPosition_vs), LightPonctualColor/(dist*dist));
     // dist = distance(vPosition_vs, uLightPos3);

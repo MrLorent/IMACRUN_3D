@@ -8,7 +8,7 @@
 namespace glimac {
 
 bool Shader::compile() {
-	glCompileShader(m_nGLId);
+	glCompileShader(m_nGLId); 
 	GLint status;
 	glGetShaderiv(m_nGLId, GL_COMPILE_STATUS, &status);
 	return status == GL_TRUE;
@@ -26,7 +26,7 @@ const std::string Shader::getInfoLog() const {
 
 Shader loadShader(GLenum type, const FilePath& filepath) {
     std::ifstream input(filepath.c_str());
-    if(!input) {
+    if(!input) { 
         throw std::runtime_error("Unable to load the file " + filepath.str());
     }
     

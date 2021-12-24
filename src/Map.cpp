@@ -75,14 +75,14 @@ void Map::loadMapElements()
 void Map::initMap()
 {
     std::vector<char> mapStart = {
-        'w','f','f','f','w',
-        'w','f','f','f','w',
-        'w','f','f','f','w',
-        'w','f','f','f','w',
-        'w','f','f','f','w',
-        'w','f','f','f','w',
-        'w','f','f','f','w',
-        'w','f','f','f','w',
+        'w','c','f','f','w',
+        'w','c','f','f','w',
+        'w','c','f','f','w',
+        'w','c','f','f','w',
+        'w','c','f','f','w',
+        'w','c','f','f','w',
+        'w','c','f','f','w',
+        'w','c','f','f','w',
         'w','f','f','f','w',
         'w','f','f','f','l'
     };
