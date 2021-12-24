@@ -6,6 +6,7 @@
 
 #include "Model.hpp"
 #include "Game.hpp"
+#include "Text2D.hpp"
 
 class GameRenderer
 {
@@ -16,6 +17,9 @@ private:
     unsigned int _renderingLength;
     short int _rotationDirection;
     unsigned int _rotatingIndex;
+    Text2D _text;
+    glm::mat4 _textProjectionMatrix;
+
 
     std::deque<glm::vec3> currentLights;
 

@@ -5,7 +5,16 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
      _renderingLength(15), // nb ligne to draw
      _rotationDirection(0),
      _rotatingIndex(0)
-{}
+{
+     /* Initialisation of the fonts */
+    _text = Text2D(20, _applicationPath, "PTMono.ttc");
+    _textProjectionMatrix = glm::ortho(
+        0.0f,
+        static_cast<float>(720),
+        0.0f,
+        static_cast<float>(720)
+    );
+}
 
 void GameRenderer::rotateCamera(Camera& cam, unsigned int caseSubdivisions){
     if(_rotatingIndex > caseSubdivisions * 2)
@@ -250,4 +259,11 @@ void GameRenderer::render(
     /* Move the player model according to the camera */
 
     _player.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+
+    _text.draw(
+            "Score : "+std::to_string(game._player.getScore()),
+            glm::vec2(50.f, 600.f ),
+            glm::vec3(1.f),
+            _textProjectionMatrix
+        );
 }

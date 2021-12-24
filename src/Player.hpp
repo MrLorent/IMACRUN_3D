@@ -8,6 +8,7 @@ class Player
 {
     private:
         glm::vec3 _position;
+        unsigned int _score;
 
         unsigned int _jumpingIndex;
         unsigned int _jumpingTiming;
@@ -24,13 +25,15 @@ class Player
         // ~Player();
 
         // GETTER
-        glm::vec3 getPosition();
+        glm::vec3 getPosition() const;
+        unsigned int getScore()const;
 
         // SETTER
-        void setPosition(glm::vec3 newPosition);
+        void setPosition(const glm::vec3 newPosition);
         void goLeft();
         void goRight();
 
         // METHOD
         void jump();
+        void upScore();
 };

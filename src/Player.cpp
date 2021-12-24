@@ -4,17 +4,18 @@ Player::Player(short unsigned int caseSubdivision)
     :_position(glm::vec3(0.f, 0.f, 0.f)),
      _isJumping(false),
      _jumpingIndex(0),
-     _jumpingTiming(caseSubdivision * 4.5)
+     _jumpingTiming(caseSubdivision * 4.5),
+     _score(0)
 {}
 
 // GETTER
-glm::vec3 Player::getPosition()
+glm::vec3 Player::getPosition() const
 {
     return _position;
 }
 
 // SETTER
-void Player::setPosition(glm::vec3 newPosition)
+void Player::setPosition(const glm::vec3 newPosition)
 {
     _position = newPosition;
 }
@@ -45,6 +46,15 @@ void Player::jump()
         _jumpingIndex++;
     }
 }
+
+unsigned int Player::getScore()const{
+    return _score;
+}
+
+void Player::upScore(){
+    _score++;
+}
+
 
 // Player::~Player()
 // {

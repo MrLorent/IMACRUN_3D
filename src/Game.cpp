@@ -54,7 +54,7 @@ void Game::runGame()
 
 void Game::checkPlayerPosition()
 {
-    const char currentCase = _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
+    char currentCase = _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
     
     switch (currentCase)
     {
@@ -71,6 +71,20 @@ void Game::checkPlayerPosition()
             _paused = true;
         }
         break;
+    case Map::BAREL:
+        if(_player.getPosition().y == 0)
+        {
+            _finished = true;
+            _paused = true;
+        }
+        break;
+    case Map::COLLECTIBLE:
+        if(_player.getPosition().y == 0)
+            {
+                _player.upScore();
+                _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x]=Map::FLOOR;
+            }
+        
     default:
         break;
     }
