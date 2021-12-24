@@ -31,38 +31,23 @@ void Map::loadMapElements()
 {
     std::ifstream file("./assets/map/map_elements.txt");
       if(file) {
-        //L'ouverture s'est bien passée, on peut donc lire
-        //On commence à lire le fichier
-        /*int roadLength;
-        file >> roadLength;
-        std::cout << "\nLongueur route : " << roadLength << std::endl ;*/
-
         std::vector<char> line ;
-        //std::string line;
-        //char cases[6];
         char caractere;
         int j=0;
-        while ( j!=25 ) {  
-            std::cout << "\nLigne : " ;
-            for (unsigned int i = 0 ; i != 5 ; i ++){ 
-                //std::getline(file, line); 
-                //char caseu;
-                file.get(caractere); 
-                //std::strcpy(cases, line.c_str());
-                //cases[i] = line[i];
-                line.push_back(caractere);
-                std::cout << line[j] << " - " ;
-                j++;
+        int k=0;
+        while ( k!=5 ) {  
+            while ( j!=25 ) {  
+                for (unsigned int i = 0 ; i != 5 ; i ++){ 
+                    file.get(caractere); 
+                    line.push_back(caractere);
+                    j++;
+                }
+                _mapElements.push_back(line);
             }
-            
-            //std::cout << std::endl ;
-            _mapElements.push_back(line);
-            //file.seekg(2+5*j, iostream::beg);
-            //std::cout << _map[0,1] << " ";
+            k++;
         }
-        std::cout << std::endl ;
         std::cout << "La map a ete chargée." << std::endl;
-        remove("map_elements2.txt");
+        remove("map_elements.txt");
     }else
     {
         std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
