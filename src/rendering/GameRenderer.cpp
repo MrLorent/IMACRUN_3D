@@ -47,32 +47,6 @@ void GameRenderer::render(
     Game& game
 )
 {
-    // DRAW THE PLAYER
-    Player& player = game._player;
-
-    if(player._isJumping) player.jump();
-    /* Place the Player Model into the scene */
-
-    /* turn back the model from the camera */
-    glm::mat4 MMatrix = glm::rotate(
-        glm::mat4(1.f),
-        float(M_PI),
-        glm::vec3(0.f,1.f,0.f)
-    );
-
-    /* put the player model at the right position */
-    MMatrix = glm::translate(
-        MMatrix,
-        player.getPosition()
-    );
-
-    auto VMatrix = game._camera.getViewMatrix();
-
-    /* Move the player model according to the camera */
-   // MVMatrix = game._camera.getViewMatrix() * MVMatrix;
-
-    _player.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
-
     // DRAW THE MAP
     Map& map = game._map;
     for(size_t i=0; i<map.firstLights.size(); ++i)
@@ -80,7 +54,7 @@ void GameRenderer::render(
         currentLights.push_back(map.firstLights[i]);
     }
 
-    MMatrix = glm::translate(
+    glm::mat4 MMatrix = glm::translate(
         glm::mat4(1.f),
         glm::vec3(
             -2.f, /* Place of the first left wall */
@@ -91,7 +65,7 @@ void GameRenderer::render(
 
     if(game._camera._turning != 0) game._camera.takeTurn();
 
-    VMatrix= game._camera.getViewMatrix();
+    auto VMatrix= game._camera.getViewMatrix();
 
 
     /* Move the scene according to the camera */
@@ -159,4 +133,30 @@ void GameRenderer::render(
             MMatrix = glm::translate(MMatrix, glm::vec3(-map.getMapWidth(), 0.f, 1.f));
         }
     }
+
+    // DRAW THE PLAYER
+    Player& player = game._player;
+
+    if(player._isJumping) player.jump();
+    /* Place the Player Model into the scene */
+
+    /* turn back the model from the camera */
+    MMatrix = glm::rotate(
+        glm::mat4(1.f),
+        float(M_PI),
+        glm::vec3(0.f,1.f,0.f)
+    );
+
+    /* put the player model at the right position */
+    MMatrix = glm::translate(
+        MMatrix,
+        player.getPosition()
+    );
+
+    VMatrix = game._camera.getViewMatrix();
+
+    /* Move the player model according to the camera */
+   // MVMatrix = game._camera.getViewMatrix() * MVMatrix;
+
+    _player.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
 }

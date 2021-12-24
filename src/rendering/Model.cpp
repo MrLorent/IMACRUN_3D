@@ -39,19 +39,19 @@ void Model::draw(
     /* Link the shaders of the model */
     _shaders.use();
 
-    // auto tmp = glm::column(VMatrix * MMatrixLight,3);
-    // glUniform3f(
-    //     _uLightPos1,
-    //     tmp.x,
-    //     tmp.y,
-    //     tmp.z
-    // );
-
-    glUniform3fv(
+    auto tmp = glm::column(VMatrix * MMatrixLight,3);
+    glUniform3f(
         _uLightPos1,
-        1,
-        glm::value_ptr(glm::vec3(glm::vec4(lights[0],1) * VMatrix))
+        tmp.x,
+        tmp.y,
+        tmp.z
     );
+
+    // glUniform3fv(
+    //     _uLightPos1,
+    //     1,
+    //     glm::value_ptr(glm::vec3(glm::vec4(lights[0],1) * VMatrix))
+    // );
 
     // glUniform3fv(
     //     _uLightPos1,
