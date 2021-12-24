@@ -48,6 +48,9 @@ public:
     // FREELY CAMERA
 
     void setPosition(glm::vec3 position);
+    glm::vec3 getPosition(){
+        return _position;
+    };
     
     // COMMON METHODS
     void takeTurn();

@@ -3,7 +3,7 @@
 #include "stb_image.h"
 #include <iostream>
 
-namespace glimac {
+namespace glimac { 
 
 std::unique_ptr<Image> loadImage(const FilePath& filepath) {
     int x, y, n;
@@ -11,7 +11,7 @@ std::unique_ptr<Image> loadImage(const FilePath& filepath) {
     unsigned char *data = stbi_load(filepath.c_str(), &x, &y, &n, 4);
     if(!data) {
         std::cerr << "loading image " << filepath << " error: " << stbi_failure_reason() << std::endl;
-        return std::unique_ptr<Image>();
+        return std::unique_ptr<Image>(); 
     }
     std::unique_ptr<Image> pImage(new Image(x, y));
     unsigned int size = x * y;

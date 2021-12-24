@@ -8,6 +8,13 @@
 #include "Program.hpp"
 #include "Texture.hpp"
 
+struct Textures{
+    Texture diffuse;
+    Texture specular;
+    float shininess; 
+};
+
+
 struct Vertex{
     glm::vec3 position;
     glm::vec3 normal;
@@ -51,13 +58,14 @@ class Mesh
         void initVbo();
         void initIbo();
         void initVao();
+        void bindTexture(int index, GLint textureId, const char* uniformName, const GLuint shadersId) const;
     
     public:
         // PUBLIC ATTRIBUTS
         
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
-        std::vector<Texture> textures;
+        Textures textures;
 
         // OPERATORS
         /* Move assignment operator */
@@ -74,7 +82,7 @@ class Mesh
         Mesh(
             const std::vector<Vertex>& vertices,
             const std::vector<unsigned int>& indices,
-            std::vector<Texture>&& textures
+            Textures&& textures
         );
 
         /* Copy constructor */
@@ -92,4 +100,5 @@ class Mesh
         // METHODS
         
         void draw(glimac::Program& shaders);
+
 };
