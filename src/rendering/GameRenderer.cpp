@@ -257,8 +257,15 @@ void GameRenderer::render(
     VMatrix = game._camera.getViewMatrix();
 
     /* Move the player model according to the camera */
-
+    MMatrix=glm::scale(
+                        MMatrix,
+                        glm::vec3(0.5,0.5,0.5)
+                    );
     _player.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+    MMatrix=glm::scale(
+                        MMatrix,
+                        glm::vec3(2,2,2)
+                    );
 
     _text.draw(
             "Score : "+std::to_string(game._player.getScore()),
