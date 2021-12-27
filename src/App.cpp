@@ -95,10 +95,6 @@ void App::render()
         _menuRenderer.render(_menuList, _menuIndex, _width, _height);
         break;
     }
-    if(_menuIndex == GAME){
-        
-    }else{
-    }
 }
 
 void App::key_callback(int key, int scancode, int action, int mods)
