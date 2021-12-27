@@ -75,11 +75,11 @@ void Game::checkPlayerPosition()
         break;
     }
 
-    if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL) && _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::PASSED_TURN)
+    if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] == Map::FLOOR))
     {
         _turn = Player::LEFT;
     }
-    else if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth()] != Map::WALL) && _map[_playerIndex * _map.getMapWidth()] != Map::PASSED_TURN)
+    else if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth()] == Map::FLOOR))
     {
         _turn = Player::RIGHT;
     }

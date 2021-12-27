@@ -74,9 +74,34 @@ void Map::loadMapElements()
 
 void Map::initMap()
 {
-    for(int i=0; i<_mapElements[0].size() * 2; ++i){
-        _map.push_back(_mapElements[0][i%_mapElements[0].size()]);
+    std::vector<char> mapStart = {
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','l'
+    };
+    for(size_t i=0; i<mapStart.size(); ++i)
+    {
+        if(mapStart[i] == LIGHT && firstLights.size() < 4)
+        {
+            firstLights.push_back(glm::vec3(
+                i%_mapWidth-2,
+                2.f,
+                i/_mapWidth + 1
+            ));
+        }
+        _map.push_back(mapStart[i]);
     }
+    
+    // for(int i=0; i<_mapElements[0].size() * 2; ++i){
+    //     _map.push_back(_mapElements[0][i%_mapElements[0].size()]);
+    // }
     while(_map.size() < 20 * _mapWidth)
     {
         int randomIndex = _distribution(_random);
@@ -84,6 +109,7 @@ void Map::initMap()
             _map.push_back(_mapElements[randomIndex][i]);
         }
     }
+
 }
 
 void Map::empty()

@@ -95,10 +95,6 @@ void App::render()
         _menuRenderer.render(_menuList, _menuIndex, _width, _height);
         break;
     }
-    if(_menuIndex == GAME){
-        
-    }else{
-    }
 }
 
 void App::key_callback(int key, int scancode, int action, int mods)
@@ -127,8 +123,6 @@ void App::key_callback(int key, int scancode, int action, int mods)
                     { // "RECOMMENCER" || "SAUVEGARDER" || "RETOUR AU MENU"
                         _game._running = false;
                         _game._finished = false;
-                        std::cout << "finished: " << _game._finished << std::endl;
-                        std::cout << "paused: " << _game._paused << std::endl;
                     }
                     break;
                 default:
