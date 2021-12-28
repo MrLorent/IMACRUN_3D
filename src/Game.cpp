@@ -26,6 +26,55 @@ void Game::initGame()
     _player = Player(_caseSubdivisions);
 }
 
+
+void Game::initGameFromSave(){
+    _playerIndex = _defaultIndex;
+    _turn = 0;
+    _camera = Camera(_caseSubdivisions);
+    _map = Map();
+
+    std::ifstream file("./external/save.txt");
+        if(file) {
+    
+            //Charger Map courrante
+            unsigned int k;
+            k=0;
+            std::vector<char> mapLoaded;
+            char caractere;
+            while(_map.size() < 100){
+                while(k!=25){
+                    for (unsigned int i = 0 ; i != 5 ; i ++){ 
+                        file.get(caractere); 
+                        mapLoaded.push_back(caractere);
+                        k++;
+                    }
+                    file.get(caractere);//retour à la ligne
+                }
+                //_map._map.push_back(mapLoaded[_map.size()]) ;
+            }
+            
+            //Charger position joueur
+            int coord;
+            glm::vec3 newPosition;
+            for (unsigned int i =0 ; i<3 ; i++){
+                file >> coord;
+                newPosition[i]=coord;
+            }
+            _player = Player(_caseSubdivisions);
+            _player.setPosition(newPosition); 
+
+            //Charger score
+            int score;
+            file >> score;
+            setScore(score); 
+
+            remove("save.txt");
+        }else
+        {
+            std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+        }
+}
+
 void Game::saveGame(){
     
     std::ofstream file;
