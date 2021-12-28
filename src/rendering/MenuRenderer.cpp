@@ -72,16 +72,37 @@ void MenuRenderer::drawButtons(Menu& current)
 
 void MenuRenderer::drawMainMenu(Menu& menu)
 {
+    _title.draw(
+        "IMACRUN",
+        glm::vec2(_WINDOW_WIDTH/2.f -100.f, _WINDOW_HEIGHT-100.f),
+        glm::vec3(1.f,1.f,0.f),
+        _TEXT_PROJECTION_MATRIX
+    );
+
     drawButtons(menu);
 }
 
 void MenuRenderer::drawGamePaused(Menu& menu)
 {
+    _title.draw(
+        "GAME PAUSED",
+        glm::vec2(_WINDOW_WIDTH/2.f -200.f, _WINDOW_HEIGHT-100.f),
+        glm::vec3(1.f,1.f,0.f),
+        _TEXT_PROJECTION_MATRIX
+    );
+
     drawButtons(menu);
 }
 
 void MenuRenderer::drawGameOver(Menu& menu)
 {
+    _title.draw(
+        "GAME OVER",
+        glm::vec2(_WINDOW_WIDTH/2.f -200.f, _WINDOW_HEIGHT-100.f),
+        glm::vec3(1.f,1.f,0.f),
+        _TEXT_PROJECTION_MATRIX
+    );
+
     drawButtons(menu);
 }
 
@@ -114,5 +135,12 @@ void MenuRenderer::drawScores(Menu& menu, std::vector<Score>& scores)
 
 void MenuRenderer::drawScoreInput(Menu& menu)
 {
+    _title.draw(
+        "NOUVEAU MEILLEUR SCORE !",
+        glm::vec2(_WINDOW_WIDTH/2.f -265.f, _WINDOW_HEIGHT-100.f),
+        glm::vec3(1.f,1.f,0.f),
+        _TEXT_PROJECTION_MATRIX
+    );
+
     drawButtons(menu);
 }

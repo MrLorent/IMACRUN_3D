@@ -58,7 +58,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     // SCORE INPUT
     buttons = {
-        Button("Valider", MAIN_MENU),
+        Button("Enregistrer", MAIN_MENU),
         Button("Retour", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
@@ -110,12 +110,10 @@ void App::render()
             if(_game.getScore() > _scores[_scores.size()-1].score)
             {
                 _menuIndex = SCORE_INPUT;
-                _menuRenderer.drawScoreInput(_menuList[_menuIndex]);
             }
             else
             {
                 _menuIndex = GAME_OVER;
-                _menuRenderer.drawGameOver(_menuList[_menuIndex]);
             }
         }
         else if(_game._paused)
@@ -134,8 +132,14 @@ void App::render()
             _gameRenderer.render(_game);
         }
         break;
+    case GAME_OVER:
+        _menuRenderer.drawGameOver(_menuList[_menuIndex]);
+        break;
     case SCORES:
         _menuRenderer.drawScores(_menuList[_menuIndex], _scores);
+        break;
+    case SCORE_INPUT:
+        _menuRenderer.drawScoreInput(_menuList[_menuIndex]);
         break;
     
     default:

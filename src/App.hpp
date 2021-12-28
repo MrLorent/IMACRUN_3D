@@ -26,6 +26,7 @@ class App
         std::vector<Menu> _menuList;
         short unsigned int _menuIndex;
         MenuRenderer _menuRenderer;
+        std::string pseudoInput;
 
         /* Game entities */
         Game _game;
