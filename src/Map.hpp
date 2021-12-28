@@ -5,6 +5,7 @@
 #include <deque>
 #include <random>
 #include <iostream>
+#include <fstream>
 
 #include "glm/glm.hpp"
 #include "iostream"
