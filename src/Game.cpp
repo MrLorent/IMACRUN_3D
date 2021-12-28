@@ -26,6 +26,35 @@ void Game::initGame()
     _player = Player(_caseSubdivisions);
 }
 
+void Game::saveGame(){
+    
+    std::ofstream file;
+    std::string const fileName("./external/save.txt");
+    file.open(fileName, std::ios::out | std::ios::binary);
+    unsigned int k;
+    k=0;
+
+    if(file.is_open())    
+    {
+        while( k < _map.size() ) { 
+            for (unsigned int i = 0 ; i != 5 ; i++){ 
+                file << _map[i]; 
+            }
+            file << std::endl;
+            k++;
+        }
+        glm::vec3 currentPosition = _player.getPosition();
+        file <<  currentPosition[0] << currentPosition[1] << currentPosition[2] << std::endl;          
+        file << _player.getScore() << std::endl;  
+        file.close();
+        std::cout << "La partie a ete sauvegardee." << std::endl;  
+    }
+    else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier." << std::endl;
+    }
+}
+
 void Game::runGame()
 {
     checkPlayerPosition();

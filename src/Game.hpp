@@ -46,6 +46,7 @@ class Game
 
         void initGame();
         void runGame();
+        void saveGame();
 
         void key_callback(int key, int scancode, int action, int mods);
         void mouse_button_callback(int button, int action, int mods);
