@@ -7,6 +7,13 @@
 class MenuRenderer
 {
 private:
+    // ATTRIBUTS
+    /* Window parameters */
+    int _WINDOW_WIDTH;
+    int _WINDOW_HEIGHT;
+    glm::mat4 _PROJECTION_MATRIX;
+    glm::mat4 _TEXT_PROJECTION_MATRIX;
+
     glimac::FilePath _applicationPath;
     Text2D _PTMono;
 public:
@@ -21,10 +28,14 @@ public:
     //~MenuRenderer();
 
     // METHODS
+    void setWindowParameters(
+        const unsigned width,
+        const unsigned height,
+        glm::mat4& projection
+    );
+
     void render(
         std::vector<Menu> menu_list,
-        short unsigned int menu_index,
-        unsigned int window_width,
-        unsigned int window_height
+        short unsigned int menu_index
     );
 };

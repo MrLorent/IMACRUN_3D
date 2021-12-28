@@ -68,12 +68,12 @@ void App::render()
     switch (_menuIndex)
     {
     case MAIN_MENU:
-        _menuRenderer.render(_menuList, _menuIndex, _WINDOW_WIDTH, _WINDOW_HEIGHT);
+        _menuRenderer.render(_menuList, _menuIndex);
         break;
     case GAME:
         if(_game._finished || _game._paused)
         {
-            _menuRenderer.render(_menuList, _menuIndex, _WINDOW_WIDTH, _WINDOW_HEIGHT);
+            _menuRenderer.render(_menuList, _menuIndex);
         }
         else if(!_game._running)
         {
@@ -89,7 +89,7 @@ void App::render()
         break;
     
     default:
-        _menuRenderer.render(_menuList, _menuIndex, _WINDOW_WIDTH, _WINDOW_HEIGHT);
+        _menuRenderer.render(_menuList, _menuIndex);
         break;
     }
 }
@@ -183,5 +183,6 @@ void App::size_callback(GLFWwindow* window, int width, int height)
     _WINDOW_WIDTH = width;
     _WINDOW_HEIGHT = height;
 
+    _menuRenderer.setWindowParameters(width, height, _PROJECTION_MATRIX);
     _gameRenderer.setWindowParameters(width, height, _PROJECTION_MATRIX);
 }

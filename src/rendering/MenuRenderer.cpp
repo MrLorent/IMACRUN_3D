@@ -18,20 +18,29 @@ MenuRenderer::MenuRenderer(glimac::FilePath applicationPath)
 
 // METHODS
 
+void MenuRenderer::setWindowParameters(
+    const unsigned width,
+    const unsigned height,
+    glm::mat4& projection
+)
+{
+    _WINDOW_WIDTH = width;
+    _WINDOW_HEIGHT = height;
+    _PROJECTION_MATRIX = projection;
+    _TEXT_PROJECTION_MATRIX = glm::ortho(
+        0.0f,
+        static_cast<float>(width),
+        0.0f,
+        static_cast<float>(height)
+    );
+}
+
 void MenuRenderer::render(
     std::vector<Menu> menu_list,
-    short unsigned int menu_index,
-    unsigned int window_width,
-    unsigned int window_height
+    short unsigned int menu_index
     )
 {
     Menu current_menu = menu_list[menu_index];
-    glm::mat4 projectionMatrix = glm::ortho(
-        0.0f,
-        static_cast<float>(window_width),
-        0.0f,
-        static_cast<float>(window_height)
-    );
 
     /* Draw the buttons */
     glm::vec3 text_color(1.f);
@@ -48,7 +57,7 @@ void MenuRenderer::render(
             current_menu.getButtonAt(i-1).label,
             glm::vec2(50.f, margin_bottom),
             text_color,
-            projectionMatrix
+            _TEXT_PROJECTION_MATRIX
         );
 
         margin_bottom += 50.f;

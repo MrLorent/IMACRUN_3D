@@ -16,13 +16,13 @@ private:
     int _WINDOW_WIDTH;
     int _WINDOW_HEIGHT;
     glm::mat4 _PROJECTION_MATRIX;
+    glm::mat4 _TEXT_PROJECTION_MATRIX;
 
     glimac::FilePath _applicationPath;
     unsigned int _renderingLength;
     short int _rotationDirection;
     unsigned int _rotatingIndex;
     Text2D _text;
-    glm::mat4 _textProjectionMatrix;
 
 
     std::deque<glm::vec3> currentLights;

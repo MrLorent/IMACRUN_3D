@@ -10,12 +10,6 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     
      /* Initialisation of the fonts */
     _text = Text2D(20, _applicationPath, "PTMono.ttc");
-    _textProjectionMatrix = glm::ortho(
-        0.0f,
-        static_cast<float>(720),
-        0.0f,
-        static_cast<float>(720)
-    );
 }
 
 void GameRenderer::setWindowParameters(
@@ -27,6 +21,12 @@ void GameRenderer::setWindowParameters(
     _WINDOW_WIDTH = width;
     _WINDOW_HEIGHT = height;
     _PROJECTION_MATRIX = projection;
+    _TEXT_PROJECTION_MATRIX = glm::ortho(
+        0.0f,
+        static_cast<float>(width),
+        0.0f,
+        static_cast<float>(height)
+    );
 }
 
 void GameRenderer::rotateCamera(Camera& cam, unsigned int caseSubdivisions){
@@ -275,14 +275,14 @@ void GameRenderer::render(
                     );
     _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
     MMatrix=glm::scale(
-                        MMatrix,
-                        glm::vec3(2,2,2)
-                    );
+        MMatrix,
+        glm::vec3(2,2,2)
+    );
 
     _text.draw(
-            "Score : "+std::to_string(game._player.getScore()),
-            glm::vec2(50.f, 600.f ),
-            glm::vec3(1.f),
-            _textProjectionMatrix
-        );
+        "Score : "+std::to_string(game._player.getScore()),
+        glm::vec2(50.f, 600.f ),
+        glm::vec3(1.f),
+        _TEXT_PROJECTION_MATRIX
+    );
 }
