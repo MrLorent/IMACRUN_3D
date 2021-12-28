@@ -26,8 +26,8 @@ private:
     glm::mat4 _TEXT_PROJECTION_MATRIX;
 
     glimac::FilePath _applicationPath;
-    Text2D _PTMono;
-    Text2D _TinyPTMono;
+    Text2D _title;
+    Text2D _text;
 
     void drawButtons(Menu& current);
 public:
@@ -54,5 +54,7 @@ public:
     );
 
     void drawMainMenu(Menu& menu);
+    void drawGameOver(Menu& menu);
+    void drawGamePaused(Menu& menu);
     void drawScores(Menu& menu, std::vector<Score>& scores);
 };

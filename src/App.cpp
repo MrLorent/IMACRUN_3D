@@ -30,6 +30,15 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     buttons.clear();
 
+    // GAME OVER MENU
+    buttons = {
+        Button("Recommencer", GAME),
+        Button("Menu Principal", MAIN_MENU)
+    };
+    _menuList.push_back(Menu(buttons));
+
+    buttons.clear();
+
     // LOAD MENU
     buttons = {
         Button("Valider", GAME),
@@ -96,9 +105,14 @@ void App::render()
         _menuRenderer.drawMainMenu(_menuList[_menuIndex]);
         break;
     case GAME:
-        if(_game._finished || _game._paused)
+        if(_game._finished)
         {
-            _menuRenderer.render(_menuList, _menuIndex);
+            _menuIndex = GAME_OVER;
+            _menuRenderer.drawGameOver(_menuList[_menuIndex]);
+        }
+        else if(_game._paused)
+        {
+            _menuRenderer.drawGamePaused(_menuList[_menuIndex]);
         }
         else if(!_game._running)
         {
@@ -152,6 +166,11 @@ void App::key_callback(int key, int scancode, int action, int mods)
                         _game._running = false;
                         _game._finished = false;
                     }
+                    break;
+                case GAME_OVER:
+                    _game._paused = false;
+                    _game._running = false;
+                    _game._finished = false;
                     break;
                 case LOAD_MENU:
                     if(BUTTON_CLICKED == 0)

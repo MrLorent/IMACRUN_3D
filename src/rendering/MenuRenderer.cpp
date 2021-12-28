@@ -7,8 +7,8 @@ MenuRenderer::MenuRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath)
 {
     /* Initialisation of the fonts */
-    _PTMono = Text2D(40, _applicationPath, "PTMono.ttc");
-    _TinyPTMono = Text2D(30, _applicationPath, "PTMono.ttc");
+    _title = Text2D(40, _applicationPath, "PTMono.ttc");
+    _text = Text2D(30, _applicationPath, "PTMono.ttc");
 }
 
 // DESTRUCTORS
@@ -59,7 +59,7 @@ void MenuRenderer::drawButtons(Menu& current)
             text_color = glm::vec3(1.f);
         }
 
-        _PTMono.draw(
+        _title.draw(
             current.getButtonAt(i-1).label,
             glm::vec2(50.f, margin_bottom),
             text_color,
@@ -75,9 +75,19 @@ void MenuRenderer::drawMainMenu(Menu& menu)
     drawButtons(menu);
 }
 
+void MenuRenderer::drawGamePaused(Menu& menu)
+{
+    drawButtons(menu);
+}
+
+void MenuRenderer::drawGameOver(Menu& menu)
+{
+    drawButtons(menu);
+}
+
 void MenuRenderer::drawScores(Menu& menu, std::vector<Score>& scores)
 {
-    _PTMono.draw(
+    _title.draw(
         "MEILLEURS SCORES",
         glm::vec2(_WINDOW_WIDTH/2.f -200.f, _WINDOW_HEIGHT-100.f),
         glm::vec3(1.f,1.f,0.f),
@@ -89,7 +99,7 @@ void MenuRenderer::drawScores(Menu& menu, std::vector<Score>& scores)
 
     for(size_t i=0; i<scores.size();++i)
     {
-        _TinyPTMono.draw(
+        _text.draw(
             std::to_string(scores[i].place) + "    |    " + scores[i].name + "    |    " + std::to_string(scores[i].score),
             glm::vec2(marginleft, _WINDOW_HEIGHT - marginTop),
             glm::vec3(1.f),
