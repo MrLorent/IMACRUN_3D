@@ -4,6 +4,17 @@
 #include "Menu.hpp"
 #include "Text2D.hpp"
 
+struct Score
+{
+    short unsigned int place;
+    std::string name;
+    unsigned int score;
+
+    Score(short unsigned int p, std::string n, unsigned int s)
+        :place(p), name(n), score(s)
+    {}
+};
+
 class MenuRenderer
 {
 private:
@@ -16,6 +27,9 @@ private:
 
     glimac::FilePath _applicationPath;
     Text2D _PTMono;
+    Text2D _TinyPTMono;
+
+    void drawButtons(Menu& current);
 public:
     // CONSTRUCTORS
     /* basic constructors */
@@ -39,5 +53,6 @@ public:
         short unsigned int menu_index
     );
 
-    void drawButtons(Menu& current);
+    void drawMainMenu(Menu& menu);
+    void drawScores(Menu& menu, std::vector<Score>& scores);
 };

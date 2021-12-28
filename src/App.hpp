@@ -22,6 +22,7 @@ class App
         glimac::FilePath _applicationPath;
 
         /* Application parameters */
+        std::vector<Score> _scores;
         std::vector<Menu> _menuList;
         short unsigned int _menuIndex;
         MenuRenderer _menuRenderer;
@@ -50,6 +51,8 @@ class App
         // SETTERS
 
         // METHODS
+        void getBestScores();
+
         /* Graphics */
 
         void render();

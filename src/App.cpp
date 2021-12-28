@@ -6,6 +6,9 @@
 App::App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
     :_applicationPath(glimac::FilePath(path))
 {   
+    /* Initialization of the best scores */
+    getBestScores();
+
     /* Initialization of the navigation */
     // MAIN MENU
     std::vector<Button> buttons = {
@@ -62,13 +65,35 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
 // METHODS
 
+void App::getBestScores()
+{
+    std::ifstream file("./externals/scores.txt");
+    if(file) {
+        std::string pseudo;
+        unsigned int score;
+
+        for(short unsigned int i=0; i<3;++i)
+        {
+            file >> pseudo;
+            file >> score;
+
+            _scores.push_back(Score(i+1, pseudo, score));
+        }
+
+        file.close();
+    }else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le scores.txt." << std::endl;
+    }
+}
+
 /* Graphics */
 void App::render()
 {
     switch (_menuIndex)
     {
     case MAIN_MENU:
-        _menuRenderer.render(_menuList, _menuIndex);
+        _menuRenderer.drawMainMenu(_menuList[_menuIndex]);
         break;
     case GAME:
         if(_game._finished || _game._paused)
@@ -86,6 +111,9 @@ void App::render()
             _game.runGame();
             _gameRenderer.render(_game);
         }
+        break;
+    case SCORES:
+        _menuRenderer.drawScores(_menuList[_menuIndex], _scores);
         break;
     
     default:
