@@ -18,6 +18,17 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     );
 }
 
+void GameRenderer::setWindowParameters(
+    const unsigned width,
+    const unsigned height,
+    glm::mat4& projection
+)
+{
+    _WINDOW_WIDTH = width;
+    _WINDOW_HEIGHT = height;
+    _PROJECTION_MATRIX = projection;
+}
+
 void GameRenderer::rotateCamera(Camera& cam, unsigned int caseSubdivisions){
     if(_rotatingIndex > caseSubdivisions * 2)
     {
@@ -82,7 +93,6 @@ void GameRenderer::load3DModels()
 }
 
 void GameRenderer::render(
-    glm::mat4 projectionMatrix,
     Game& game
 )
 {
@@ -116,10 +126,10 @@ void GameRenderer::render(
             switch (map[map.getMapWidth() * i + k])
             {
                 case Map::FLOOR:
-                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::PASSED_TURN:
-                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::WALL:
                     if(k==0){
@@ -128,7 +138,7 @@ void GameRenderer::render(
                             glm::vec3(0.4f,0.f,0.f)
                         );                    
 
-                        _wall.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                        _wall.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 
                         MMatrix = glm::translate(
                             MMatrix,
@@ -147,7 +157,7 @@ void GameRenderer::render(
                             glm::vec3(0.f, 1.f, 0.f)
                         );
 
-                        _wall.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                        _wall.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 
                         MMatrix = glm::rotate(
                             MMatrix,
@@ -168,7 +178,7 @@ void GameRenderer::render(
                         glm::vec3(0.f,1.f,0.f)
                     );
                     _light.MMatrixLight = MMatrix;
-                    _light.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    _light.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     MMatrix = glm::translate(
                         MMatrix,
                         glm::vec3(0.f,-1.f,0.f)
@@ -177,12 +187,12 @@ void GameRenderer::render(
                 case Map::HOLE:
                     break;
                 case Map::BAREL:
-                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     MMatrix = glm::translate(
                         MMatrix,
                         glm::vec3(0.f,0.5f,0.f)
                     );
-                    _barrel.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    _barrel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     MMatrix = glm::translate(
                         MMatrix,
                         glm::vec3(0.f,-0.5f,0.f)
@@ -190,7 +200,7 @@ void GameRenderer::render(
                     break;
                 case Map::COLLECTIBLE:
 
-                    _floor.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     MMatrix = glm::translate(
                         MMatrix,
                         glm::vec3(0.f,0.5f,0.f)
@@ -199,7 +209,7 @@ void GameRenderer::render(
                         MMatrix,
                         glm::vec3(0.25,0.25,0.25)
                     );
-                    _bottle.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+                    _bottle.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     MMatrix=glm::scale(
                         MMatrix,
                         glm::vec3(4,4,4)
@@ -263,7 +273,7 @@ void GameRenderer::render(
                         MMatrix,
                         glm::vec3(0.5,0.5,0.5)
                     );
-    _player.draw(projectionMatrix, VMatrix, MMatrix, currentLights);
+    _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
     MMatrix=glm::scale(
                         MMatrix,
                         glm::vec3(2,2,2)

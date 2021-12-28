@@ -5,10 +5,7 @@
 
 App::App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
     :_applicationPath(glimac::FilePath(path))
-{
-    /* Initialization of the window size */
-    size_callback(window, width, height);
-    
+{   
     /* Initialization of the navigation */
     // MAIN MENU
     std::vector<Button> buttons = {
@@ -18,7 +15,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     };
     _menuList.push_back(Menu(buttons));
     
-    buttons.empty();
+    buttons.clear();
 
     // GAME PAUSED MENU
     buttons = {
@@ -28,7 +25,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     };
     _menuList.push_back(Menu(buttons));
 
-    buttons.empty();
+    buttons.clear();
 
     // LOAD MENU
     buttons = {
@@ -37,7 +34,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     };
     _menuList.push_back(Menu(buttons));
 
-    buttons.empty();
+    buttons.clear();
 
     // SCORES
     buttons = {
@@ -45,7 +42,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     };
     _menuList.push_back(Menu(buttons));
 
-    buttons.empty();
+    buttons.clear();
 
     // SCORE INPUT
     buttons = {
@@ -58,6 +55,9 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     _menuRenderer = MenuRenderer(_applicationPath);
 
     _gameRenderer = GameRenderer(_applicationPath);
+
+    /* Initialization of the window size */
+    size_callback(window, width, height);
 }
 
 // METHODS
@@ -84,7 +84,7 @@ void App::render()
         {
             /* Running game */
             _game.runGame();
-            _gameRenderer.render(_PROJECTION_MATRIX, _game);
+            _gameRenderer.render(_game);
         }
         break;
     
@@ -171,6 +171,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
 {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
+    
     _PROJECTION_MATRIX = glm::perspectiveFov(
         glm::radians(70.0f),
         float(width),
@@ -181,5 +182,6 @@ void App::size_callback(GLFWwindow* window, int width, int height)
 
     _WINDOW_WIDTH = width;
     _WINDOW_HEIGHT = height;
-    
+
+    _gameRenderer.setWindowParameters(width, height, _PROJECTION_MATRIX);
 }

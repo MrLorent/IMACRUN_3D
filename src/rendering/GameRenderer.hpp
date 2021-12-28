@@ -12,7 +12,10 @@ class GameRenderer
 {
 private:
     // ATTRIBUTS
-    /* window parameters */
+    /* Window parameters */
+    int _WINDOW_WIDTH;
+    int _WINDOW_HEIGHT;
+    glm::mat4 _PROJECTION_MATRIX;
 
     glimac::FilePath _applicationPath;
     unsigned int _renderingLength;
@@ -42,8 +45,16 @@ public:
     void load3DModels();
     void initMapRotation(int direction);
 
+    // METHODS
+
     void render(
-        glm::mat4 projectionMatrix,
         Game& game
     );
+
+    void setWindowParameters(
+        const unsigned width,
+        const unsigned height,
+        glm::mat4& projection
+    );
+
 };
