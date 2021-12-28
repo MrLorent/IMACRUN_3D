@@ -17,7 +17,6 @@ Map::Map()
 {
     loadMapElements();
     _distribution = std::uniform_int_distribution<int>(0,_mapElements.size()-1);
-    initMap();
 }
 
 Map::~Map()
@@ -93,6 +92,10 @@ void Map::initMap()
     }
 
 }
+void Map::add(const char c)
+{
+    _map.push_back(c);
+}
 
 void Map::empty()
 {
@@ -107,7 +110,7 @@ void Map::reloadMap()
     }
 }
 
-size_t Map::size()
+size_t Map::getSize()
 {
     return _map.size();
 }

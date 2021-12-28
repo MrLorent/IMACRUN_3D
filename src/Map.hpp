@@ -48,11 +48,12 @@ public:
     ~Map();
 
     // GETTERS
-    size_t size();
+    size_t getSize();
     unsigned short int getMapWidth();
 
     // METHODS
     void initMap();
+    void add(const char c);
     void empty();
     void reloadMap();
     void deleteFirstLigne();

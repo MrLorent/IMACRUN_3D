@@ -23,6 +23,7 @@ void Game::initGame()
     _turn = 0;
     _camera = Camera(_caseSubdivisions);
     _map = Map();
+    _map.initMap();
     _player = Player(_caseSubdivisions);
 }
 
@@ -32,47 +33,38 @@ void Game::initGameFromSave(){
     _turn = 0;
     _camera = Camera(_caseSubdivisions);
     _map = Map();
-
-    std::ifstream file("./external/save.txt");
-        if(file) {
     
-            //Charger Map courrante
-            unsigned int k;
-            k=0;
-            std::vector<char> mapLoaded;
-            char caractere;
-            while(_map.size() < 100){
-                while(k!=25){
-                    for (unsigned int i = 0 ; i != 5 ; i ++){ 
-                        file.get(caractere); 
-                        mapLoaded.push_back(caractere);
-                        k++;
-                    }
-                    file.get(caractere);//retour à la ligne
-                }
-                //_map._map.push_back(mapLoaded[_map.size()]) ;
-            }
-            
-            //Charger position joueur
-            int coord;
-            glm::vec3 newPosition;
-            for (unsigned int i =0 ; i<3 ; i++){
-                file >> coord;
-                newPosition[i]=coord;
-            }
-            _player = Player(_caseSubdivisions);
-            _player.setPosition(newPosition); 
+    /* Initialization of the game */
+    std::ifstream file("./externals/save.txt");
+    if(file) {
+        //Charger score
+        int score;
+        file >> score;
+        _player.setScore(score);
 
-            //Charger score
-            int score;
-            file >> score;
-            setScore(score); 
-
-            remove("save.txt");
-        }else
-        {
-            std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+        //Charger position joueur
+        float coord;
+        glm::vec3 position;
+        for (unsigned int i =0 ; i<3 ; i++){
+            file >> coord;
+            position[i] = coord;
         }
+        _player = Player(_caseSubdivisions);
+        _player.setPosition(position);
+
+        //Charger Map courrante
+        unsigned int mapSize;
+        file >> mapSize;
+        char caractere;
+        for(unsigned int i=0; i < mapSize ; ++i){ 
+            file >> caractere; 
+            _map.add(caractere);
+        }
+        file.close();
+    }else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+    }
 }
 
 void Game::saveGame(){
@@ -87,7 +79,8 @@ void Game::saveGame(){
         file <<  _player.getPosition().x << std::endl;
         file << _player.getPosition().y << std::endl;
         file << _player.getPosition().z << std::endl;
-        for(size_t i=0; i < _map.size(); ++i) { 
+        file << _map.getSize();
+        for(size_t i=0; i < _map.getSize(); ++i) { 
             file << _map[i]; 
             if(i%_map.getMapWidth() == _map.getMapWidth()-1) file << std::endl;
         }            
@@ -119,7 +112,7 @@ void Game::runGame()
                 _map.deleteFirstLigne();
             }
             _caseSubdivisionsIndex = 0;
-            if(_map.size() < 80 && _map.size()%_map.getMapWidth() == 0) _map.reloadMap();
+            if(_map.getSize() < 80 && _map.getSize()%_map.getMapWidth() == 0) _map.reloadMap();
 
             if(_turn != 0) _wallDistance--;
         }
