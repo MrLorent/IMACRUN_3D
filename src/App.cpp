@@ -121,6 +121,12 @@ void App::key_callback(int key, int scancode, int action, int mods)
                     _game._paused = false;
                     if(BUTTON_CLICKED != 0)
                     { // "RECOMMENCER" || "SAUVEGARDER" || "RETOUR AU MENU"
+                       if(BUTTON_CLICKED == 2){
+                            std::cout << "Sauvegarde en cours" << std::endl ;
+                            _game.saveGame();
+                            std::cout << "Retour menu pricipal." << std::endl ;
+
+                        }
                         _game._running = false;
                         _game._finished = false;
                     }
