@@ -20,6 +20,11 @@ void Player::setPosition(const glm::vec3 newPosition)
     _position = newPosition;
 }
 
+void Player::setScore(const int score)
+{
+    _score = score;
+}
+
 void Player::goLeft()
 {
     if(_position.x != -1) _position.x -= 1;

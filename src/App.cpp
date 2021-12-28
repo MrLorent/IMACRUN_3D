@@ -26,7 +26,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     buttons = {
         Button("Reprendre", GAME),
         Button("Recommencer", GAME),
-        Button("Menu Principal", MAIN_MENU)
+        Button("Sauvegarder et quitter", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
 
@@ -122,14 +122,16 @@ void App::key_callback(int key, int scancode, int action, int mods)
                     if(BUTTON_CLICKED != 0)
                     { // "RECOMMENCER" || "SAUVEGARDER" || "RETOUR AU MENU"
                        if(BUTTON_CLICKED == 2){
-                            std::cout << "Sauvegarde en cours" << std::endl ;
                             _game.saveGame();
-                            std::cout << "Retour menu pricipal." << std::endl ;
-
                         }
                         _game._running = false;
                         _game._finished = false;
                     }
+                    break;
+                case LOAD_MENU:
+                    _game.initGameFromSave();
+                    _gameRenderer.load3DModels();
+                    _game._running = true;
                     break;
                 default:
                     break;

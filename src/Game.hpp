@@ -45,6 +45,7 @@ class Game
         bool isRunning();
 
         void initGame();
+        void initGameFromSave();
         void runGame();
         void saveGame();
 

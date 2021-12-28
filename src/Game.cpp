@@ -23,7 +23,48 @@ void Game::initGame()
     _turn = 0;
     _camera = Camera(_caseSubdivisions);
     _map = Map();
+    _map.initMap();
     _player = Player(_caseSubdivisions);
+}
+
+
+void Game::initGameFromSave(){
+    _playerIndex = _defaultIndex;
+    _turn = 0;
+    _camera = Camera(_caseSubdivisions);
+    _map = Map();
+    
+    /* Initialization of the game */
+    std::ifstream file("./externals/save.txt");
+    if(file) {
+        //Charger score
+        int score;
+        file >> score;
+        _player.setScore(score);
+
+        //Charger position joueur
+        float coord;
+        glm::vec3 position;
+        for (unsigned int i =0 ; i<3 ; i++){
+            file >> coord;
+            position[i] = coord;
+        }
+        _player = Player(_caseSubdivisions);
+        _player.setPosition(position);
+
+        //Charger Map courrante
+        unsigned int mapSize;
+        file >> mapSize;
+        char caractere;
+        for(unsigned int i=0; i < mapSize ; ++i){ 
+            file >> caractere; 
+            _map.add(caractere);
+        }
+        file.close();
+    }else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+    }
 }
 
 void Game::saveGame(){
@@ -38,7 +79,8 @@ void Game::saveGame(){
         file <<  _player.getPosition().x << std::endl;
         file << _player.getPosition().y << std::endl;
         file << _player.getPosition().z << std::endl;
-        for(size_t i=0; i < _map.size(); ++i) { 
+        file << _map.getSize();
+        for(size_t i=0; i < _map.getSize(); ++i) { 
             file << _map[i]; 
             if(i%_map.getMapWidth() == _map.getMapWidth()-1) file << std::endl;
         }            
@@ -70,7 +112,7 @@ void Game::runGame()
                 _map.deleteFirstLigne();
             }
             _caseSubdivisionsIndex = 0;
-            if(_map.size() < 80 && _map.size()%_map.getMapWidth() == 0) _map.reloadMap();
+            if(_map.getSize() < 80 && _map.getSize()%_map.getMapWidth() == 0) _map.reloadMap();
 
             if(_turn != 0) _wallDistance--;
         }

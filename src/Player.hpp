@@ -30,6 +30,7 @@ class Player
 
         // SETTER
         void setPosition(const glm::vec3 newPosition);
+        void setScore(const int score);
         void goLeft();
         void goRight();
 
