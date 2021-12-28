@@ -34,19 +34,14 @@ void Map::loadMapElements()
         int linePerElement;
         file >> nbElements;
         file >> linePerElement;
-        std::cout << nbElements << std::endl;
-        std::cout << linePerElement << std::endl;
 
         for(int k=0; k<nbElements;++k ) {
             for(int j=0; j<_mapWidth*linePerElement; ++j){ 
                 file >> caractere;
                 element.push_back(caractere);
-                std::cout << " " << caractere << " ";
-                if(j%_mapWidth == 4) std::cout << std::endl;
             }
             _mapElements.push_back(element);
             element.clear();
-            std::cout << std::endl;
         }
         file.close();
     }else

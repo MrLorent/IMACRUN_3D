@@ -29,23 +29,19 @@ void Game::initGame()
 void Game::saveGame(){
     
     std::ofstream file;
-    std::string const fileName("./external/save.txt");
+    std::string const fileName("./externals/save.txt");
     file.open(fileName, std::ios::out | std::ios::binary);
-    unsigned int k;
-    k=0;
 
     if(file.is_open())    
     {
-        while( k < _map.size() ) { 
-            for (unsigned int i = 0 ; i != 5 ; i++){ 
-                file << _map[i]; 
-            }
-            file << std::endl;
-            k++;
-        }
-        glm::vec3 currentPosition = _player.getPosition();
-        file <<  currentPosition[0] << currentPosition[1] << currentPosition[2] << std::endl;          
-        file << _player.getScore() << std::endl;  
+        file << _player.getScore() << std::endl;
+        file <<  _player.getPosition().x << std::endl;
+        file << _player.getPosition().y << std::endl;
+        file << _player.getPosition().z << std::endl;
+        for(size_t i=0; i < _map.size(); ++i) { 
+            file << _map[i]; 
+            if(i%_map.getMapWidth() == _map.getMapWidth()-1) file << std::endl;
+        }            
         file.close();
         std::cout << "La partie a ete sauvegardee." << std::endl;  
     }
