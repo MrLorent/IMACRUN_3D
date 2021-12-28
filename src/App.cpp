@@ -126,8 +126,11 @@ void App::key_callback(int key, int scancode, int action, int mods)
                     }
                     break;
                 case LOAD_MENU:
-                    _game.initGameFromSave();
-                    _game._running = true;
+                    if(BUTTON_CLICKED == 0)
+                    {
+                        _game.initGameFromSave();
+                        _game._running = true;
+                    }
                     break;
                 default:
                     break;

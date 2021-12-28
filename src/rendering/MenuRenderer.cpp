@@ -42,19 +42,24 @@ void MenuRenderer::render(
 {
     Menu current_menu = menu_list[menu_index];
 
+    drawButtons(current_menu);
+}
+
+void MenuRenderer::drawButtons(Menu& current)
+{
     /* Draw the buttons */
     glm::vec3 text_color(1.f);
     float margin_bottom = 50.f;
-    for(unsigned int i = current_menu.getNumberOfButtons(); i > 0; --i)
+    for(unsigned int i = current.getNumberOfButtons(); i > 0; --i)
     {
-        if((i-1) == current_menu.getButtonIndex()){
+        if((i-1) == current.getButtonIndex()){
             text_color = glm::vec3(1.f,1.f,0.f);
         }else{
             text_color = glm::vec3(1.f);
         }
 
         _PTMono.draw(
-            current_menu.getButtonAt(i-1).label,
+            current.getButtonAt(i-1).label,
             glm::vec2(50.f, margin_bottom),
             text_color,
             _TEXT_PROJECTION_MATRIX

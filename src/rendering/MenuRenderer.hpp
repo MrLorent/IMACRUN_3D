@@ -38,4 +38,6 @@ public:
         std::vector<Menu> menu_list,
         short unsigned int menu_index
     );
+
+    void drawButtons(Menu& current);
 };
