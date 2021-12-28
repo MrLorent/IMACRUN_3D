@@ -14,9 +14,9 @@ class App
     private:
         // ATTRIBUTS
         /* Window parameters */
-        int _width;
-        int _height;
-        glm::mat4 _projectionMatrix;
+        int _WINDOW_WIDTH;
+        int _WINDOW_HEIGHT;
+        glm::mat4 _PROJECTION_MATRIX;
 
         /* External parameters */
         glimac::FilePath _applicationPath;

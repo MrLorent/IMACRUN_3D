@@ -8,8 +8,6 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 {
     /* Initialization of the window size */
     size_callback(window, width, height);
-    _width = width;
-    _height = height;
     
     /* Initialization of the navigation */
     // MAIN MENU
@@ -70,12 +68,12 @@ void App::render()
     switch (_menuIndex)
     {
     case MAIN_MENU:
-        _menuRenderer.render(_menuList, _menuIndex, _width, _height);
+        _menuRenderer.render(_menuList, _menuIndex, _WINDOW_WIDTH, _WINDOW_HEIGHT);
         break;
     case GAME:
         if(_game._finished || _game._paused)
         {
-            _menuRenderer.render(_menuList, _menuIndex, _width, _height);
+            _menuRenderer.render(_menuList, _menuIndex, _WINDOW_WIDTH, _WINDOW_HEIGHT);
         }
         else if(!_game._running)
         {
@@ -86,12 +84,12 @@ void App::render()
         {
             /* Running game */
             _game.runGame();
-            _gameRenderer.render(_projectionMatrix, _game);
+            _gameRenderer.render(_PROJECTION_MATRIX, _game);
         }
         break;
     
     default:
-        _menuRenderer.render(_menuList, _menuIndex, _width, _height);
+        _menuRenderer.render(_menuList, _menuIndex, _WINDOW_WIDTH, _WINDOW_HEIGHT);
         break;
     }
 }
@@ -173,7 +171,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
 {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
-    _projectionMatrix = glm::perspectiveFov(
+    _PROJECTION_MATRIX = glm::perspectiveFov(
         glm::radians(70.0f),
         float(width),
         float(height),
@@ -181,6 +179,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
         100.0f
     );
 
-    _width = width;
-    _height = height;
+    _WINDOW_WIDTH = width;
+    _WINDOW_HEIGHT = height;
+    
 }

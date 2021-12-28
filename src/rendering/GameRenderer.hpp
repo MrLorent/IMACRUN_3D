@@ -12,6 +12,7 @@ class GameRenderer
 {
 private:
     // ATTRIBUTS
+    /* window parameters */
 
     glimac::FilePath _applicationPath;
     unsigned int _renderingLength;
