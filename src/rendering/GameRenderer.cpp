@@ -6,6 +6,8 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
      _rotationDirection(0),
      _rotatingIndex(0)
 {
+    load3DModels();
+    
      /* Initialisation of the fonts */
     _text = Text2D(20, _applicationPath, "PTMono.ttc");
     _textProjectionMatrix = glm::ortho(

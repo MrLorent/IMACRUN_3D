@@ -81,7 +81,6 @@ void App::render()
         {
             /* Initiate game */
             _game.initGame();
-            _gameRenderer.load3DModels();
             _game._running = true;
         }else
         {
@@ -130,7 +129,6 @@ void App::key_callback(int key, int scancode, int action, int mods)
                     break;
                 case LOAD_MENU:
                     _game.initGameFromSave();
-                    _gameRenderer.load3DModels();
                     _game._running = true;
                     break;
                 default:
