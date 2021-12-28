@@ -111,3 +111,8 @@ void MenuRenderer::drawScores(Menu& menu, std::vector<Score>& scores)
 
     drawButtons(menu);
 }
+
+void MenuRenderer::drawScoreInput(Menu& menu)
+{
+    drawButtons(menu);
+}

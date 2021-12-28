@@ -41,7 +41,12 @@ class Game
         
         Game();
 
+        // GETTERS
+
+        inline const unsigned int getScore(){ return _player.getScore(); }
+
         //  METHODS
+        
         bool isRunning();
 
         void initGame();

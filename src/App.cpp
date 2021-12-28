@@ -107,8 +107,16 @@ void App::render()
     case GAME:
         if(_game._finished)
         {
-            _menuIndex = GAME_OVER;
-            _menuRenderer.drawGameOver(_menuList[_menuIndex]);
+            if(_game.getScore() > _scores[_scores.size()-1].score)
+            {
+                _menuIndex = SCORE_INPUT;
+                _menuRenderer.drawScoreInput(_menuList[_menuIndex]);
+            }
+            else
+            {
+                _menuIndex = GAME_OVER;
+                _menuRenderer.drawGameOver(_menuList[_menuIndex]);
+            }
         }
         else if(_game._paused)
         {
