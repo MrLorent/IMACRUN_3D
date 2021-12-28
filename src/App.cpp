@@ -101,13 +101,13 @@ void App::key_callback(int key, int scancode, int action, int mods)
 {
     switch (key)
         {
-        case 264: // up arrow
+        case GLFW_KEY_DOWN: // down arrow
             if(action != 0) _menuList[_menuIndex].changeCurrentButton(1);
             break;
-        case 265: // down arrow
+        case GLFW_KEY_UP: // up arrow
             if(action != 0) _menuList[_menuIndex].changeCurrentButton(-1);
             break;
-        case 257: // Enter
+        case GLFW_KEY_ENTER: // Enter
             if(action !=0)
             {
                 const short unsigned int PREVIOUS_MENU = _menuIndex;

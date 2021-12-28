@@ -1,6 +1,8 @@
 #pragma once
 #define GAME_HPP
 
+#include <GLFW/glfw3.h>
+
 #include "Camera.hpp"
 #include "Player.hpp"
 #include "Map.hpp"

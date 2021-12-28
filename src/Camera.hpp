@@ -15,7 +15,7 @@ private:
     float _xAngle;
     float _yAngle;
 
-    // FREELY ATTRIBUTS
+    // FREEFLY ATTRIBUTS
     glm::vec3 _position;
     /* look direction */
     float _phi;
@@ -30,7 +30,7 @@ private:
 public:
     // CONSTANTS
     static constexpr short unsigned int TRACKBALL = 0;
-    static constexpr short unsigned int FREELY = 1;
+    static constexpr short unsigned int FREEFLY = 1;
 
     short unsigned int _mode;
     short int _turning;
@@ -45,7 +45,7 @@ public:
 
     void changeDistance(float delta);
 
-    // FREELY CAMERA
+    // FREEFLY CAMERA
 
     void setPosition(glm::vec3 position);
     glm::vec3 getPosition(){

@@ -54,7 +54,7 @@ void Game::runGame()
 
 void Game::checkPlayerPosition()
 {
-    const char currentCase = _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
+    char currentCase = _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
     
     switch (currentCase)
     {
@@ -71,6 +71,20 @@ void Game::checkPlayerPosition()
             _paused = true;
         }
         break;
+    case Map::BAREL:
+        if(_player.getPosition().y == 0)
+        {
+            _finished = true;
+            _paused = true;
+        }
+        break;
+    case Map::COLLECTIBLE:
+        if(_player.getPosition().y == 0)
+            {
+                _player.upScore();
+                _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x]=Map::FLOOR;
+            }
+        
     default:
         break;
     }
@@ -166,49 +180,50 @@ void Game::key_callback(int key, int scancode, int action, int mods)
 {
     switch (key)
         {
-        case 256: //ECHAP
+        case GLFW_KEY_ESCAPE: //ECHAP 
             _running = false;
             break;
-        case 80: // 'P'
+        case GLFW_KEY_P: // 'P'
             if(action!=0)
             {
                 if(_paused) _paused = false;
                 else _paused = true;
             }
             break;
-        case 67: // 'C'
+        case GLFW_KEY_C: // 'C'
             if(action!=0) _camera.switchMode(); 
             break;
-        case 65: // 'Q'
+        case GLFW_KEY_A: // 'Q'
             if(action!=0){
                 if(_turn == LEFT) passTurn();
                 else _player.goLeft();
-                if(_camera._mode == Camera::FREELY) _camera.setPosition(_player.getPosition());
+                _camera.setPosition(_player.getPosition());
             }
             break;
-        case 68:
+        case GLFW_KEY_D:
             if(action!=0){
                 if(_turn == Player::RIGHT) passTurn();
                 else _player.goRight();
-                if(_camera._mode == Camera::FREELY) _camera.setPosition(_player.getPosition());
+                _camera.setPosition(_player.getPosition());
             }
             break;
-        case 32: // SPACEBAR
+        case GLFW_KEY_SPACE: // SPACEBAR
             _player._isJumping = true;
             break;
-        case 262: //Fleche droite
-            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(-2.*float(1));
+        case GLFW_KEY_RIGHT: //Fleche droite
+            _camera.rotateHorizontaly(-2.*float(1));
+            
             break;
 
-        case 263: //Fleche gauche
-            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(2.*float(1));
+        case GLFW_KEY_LEFT: //Fleche gauche
+            _camera.rotateHorizontaly(2.*float(1));
             break;
 
-        case 264: //Fleche bas
+        case GLFW_KEY_DOWN: //Fleche bas
             if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateVerticaly(-2.*float(1));
             break;
         
-        case 265: //Fleche haut
+        case GLFW_KEY_UP: //Fleche haut
             if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateVerticaly(2.*float(1));
             break;
         default:
