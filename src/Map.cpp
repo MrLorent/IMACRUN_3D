@@ -47,10 +47,6 @@ void Map::loadMapElements()
     {
         std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
     }
-    for(int i=0; i<_mapElements.size(); ++i)
-    {
-        std::cout << _mapElements[i].size() << std::endl;
-    }
 }
 
 void Map::initMap()
