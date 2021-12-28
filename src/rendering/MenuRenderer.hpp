@@ -57,5 +57,5 @@ public:
     void drawGameOver(Menu& menu);
     void drawGamePaused(Menu& menu);
     void drawScores(Menu& menu, std::vector<Score>& scores);
-    void drawScoreInput(Menu& menu);
+    void drawScoreInput(Menu& menu, std::string pseudo);
 };

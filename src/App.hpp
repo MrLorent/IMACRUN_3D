@@ -26,7 +26,7 @@ class App
         std::vector<Menu> _menuList;
         short unsigned int _menuIndex;
         MenuRenderer _menuRenderer;
-        std::string pseudoInput;
+        std::string _pseudoInput;
 
         /* Game entities */
         Game _game;
@@ -62,6 +62,7 @@ class App
         /* Control managers */
 
         void key_callback(int key, int scancode, int action, int mods);
+        void char_callback(unsigned int codepoint);
         void mouse_button_callback(int button, int action, int mods);
         void scroll_callback(double xoffset, double yoffset);
         void cursor_position_callback(double xpos, double ypos);

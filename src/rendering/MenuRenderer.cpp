@@ -133,14 +133,37 @@ void MenuRenderer::drawScores(Menu& menu, std::vector<Score>& scores)
     drawButtons(menu);
 }
 
-void MenuRenderer::drawScoreInput(Menu& menu)
+void MenuRenderer::drawScoreInput(Menu& menu, std::string pseudo)
 {
+    for(size_t i=pseudo.size(); i<3; ++i) pseudo += "_";
     _title.draw(
         "NOUVEAU MEILLEUR SCORE !",
         glm::vec2(_WINDOW_WIDTH/2.f -265.f, _WINDOW_HEIGHT-100.f),
         glm::vec3(1.f,1.f,0.f),
         _TEXT_PROJECTION_MATRIX
     );
+
+    _text.draw(
+        "Veuillez entrer votre pseudo :",
+        glm::vec2(_WINDOW_WIDTH/2.f -260.f, _WINDOW_HEIGHT - 250),
+        glm::vec3(1.f),
+        _TEXT_PROJECTION_MATRIX
+    );
+
+    _text.draw(
+        "(3 lettres seulement)",
+        glm::vec2(_WINDOW_WIDTH/2.f -200.f, _WINDOW_HEIGHT - 285),
+        glm::vec3(1.f),
+        _TEXT_PROJECTION_MATRIX
+    );
+
+    _title.draw(
+        pseudo,
+        glm::vec2(_WINDOW_WIDTH/2.f -50.f, _WINDOW_HEIGHT-350.f),
+        glm::vec3(1.f,1.f,1.f),
+        _TEXT_PROJECTION_MATRIX
+    );
+
 
     drawButtons(menu);
 }

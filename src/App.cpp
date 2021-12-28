@@ -139,7 +139,7 @@ void App::render()
         _menuRenderer.drawScores(_menuList[_menuIndex], _scores);
         break;
     case SCORE_INPUT:
-        _menuRenderer.drawScoreInput(_menuList[_menuIndex]);
+        _menuRenderer.drawScoreInput(_menuList[_menuIndex], _pseudoInput);
         break;
     
     default:
@@ -157,6 +157,9 @@ void App::key_callback(int key, int scancode, int action, int mods)
             break;
         case GLFW_KEY_UP: // up arrow
             if(action != 0) _menuList[_menuIndex].changeCurrentButton(-1);
+            break;
+        case GLFW_KEY_BACKSPACE:
+            if(action !=0 && _menuIndex == SCORE_INPUT) _pseudoInput.pop_back();
             break;
         case GLFW_KEY_ENTER: // Enter
             if(action !=0)
@@ -196,25 +199,17 @@ void App::key_callback(int key, int scancode, int action, int mods)
                 }
             }
             break;
-        case 49: // "1"
-            _menuIndex = MAIN_MENU;
-            break;
-        case 50: // "2"
-            _menuIndex = GAME;
-            break;
-        case 51: // "3"
-            _menuIndex = LOAD_MENU;
-            break;
-        case 323: // "4"
-            _menuIndex = SCORES;
-            break;
-        case 324: // "5"
-            _menuIndex = SCORE_INPUT;
-            break;
+        
         default:
-            std::cout << key << std::endl;
+                std::cout << key << std::endl;
             break;
         }
+}
+
+void App::char_callback(unsigned int codepoint)
+{
+    if(_menuIndex == SCORE_INPUT && _pseudoInput.size() < 3) _pseudoInput.push_back(std::toupper(char(codepoint)));
+    else std::cout << "code point: " << codepoint << std::endl;
 }
 
 void App::mouse_button_callback(int button, int action, int mods)
