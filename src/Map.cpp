@@ -26,50 +26,81 @@ Map::~Map()
 
 void Map::loadMapElements()
 {
-    std::vector<char> floor = {
-        'w','f','f','f','w',
-        'w','f','f','f','w',
-        'w','f','f','f','w',
-        'w','f','f','f','w',
-        'w','f','f','f','w'
-    };
-    _mapElements.push_back(floor);
+    std::ifstream file("./assets/map/map_elements.txt");
+    if(file) {
+        std::vector<char> element;
+        char caractere;
+        int nbElements;
+        int linePerElement;
+        file >> nbElements;
+        file >> linePerElement;
+        std::cout << nbElements << std::endl;
+        std::cout << linePerElement << std::endl;
 
-    std::vector<char> leftHole = {
-        'w','f','f','f','w',
-        'w','f','h','h','w',
-        'w','f','h','h','w',
-        'w','f','h','h','w',
-        'w','f','f','f','w'
-    };
-    _mapElements.push_back(leftHole);
+        for(int k=0; k<nbElements;++k ) {
+            for(int j=0; j<_mapWidth*linePerElement; ++j){ 
+                file >> caractere;
+                element.push_back(caractere);
+                std::cout << " " << caractere << " ";
+                if(j%_mapWidth == 4) std::cout << std::endl;
+            }
+            _mapElements.push_back(element);
+            element.clear();
+            std::cout << std::endl;
+        }
+        file.close();
+    }else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+    }
+    for(int i=0; i<_mapElements.size(); ++i)
+    {
+        std::cout << _mapElements[i].size() << std::endl;
+    }
+    // std::vector<char> floor = {
+    //     'w','f','f','f','w',
+    //     'w','f','f','f','w',
+    //     'w','f','f','f','w',
+    //     'w','f','f','f','w',
+    //     'w','f','f','f','w'
+    // };
+    // _mapElements.push_back(floor);
 
-    std::vector<char> rightHole = {
-        'w','f','f','f','w',
-        'w','h','h','f','w',
-        'w','h','h','f','w',
-        'w','h','h','f','w',
-        'w','f','f','f','w'
-    };
-    _mapElements.push_back(rightHole);
+    // std::vector<char> leftHole = {
+    //     'w','f','f','f','w',
+    //     'w','f','h','h','w',
+    //     'w','f','h','h','w',
+    //     'w','f','h','h','w',
+    //     'w','f','f','f','w'
+    // };
+    // _mapElements.push_back(leftHole);
 
-    std::vector<char> leftTurn = {
-        'w','f','f','f','w',
-        'w','f','f','f','f',
-        'w','f','f','f','f',
-        'w','f','f','f','f',
-        'w','w','w','w','w'
-    };
-    _mapElements.push_back(leftTurn);
+    // std::vector<char> rightHole = {
+    //     'w','f','f','f','w',
+    //     'w','h','h','f','w',
+    //     'w','h','h','f','w',
+    //     'w','h','h','f','w',
+    //     'w','f','f','f','w'
+    // };
+    // _mapElements.push_back(rightHole);
 
-    std::vector<char> rightTurn = {
-        'w','f','f','f','w',
-        'f','f','f','f','w',
-        'f','f','f','f','w',
-        'f','f','f','f','w',
-        'w','w','w','w','w'
-    };
-    _mapElements.push_back(rightTurn);
+    // std::vector<char> leftTurn = {
+    //     'w','f','f','f','w',
+    //     'w','f','f','f','f',
+    //     'w','f','f','f','f',
+    //     'w','f','f','f','f',
+    //     'w','w','w','w','w'
+    // };
+    // _mapElements.push_back(leftTurn);
+
+    // std::vector<char> rightTurn = {
+    //     'w','f','f','f','w',
+    //     'f','f','f','f','w',
+    //     'f','f','f','f','w',
+    //     'f','f','f','f','w',
+    //     'w','w','w','w','w'
+    // };
+    // _mapElements.push_back(rightTurn);
 }
 
 void Map::initMap()
