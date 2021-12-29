@@ -27,6 +27,7 @@ class App
         short unsigned int _menuIndex;
         MenuRenderer _menuRenderer;
         std::string _pseudoInput;
+        int _savedScore;
 
         /* Game entities */
         Game _game;
@@ -54,6 +55,8 @@ class App
 
         // METHODS
         void getBestScores();
+        void setBestScores();
+        void getSavedScore();
 
         /* Graphics */
 

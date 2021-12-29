@@ -106,6 +106,37 @@ void MenuRenderer::drawGameOver(Menu& menu)
     drawButtons(menu);
 }
 
+void MenuRenderer::drawLoadMenu(Menu& menu, const int savedScore)
+{
+    _title.draw(
+        "SAUVEGARDE",
+        glm::vec2(_WINDOW_WIDTH/2.f - 125.f, _WINDOW_HEIGHT-100.f),
+        glm::vec3(1.f,1.f,0.f),
+        _TEXT_PROJECTION_MATRIX
+    );
+
+    if(savedScore == -1)
+    {
+        _text.draw(
+            "No save found.",
+            glm::vec2(_WINDOW_WIDTH/2.f - 130.f, _WINDOW_HEIGHT - 250),
+            glm::vec3(1.f, 0.f, 0.f),
+            _TEXT_PROJECTION_MATRIX
+        );
+    }
+    else
+    {
+        _text.draw(
+            "SAUVEGARDE 1  |  SCORE : " + std::to_string(savedScore),
+            glm::vec2(125.f , _WINDOW_HEIGHT - 250),
+            glm::vec3(1.f),
+            _TEXT_PROJECTION_MATRIX
+        );
+    }
+
+    drawButtons(menu);
+}
+
 void MenuRenderer::drawScores(Menu& menu, std::vector<Score>& scores)
 {
     _title.draw(

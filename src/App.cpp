@@ -8,6 +8,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 {   
     /* Initialization of the best scores */
     getBestScores();
+    getSavedScore();
 
     /* Initialization of the navigation */
     // MAIN MENU
@@ -41,7 +42,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     // LOAD MENU
     buttons = {
-        Button("Valider", GAME),
+        Button("Charger", GAME),
         Button("Retour", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
@@ -58,7 +59,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     // SCORE INPUT
     buttons = {
-        Button("Enregistrer", MAIN_MENU),
+        Button("Enregistrer", SCORES),
         Button("Retour", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
@@ -73,6 +74,24 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 }
 
 // METHODS
+
+void App::getSavedScore()
+{
+    std::ifstream file;
+    std::string const fileName("./externals/save.txt");
+    file.open(fileName, std::ios::out | std::ios::binary);
+
+    if(file.is_open())
+    {
+        file >> _savedScore;
+
+        file.close();
+    }
+    else
+    {
+        std::cout << "ERROR FORM [APP | getSavedScore() ]: Impossible to open scores.txt." << std::endl;
+    }
+}
 
 void App::getBestScores()
 {
@@ -96,6 +115,41 @@ void App::getBestScores()
     }
 }
 
+void App::setBestScores()
+{
+    short unsigned int index = 0;
+    bool registered = false;
+
+    while(!registered && index < _scores.size())
+    {
+        if(_game.getScore() > _scores[index].score)
+        {
+            _scores[index] = Score(index+1, _pseudoInput, _game.getScore());
+            registered = true;
+        }
+        index++;
+    }
+    _pseudoInput = "";
+
+    std::ofstream file;
+    std::string const fileName("./externals/scores.txt");
+    file.open(fileName, std::ios::out | std::ios::binary);
+
+    if(file.is_open())
+    {
+
+        for(short unsigned int i=0; i<_scores.size();++i)
+        {
+            file << _scores[i].name << std::endl;
+            file << _scores[i].score << std::endl;
+        }
+
+        file.close();
+    }else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le scores.txt." << std::endl;
+    }
+}
 /* Graphics */
 void App::render()
 {
@@ -135,13 +189,15 @@ void App::render()
     case GAME_OVER:
         _menuRenderer.drawGameOver(_menuList[_menuIndex]);
         break;
+    case LOAD_MENU:
+        _menuRenderer.drawLoadMenu(_menuList[_menuIndex], _savedScore);
+        break;
     case SCORES:
         _menuRenderer.drawScores(_menuList[_menuIndex], _scores);
         break;
     case SCORE_INPUT:
         _menuRenderer.drawScoreInput(_menuList[_menuIndex], _pseudoInput);
         break;
-    
     default:
         _menuRenderer.render(_menuList, _menuIndex);
         break;
@@ -177,6 +233,7 @@ void App::key_callback(int key, int scancode, int action, int mods)
                     { // "RECOMMENCER" || "SAUVEGARDER" || "RETOUR AU MENU"
                        if(BUTTON_CLICKED == 2){
                             _game.saveGame();
+                            _savedScore = _game.getScore();
                         }
                         _game._running = false;
                         _game._finished = false;
@@ -187,8 +244,14 @@ void App::key_callback(int key, int scancode, int action, int mods)
                     _game._running = false;
                     _game._finished = false;
                     break;
+                case SCORE_INPUT:
+                    _game._paused = false;
+                    _game._running = false;
+                    _game._finished = false;
+                    setBestScores();
+                    break;
                 case LOAD_MENU:
-                    if(BUTTON_CLICKED == 0)
+                    if(BUTTON_CLICKED == 0 && _savedScore != -1)
                     {
                         _game.initGameFromSave();
                         _game._running = true;
