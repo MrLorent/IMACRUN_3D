@@ -89,7 +89,14 @@ void GameRenderer::load3DModels()
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl";
  
-    _bottle = Model(params);
+    _bottle = Model(params);  
+ 
+    //LOADING OF THE SKYBOX MODEL
+    params.fileName = "skybox/skybox.obj";
+    params.vsShader = "skybox.vs.glsl";
+    params.fsShader = "skybox.fs.glsl";
+ 
+    _skybox = Model(params);
 }
 
 void GameRenderer::render(
@@ -127,7 +134,7 @@ void GameRenderer::render(
             {
                 case Map::FLOOR:
                     _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-                    break;
+                    break; 
                 case Map::PASSED_TURN:
                     _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
@@ -276,7 +283,18 @@ void GameRenderer::render(
     _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
     MMatrix=glm::scale(
         MMatrix,
-        glm::vec3(2,2,2)
+        glm::vec3(2,2,2) 
+    );
+
+    MMatrix=glm::scale(
+        MMatrix,
+        glm::vec3(20,20,20)
+    );
+    _skybox.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+
+    MMatrix=glm::scale(
+        MMatrix,
+        glm::vec3(1/20,1/20,1/20)
     );
 
     _text.draw(

@@ -34,6 +34,7 @@ private:
     Model _barrel;
     Model _light;
     Model _bottle;
+    Model _skybox;
 
     // PRIVATE METHODS
     void rotateCamera(Camera& cam, unsigned int caseSubdivisions);
