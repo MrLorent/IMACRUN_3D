@@ -153,7 +153,13 @@ void Game::checkPlayerPosition()
                 _player.upScore();
                 _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x]=Map::FLOOR;
             }
-        
+        break;
+    case Map::ARCH:
+        if(_player.getPosition().x != 0){
+            _finished=true;
+            _paused=true;
+        }
+        break;
     default:
         break;
     }

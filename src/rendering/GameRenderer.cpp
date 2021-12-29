@@ -89,7 +89,7 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
             0.5 - game.getPlayerIndex() - game.getCaseSubdivisionIndex() / game.getCaseSubdivision()
         ) 
     );
-    
+   // matrix matrice= matrix(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
     for(unsigned int i=0; i<_renderingLength; ++i)
     {
         for(unsigned short int k=0; k < game._map.getMapWidth(); ++k){
@@ -102,95 +102,23 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
                     _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::WALL:
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(0.05f,0.5f,0.f)
-                    );                    
-
-                    _wall.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(-0.05f,-0.5f,0.f) 
-                    );
-                    
-                        
+                    drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights); 
                     break; 
                 case Map::LIGHT: //Mal positionnée
-
-                    //////////Dessine un mur sous la lampe///////////
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(0.05f,0.5f,0.f)
-                    );                    
-
-                    _wall.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(-0.05f,-0.5f,0.f) 
-                    );
-                    //////////////////////////////////////////////////
-
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(0.f,1.f,0.f)
-                    );
-                    _light.MMatrixLight = MMatrix;
-                    _light.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(0.f,-1.f,0.f)
-                    );
+                    drawLantern(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::HOLE:
                     break;
                 case Map::BAREL:
-                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(0.f,0.5f,0.f)
-                    );
-                    _barrel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(0.f,-0.5f,0.f)
-                    );
+                    drawBarel(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::COLLECTIBLE:
-
-                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(0.f,0.5f,0.f)
-                    );
-                    MMatrix=glm::scale(
-                        MMatrix,
-                        glm::vec3(0.25,0.25,0.25)
-                    );
-                    _bottle.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-                    MMatrix=glm::scale(
-                        MMatrix,
-                        glm::vec3(4,4,4)
-                    );
-                    MMatrix = glm::translate(
-                        MMatrix,
-                        glm::vec3(0.f,-0.5f,0.f)
-                    );
+                    drawBottle(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::ARCH:
                     _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     if(k==1){
-                        MMatrix = glm::translate(
-                            MMatrix,
-                            glm::vec3(1.f,0.f,0.f)
-                        );
-                        _arch.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-                        MMatrix = glm::translate(
-                            MMatrix,
-                            glm::vec3(-1.f,0.f,0.f)
-                        );
-                    
+                        drawArch(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     }
                 default:
                     break;
@@ -220,6 +148,8 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
         }
     }
 }
+
+
 
 void GameRenderer::drawPlayer(Player& player, glm::mat4& VMatrix)
 {
@@ -253,6 +183,113 @@ void GameRenderer::drawSkyBox(glm::mat4& VMatrix)
 {
     _skybox.draw(_PROJECTION_MATRIX, VMatrix, glm::mat4(10.f), currentLights);
 }
+
+void GameRenderer::drawWall(//a voir si matrice par reference
+    glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights
+    )
+    {
+    MMatrix = glm::translate(
+        MMatrix,
+        glm::vec3(0.05f,0.5f,0.f)
+    );                    
+
+    _wall.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+
+    MMatrix = glm::translate(
+        MMatrix,
+        glm::vec3(-0.05f,-0.5f,0.f) 
+    );
+
+    /*
+     matrice.MMatrix = glm::translate(
+        matrice.MMatrix,
+        glm::vec3(0.05f,0.5f,0.f)
+    );                    
+
+    _wall.draw(matrice._PROJECTION_MATRIX, matrice.VMatrix, matrice.MMatrix, matrice.currentLights);
+
+    matrice.MMatrix = glm::translate(
+        matrice.MMatrix,
+        glm::vec3(-0.05f,-0.5f,0.f) 
+    );*/
+}
+
+void GameRenderer::drawBarel(
+    glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights
+    ){
+        _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,0.5f,0.f)
+        );
+        _barrel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,-0.5f,0.f)
+        );
+    }
+
+ void GameRenderer::drawLantern(glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights){
+        drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,1.f,0.f)
+        );
+        _light.MMatrixLight = MMatrix;
+        _light.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,-1.f,0.f)
+        );
+    }
+
+void GameRenderer::drawBottle(glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights){
+         _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,0.5f,0.f)
+        );
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(0.25,0.25,0.25)
+        );
+        _bottle.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(4,4,4)
+        );
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,-0.5f,0.f)
+        );
+    }
+
+void GameRenderer::drawArch(glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights){
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(1.f,0.f,0.f)
+        );
+        _arch.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(-1.f,0.f,0.f)
+        );
+    }
 
 void GameRenderer::render(
     Game& game
