@@ -32,6 +32,7 @@ public:
     static constexpr char BAREL = 'b';
     static constexpr char PASSED_TURN = 'p';
     static constexpr char COLLECTIBLE = 'c';
+    static constexpr char ARCH = 'a';
 
 
     // ATTRIBUTS

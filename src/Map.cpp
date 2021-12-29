@@ -59,9 +59,9 @@ void Map::initMap()
         'w','f','f','f','w',
         'w','f','c','f','w',
         'w','f','c','f','w',
+        'w','f','f','f','w',
         'w','f','c','f','w',
-        'w','f','c','f','w',
-        'w','f','c','f','l'
+        'w','a','a','a','l'
     };
     for(size_t i=0; i<mapStart.size(); ++i)
     {

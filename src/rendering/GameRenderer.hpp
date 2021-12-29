@@ -35,6 +35,7 @@ private:
     Model _light;
     Model _bottle;
     Model _skybox;
+    Model _arch;
 
     // PRIVATE METHODS
 
