@@ -1,4 +1,4 @@
-# Blender MTL File: 'Sketchfab_2019_10_18_19_38_00.blend'
+# Blender MTL File: 'None'
 # Material Count: 1
 
 newmtl Material.002
@@ -10,4 +10,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd /textures/kisspng-cube-mapping-night-sky-star-counter-strike-1-6-skybox-texture-5b55605260fd07.7555011715323218743973.jpg
+map_Kd D:\\SULLY\\DATA\\COURS IMAC2\\Synthèse_img\\skybox\\skybox_6.jpg
