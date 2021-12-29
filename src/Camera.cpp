@@ -12,7 +12,7 @@ Camera::Camera(short unsigned int caseSubdivisions)
      _distance(2),
      _xAngle(M_PI / 6),    /* horizontal */
      _yAngle(M_PI),    /* vertical */
-    // FREELY
+    // FREEFLY
      _position(glm::vec3(0.f, 1.f, 0.f)),
      _phi(0),    /* horizontal */
      _theta(0.f)    /* vertical */
@@ -28,7 +28,7 @@ void Camera::switchMode()
 {
     if(_mode == TRACKBALL)
     {
-        _mode = FREELY;
+        _mode = FREEFLY;
     }
     else
     {
@@ -43,7 +43,7 @@ void Camera::changeDistance(float delta)
     _distance -= delta;
 }
 
-// FREELY METHODS
+// FREEFLY METHODS
 
 void Camera::computeDirectionVectors()
 {
@@ -112,6 +112,7 @@ void Camera::rotateHorizontaly(float degrees)
     else
     {
         _phi += glm::radians(degrees);
+        _phi=glm::clamp(_phi, glm::radians(-30.f), glm::radians(30.f));
         computeDirectionVectors();
     }
 }

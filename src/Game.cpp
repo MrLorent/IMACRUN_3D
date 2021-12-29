@@ -23,7 +23,74 @@ void Game::initGame()
     _turn = 0;
     _camera = Camera(_caseSubdivisions);
     _map = Map();
+    _map.initMap();
     _player = Player(_caseSubdivisions);
+}
+
+
+void Game::initGameFromSave(){
+    _playerIndex = _defaultIndex;
+    _turn = 0;
+    _camera = Camera(_caseSubdivisions);
+    _map = Map();
+    _player = Player(_caseSubdivisions);
+    
+    /* Initialization of the game */
+    std::ifstream file("./externals/save.txt");
+    if(file) {
+        //Charger score
+        int score;
+        file >> score;
+        _player.setScore(score);
+
+        //Charger position joueur
+        float coord;
+        glm::vec3 position;
+        for (unsigned int i =0 ; i<3 ; i++){
+            file >> coord;
+            position[i] = coord;
+        }
+        _player.setPosition(position);
+
+        //Charger Map courrante
+        unsigned int mapSize;
+        file >> mapSize;
+        char caractere;
+        for(unsigned int i=0; i < mapSize ; ++i){ 
+            file >> caractere; 
+            _map.add(caractere);
+        }
+        file.close();
+    }else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+    }
+}
+
+void Game::saveGame(){
+    
+    std::ofstream file;
+    std::string const fileName("./externals/save.txt");
+    file.open(fileName, std::ios::out | std::ios::binary);
+
+    if(file.is_open())    
+    {
+        file << _player.getScore() << std::endl;
+        file <<  _player.getPosition().x << std::endl;
+        file << _player.getPosition().y << std::endl;
+        file << _player.getPosition().z << std::endl;
+        file << _map.getSize();
+        for(size_t i=0; i < _map.getSize(); ++i) { 
+            file << _map[i]; 
+            if(i%_map.getMapWidth() == _map.getMapWidth()-1) file << std::endl;
+        }            
+        file.close();
+        std::cout << "La partie a ete sauvegardee." << std::endl;  
+    }
+    else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier." << std::endl;
+    }
 }
 
 void Game::runGame()
@@ -45,7 +112,7 @@ void Game::runGame()
                 _map.deleteFirstLigne();
             }
             _caseSubdivisionsIndex = 0;
-            if(_map.size() < 80 && _map.size()%_map.getMapWidth() == 0) _map.reloadMap();
+            if(_map.getSize() < 80 && _map.getSize()%_map.getMapWidth() == 0) _map.reloadMap();
 
             if(_turn != 0) _wallDistance--;
         }
@@ -54,7 +121,7 @@ void Game::runGame()
 
 void Game::checkPlayerPosition()
 {
-    const char currentCase = _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
+    char currentCase = _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x];
     
     switch (currentCase)
     {
@@ -71,15 +138,29 @@ void Game::checkPlayerPosition()
             _paused = true;
         }
         break;
+    case Map::BAREL:
+        if(_player.getPosition().y == 0)
+        {
+            _finished = true;
+            _paused = true;
+        }
+        break;
+    case Map::COLLECTIBLE:
+        if(_player.getPosition().y == 0)
+            {
+                _player.upScore();
+                _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()/2 - _player.getPosition().x]=Map::FLOOR;
+            }
+        
     default:
         break;
     }
 
-    if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::WALL) && _map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] != Map::PASSED_TURN)
+    if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth() + _map.getMapWidth()-1] == Map::FLOOR))
     {
         _turn = Player::LEFT;
     }
-    else if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth()] != Map::WALL) && _map[_playerIndex * _map.getMapWidth()] != Map::PASSED_TURN)
+    else if(_turn == 0 && (_map[_playerIndex * _map.getMapWidth()] == Map::FLOOR))
     {
         _turn = Player::RIGHT;
     }
@@ -166,49 +247,50 @@ void Game::key_callback(int key, int scancode, int action, int mods)
 {
     switch (key)
         {
-        case 256: //ECHAP
+        case GLFW_KEY_ESCAPE: //ECHAP 
             _running = false;
             break;
-        case 80: // 'P'
+        case GLFW_KEY_P: // 'P'
             if(action!=0)
             {
                 if(_paused) _paused = false;
                 else _paused = true;
             }
             break;
-        case 67: // 'C'
+        case GLFW_KEY_C: // 'C'
             if(action!=0) _camera.switchMode(); 
             break;
-        case 65: // 'Q'
+        case GLFW_KEY_A: // 'Q'
             if(action!=0){
                 if(_turn == LEFT) passTurn();
                 else _player.goLeft();
-                if(_camera._mode == Camera::FREELY) _camera.setPosition(_player.getPosition());
+                _camera.setPosition(_player.getPosition());
             }
             break;
-        case 68:
+        case GLFW_KEY_D:
             if(action!=0){
                 if(_turn == Player::RIGHT) passTurn();
                 else _player.goRight();
-                if(_camera._mode == Camera::FREELY) _camera.setPosition(_player.getPosition());
+                _camera.setPosition(_player.getPosition());
             }
             break;
-        case 32: // SPACEBAR
+        case GLFW_KEY_SPACE: // SPACEBAR
             _player._isJumping = true;
             break;
-        case 262: //Fleche droite
-            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(-2.*float(1));
+        case GLFW_KEY_RIGHT: //Fleche droite
+            _camera.rotateHorizontaly(-2.*float(1));
+            
             break;
 
-        case 263: //Fleche gauche
-            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(2.*float(1));
+        case GLFW_KEY_LEFT: //Fleche gauche
+            _camera.rotateHorizontaly(2.*float(1));
             break;
 
-        case 264: //Fleche bas
+        case GLFW_KEY_DOWN: //Fleche bas
             if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateVerticaly(-2.*float(1));
             break;
         
-        case 265: //Fleche haut
+        case GLFW_KEY_UP: //Fleche haut
             if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateVerticaly(2.*float(1));
             break;
         default:

@@ -1,6 +1,8 @@
 #pragma once
 #define GAME_HPP
 
+#include <GLFW/glfw3.h>
+
 #include "Camera.hpp"
 #include "Player.hpp"
 #include "Map.hpp"
@@ -39,11 +41,18 @@ class Game
         
         Game();
 
+        // GETTERS
+
+        inline const unsigned int getScore(){ return _player.getScore(); }
+
         //  METHODS
+        
         bool isRunning();
 
         void initGame();
+        void initGameFromSave();
         void runGame();
+        void saveGame();
 
         void key_callback(int key, int scancode, int action, int mods);
         void mouse_button_callback(int button, int action, int mods);

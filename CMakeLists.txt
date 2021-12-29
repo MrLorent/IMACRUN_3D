@@ -79,3 +79,4 @@ add_custom_command(
 endfunction()
 copy_folder_to_the_output_folder("assets")
 copy_folder_to_the_output_folder("src/shaders")
+copy_folder_to_the_output_folder("externals")

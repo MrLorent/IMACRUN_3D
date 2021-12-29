@@ -1,10 +1,10 @@
 #define TINYOBJLOADER_IMPLEMENTATION
-#include <tiny_obj_loader.h>
-
 #include "Model.hpp"
 
 // CONSTRUCTORS
 /* basic constructeur */
+
+glm::mat4 Model::MMatrixLight = glm::mat4(1.f);
 
 Model::Model(ModelParams params)
     :_shaders(loadProgram(
@@ -17,23 +17,80 @@ Model::Model(ModelParams params)
     
     /* Link the matrix attribut to the shaders matrix */
     _uMVPMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVPMatrix");
-    _uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
+    //_uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
+    _uVMatrix = glGetUniformLocation(_shaders.getGLId(), "uVMatrix");
     _uNormalMatrix = glGetUniformLocation(_shaders.getGLId(), "uNormalMatrix");
+    _uMMatrix = glGetUniformLocation(_shaders.getGLId(), "uMMatrix");
+
+    // LIGHTS
+    _uLightPos1 = glGetUniformLocation(_shaders.getGLId(), "uLightPos1");
+    _uLightPos2 = glGetUniformLocation(_shaders.getGLId(), "uLightPos2");
+    _uLightPos3 = glGetUniformLocation(_shaders.getGLId(), "uLightPos3");
+    _uLightPos4 = glGetUniformLocation(_shaders.getGLId(), "uLightPos4");
 }
 
 void Model::draw(
     glm::mat4 &ProjMatrix,
-    glm::mat4 &MVMatrix)
+    glm::mat4 &VMatrix,
+    glm::mat4 const & MMatrix,
+    std::deque<glm::vec3> lights // Position of the lights in WordCoordinate
+)
 {
     /* Link the shaders of the model */
     _shaders.use();
-    
-    // MV MATRIX
+
+    auto tmp = glm::column(VMatrix * MMatrixLight,3);
+    glUniform3f(
+        _uLightPos1,
+        tmp.x,
+        tmp.y,
+        tmp.z
+    );
+
+    // glUniform3fv(
+    //     _uLightPos1,
+    //     1,
+    //     glm::value_ptr(glm::vec3(glm::vec4(lights[0],1) * VMatrix))
+    // );
+
+    // glUniform3fv(
+    //     _uLightPos1,
+    //     1,
+    //     glm::value_ptr(glm::vec4(lights[1],1) * VMatrix)
+    // );
+
+    // glUniform3fv(
+    //     _uLightPos2,
+    //     1,
+    //     glm::value_ptr(glm::vec4(lights[1],1) * VMatrix * MMatrix)
+    // );
+
+    // glUniform3fv(
+    //     _uLightPos3,
+    //     1,
+    //     glm::value_ptr(glm::vec4(lights[2],1) * VMatrix * MMatrix)
+    // );
+
+    // glUniform3fv(
+    //     _uLightPos4,
+    //     1,
+    //     glm::value_ptr(glm::vec4(lights[3],1) * VMatrix * MMatrix)
+    // );
+
+   // Model MATRIX
     glUniformMatrix4fv(
-        _uMVMatrix,
+        _uMMatrix,
         1,
         GL_FALSE,
-        glm::value_ptr(MVMatrix)
+        glm::value_ptr(MMatrix)
+    );
+
+    // V MATRIX
+    glUniformMatrix4fv(
+        _uVMatrix,
+        1,
+        GL_FALSE,
+        glm::value_ptr(VMatrix)
     );
     
     // MVPMATRIX
@@ -41,7 +98,7 @@ void Model::draw(
         _uMVPMatrix,
         1,
         GL_FALSE,
-        glm::value_ptr(ProjMatrix*MVMatrix)
+        glm::value_ptr(ProjMatrix*VMatrix*MMatrix)
     );
     
     // NORMAL MATRIX
@@ -49,7 +106,7 @@ void Model::draw(
         _uNormalMatrix,
         1,
         GL_FALSE,
-        glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))) // Normal Matrix = glm::transpose(glm::inverse(MVMatrix))
+        glm::value_ptr(glm::transpose(glm::inverse(VMatrix*MMatrix))) // Normal Matrix = glm::transpose(glm::inverse(MVMatrix))
     );
 
     /* Draw all the meshes that compose the model */
@@ -69,7 +126,7 @@ void Model::loadModel(
     // VARIABLES TEMPORAIRES
     std::vector<Vertex> tmpVertices;
     std::vector<unsigned int> tmpIndices;
-    std::vector<Texture> tmpTextures;
+    Textures tmpTextures;
     std::unordered_map<Vertex, uint32_t> uniqueVertices;
  
     //Chargement du model 3D
@@ -87,7 +144,8 @@ void Model::loadModel(
     {
         dirName = filePath.substr(0, lastSlashIndex);
     }
-    //reader_config.mtl_search_path = "./assets/models/"+dirName;  // Path to material files
+     reader_config.mtl_search_path = "./assets/models/"+dirName; 
+    //reader_config.mtl_search_path = "/Users/admin/Documents/Cours/A2/projet/IMACRUN_3D/assets/models/"+dirName;  // Path to material files
 
     tinyobj::ObjReader reader;
 
@@ -107,7 +165,7 @@ void Model::loadModel(
 
     auto& attrib = reader.GetAttrib();
     auto& shapes = reader.GetShapes();
-   // auto& materials = reader.GetMaterials();
+    auto& materials = reader.GetMaterials();
 
 
     // Loop over shapes
@@ -134,11 +192,13 @@ void Model::loadModel(
                 );
 
                 // NORMAL
-                vertex.normal = glm::vec3(
-                    tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
-                    tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
-                    tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
-                );
+                if (idx.normal_index >= 0) {
+                    vertex.normal = glm::vec3(
+                        tinyobj::real_t(attrib.normals[3*idx.normal_index+0]),  // nx
+                        tinyobj::real_t(attrib.normals[3*idx.normal_index+1]),  // ny
+                        tinyobj::real_t(attrib.normals[3*idx.normal_index+2])   // nz
+                    );
+                }
 
                 // TEXTURE_COORDINATES
                 if (idx.texcoord_index >= 0)
@@ -172,15 +232,16 @@ void Model::loadModel(
     }
 
     // CHARGEMENT DES TEXTURES
-    loadTextures(appPath, filePath, tmpTextures);
+    loadTextures(appPath, filePath, tmpTextures, materials[0]);
     
     _meshes.push_back(std::move(Mesh(tmpVertices, tmpIndices, std::move(tmpTextures))));
 }
 
-void Model::loadTextures(
+void Model::loadTextures( 
     glimac::FilePath appPath,
     std::string filePath,
-    std::vector<Texture>& textures
+    Textures& textures,
+    tinyobj::material_t material 
 )
 {
     #ifdef _WIN32
@@ -189,32 +250,13 @@ void Model::loadTextures(
     const size_t lastSlashIndex = filePath.rfind('/');
     #endif
     std::string dirName;
-    std::string objFile;
-    std::string extensionName;
     
     /* Get the path to the current file and the .obj file name */
     if (std::string::npos != lastSlashIndex)
     {
-        objFile = filePath.substr(lastSlashIndex+1);
         dirName = filePath.substr(0, lastSlashIndex);
-   
     }
-
-    // ON COMMENCE A UTILISE DIRENT.H
-    DIR *dir;
-    struct dirent *file;
-
-    if ((dir = opendir (("./assets/models/" + dirName+ "/textures").c_str())) != nullptr) {
-        /* print all the files and directories within directory */
-        while ((file = readdir (dir)) != nullptr) {
-            extensionName = file->d_name;
-            extensionName = extensionName.substr(extensionName.rfind('.')+1);
-            if(extensionName.compare("png")==0 || extensionName.compare("jpg")==0){
-                textures.push_back(Texture("models/" + dirName + "/textures/" + file->d_name));
-            }
-        }
-        closedir (dir);
-    }else{
-        std::cout << "Error: fail to open " << dirName << " directory" << std::endl;
-    }
+                textures.diffuse=Texture("models/" + dirName +"/"+ material.diffuse_texname);
+                textures.specular=Texture("models/" + dirName + "/"+ material.specular_texname);
+                textures.shininess=material.shininess;
 }
