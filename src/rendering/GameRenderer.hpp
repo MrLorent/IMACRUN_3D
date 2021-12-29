@@ -8,6 +8,24 @@
 #include "Game.hpp"
 #include "Text2D.hpp"
 
+struct matrix{
+    glm::mat4 _PROJECTION_MATRIX;
+    glm::mat4 VMatrix;
+    glm::mat4 MMatrix;
+    std::deque<glm::vec3> currentLights;
+
+
+    matrix(glm::mat4 projMatrix,
+    glm::mat4 ViewMatrix,
+    glm::mat4 ModelMatrix,
+    std::deque<glm::vec3> Lights):
+    _PROJECTION_MATRIX(projMatrix),
+    VMatrix(ViewMatrix),
+    MMatrix(ModelMatrix),
+    currentLights(Lights){}
+};
+
+
 class GameRenderer
 {
 private:
@@ -44,6 +62,31 @@ private:
     void drawMap(Game& game, glm::mat4& VMatrix);
     void drawPlayer(Player& player, glm::mat4& VMatrix);
     void drawSkyBox(glm::mat4& VMatrix);
+    void drawWall(glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights);
+
+    void drawBarel(glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights);
+
+    void drawLantern(glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights);
+
+    void drawBottle(glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights);
+
+    void drawArch(glm::mat4 _PROJECTION_MATRIX,
+    glm::mat4 VMatrix,
+    glm::mat4 MMatrix,
+    std::deque<glm::vec3> currentLights);
+
 
 public:
     GameRenderer(){}
