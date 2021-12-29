@@ -103,6 +103,8 @@ void GameRenderer::render(
     Game& game
 )
 {
+    
+
     // DRAW THE MAP
     Map& map = game._map;
     for(size_t i=0; i<map.firstLights.size(); ++i)
@@ -286,17 +288,13 @@ void GameRenderer::render(
         glm::vec3(2,2,2) 
     );
 
-    MMatrix=glm::scale(
-        MMatrix,
-        glm::vec3(10,10,10)
-    );
-    _skybox.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 
-    MMatrix=glm::scale(
-        MMatrix,
-        glm::vec3(1/10,1/10,1/10)
-    );
+    //Draw the skybox
+    glm::mat4 skyboxMMatrix=glm::mat4(10.f);
 
+    _skybox.draw(_PROJECTION_MATRIX, VMatrix, skyboxMMatrix, currentLights);
+
+    //Draw the score
     _text.draw(
         "Score : "+std::to_string(game._player.getScore()),
         glm::vec2(50.f, 600.f ),
