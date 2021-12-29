@@ -61,8 +61,9 @@ private:
     void load3DModels();
 
     void drawMap(Game& game, glm::mat4& VMatrix);
-    void drawPlayer(Player& player, glm::mat4& VMatrix);
+    void drawPlayer(Game& game,Player& player, glm::mat4& VMatrix);
     void drawSkyBox(glm::mat4& VMatrix);
+
     void drawWall(glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
     glm::mat4 &MMatrix,

@@ -13,7 +13,7 @@ Camera::Camera(short unsigned int caseSubdivisions)
      _xAngle(M_PI / 6),    /* horizontal */
      _yAngle(M_PI),    /* vertical */
     // FREEFLY
-     _position(glm::vec3(0.f, 1.f, 0.f)),
+     _position(glm::vec3(0.f, 1.f, 0.1f)),
      _phi(0),    /* horizontal */
      _theta(0.f)    /* vertical */
 {

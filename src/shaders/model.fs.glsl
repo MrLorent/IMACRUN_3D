@@ -20,7 +20,7 @@ uniform vec3 uLightPos4;
 
 //Lumière directionnelle
 const vec3 LightDirection = normalize(vec3(0.8, 0.8, 0.2));
-const vec3 LightColor= vec3(14/255, 4/255, 51/255);
+const vec3 LightColor= vec3(98.f/255, 85.f/255, 128.f/255);
 
 //Lumiere ponctuelle
 const vec3 LightPosition = vec3(0., 1., 5.);

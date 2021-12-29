@@ -5,7 +5,7 @@ Player::Player(short unsigned int caseSubdivision)
      _isJumping(false),
      _isCrouching(false),
      _crouchingIndex(0),
-     _crouchingTiming(caseSubdivision * 4.5),
+     _crouchingTiming(caseSubdivision * 3.5),
      _jumpingIndex(0),
      _jumpingTiming(caseSubdivision * 4.5),
      _score(0)

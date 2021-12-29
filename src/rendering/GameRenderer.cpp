@@ -113,9 +113,9 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
                     break; 
                 case Map::LIGHT: //Mal positionnée
                     drawLantern(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-                    break;
-                case Map::HOLE:
-                    break;
+                    break; 
+                case Map::HOLE:  
+                    break; 
                 case Map::BAREL:
                     drawBarel(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
@@ -164,31 +164,40 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
 
 
 
-void GameRenderer::drawPlayer(Player& player, glm::mat4& VMatrix)
+void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
 {
     /* turn back the model from the camera */
-    glm::mat4 MMatrix = glm::rotate(
-        glm::mat4(1.f),
-        float(M_PI),
-        glm::vec3(0.f,1.f,0.f)
-    );
-
+        glm::mat4 MMatrix = glm::rotate(
+            glm::mat4(1.f),
+            float(M_PI),
+            glm::vec3(0.f,1.f,0.f)
+        );
     /* put the player model at the right position */
-    MMatrix = glm::translate(
-        MMatrix,
-        player.getPosition()
-    );
+        MMatrix = glm::translate(
+            MMatrix,
+            player.getPosition()
+        );
 
-    /* Move the player model according to the camera */
-    MMatrix = glm::translate(
-        MMatrix,
-        glm::vec3(0., 0.8, 0)
-    );
+    if(player._isCrouching){
+        /* Move the player model according to the camera */
+        game._camera.setPosition(glm::vec3(game._player.getPosition().x, (game._player.getPosition().y)-0.5 ,game._player.getPosition().z-0.1));
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0., 0.5, 0)
+        );
 
-    // MMatrix=glm::scale(
-    //     MMatrix,
-    //     glm::vec3(0.5,0.5,0.5)
-    // );
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(0.5,0.5,0.5)
+        );
+    }else{
+         game._camera.setPosition(game._player.getPosition()+ glm::vec3(0.,0.,-0.1));
+        /* Move the player model according to the camera */
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0., 0.8, 0)
+        );
+    }
     _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 }
 
@@ -239,12 +248,22 @@ void GameRenderer::drawBarel(
         _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
         MMatrix = glm::translate(
             MMatrix,
-            glm::vec3(0.f,0.5f,0.f)
+            glm::vec3(0.f,0.35f,0.f)
+        );
+
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(0.5,0.5,0.5)
         );
         _barrel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(2,2,2)
+        );
         MMatrix = glm::translate(
             MMatrix,
-            glm::vec3(0.f,-0.5f,0.f)
+            glm::vec3(0.f,-0.35f,0.f)
         );
     }
 
@@ -272,10 +291,6 @@ void GameRenderer::drawBottle(
     glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
          _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-        MMatrix = glm::translate(
-            MMatrix,
-            glm::vec3(0.f,0.5f,0.f)
-        );
         MMatrix=glm::scale(
             MMatrix,
             glm::vec3(0.25,0.25,0.25)
@@ -284,10 +299,6 @@ void GameRenderer::drawBottle(
         MMatrix=glm::scale(
             MMatrix,
             glm::vec3(4,4,4)
-        );
-        MMatrix = glm::translate(
-            MMatrix,
-            glm::vec3(0.f,-0.5f,0.f)
         );
     }
 
@@ -330,13 +341,14 @@ void GameRenderer::render(
     Game& game
 )
 {
+    //game._camera.setPosition(game._player.getPosition()+ glm::vec3(0.,0.,-0.1));
     glm::mat4 VMatrix = game._camera.getViewMatrix();
     
     // DRAW THE MAP
     drawMap(game, VMatrix);
 
     // DRAW THE PLAYER
-    drawPlayer(game._player, VMatrix);
+    drawPlayer(game ,game._player, VMatrix);
 
     // DRAW THE SKYBOX
     drawSkyBox(VMatrix);
