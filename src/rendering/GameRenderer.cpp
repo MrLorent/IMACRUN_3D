@@ -288,13 +288,13 @@ void GameRenderer::render(
 
     MMatrix=glm::scale(
         MMatrix,
-        glm::vec3(20,20,20)
+        glm::vec3(10,10,10)
     );
     _skybox.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 
     MMatrix=glm::scale(
         MMatrix,
-        glm::vec3(1/20,1/20,1/20)
+        glm::vec3(1/10,1/10,1/10)
     );
 
     _text.draw(
