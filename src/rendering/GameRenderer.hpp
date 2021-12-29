@@ -47,6 +47,7 @@ private:
 
     /* 3D Models */
     Model _player;
+    Model _monster;
     Model _wall;
     Model _floor;
     Model _barrel;
@@ -62,6 +63,7 @@ private:
 
     void drawMap(Game& game, glm::mat4& VMatrix);
     void drawPlayer(Game& game,Player& player, glm::mat4& VMatrix);
+    void drawMonsters(Game& game,Player& player, glm::mat4& VMatrix);
     void drawSkyBox(glm::mat4& VMatrix);
 
     void drawWall(glm::mat4 &_PROJECTION_MATRIX,

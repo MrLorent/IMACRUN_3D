@@ -22,7 +22,14 @@ void GameRenderer::load3DModels()
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl";
 
-    _player = Model(params);
+    _player=Model(params);
+
+    // LOADING OF THE MONSTER MODEL
+    params.fileName = "wizard/wizard.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
+
+    _monster = Model(params);
 
     // LOADING OF THE TILE MODEL
     params.fileName = "Cobblestones/CobbleStones.obj";
@@ -179,8 +186,10 @@ void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
         );
 
     if(player._isCrouching){
-        /* Move the player model according to the camera */
+        /* Move the camera according to the model */
         game._camera.setPosition(glm::vec3(game._player.getPosition().x, (game._player.getPosition().y)-0.5 ,game._player.getPosition().z-0.1));
+
+        /* Move and scale the model to the right place*/
         MMatrix = glm::translate(
             MMatrix,
             glm::vec3(0., 0.5, 0)
@@ -191,14 +200,62 @@ void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
             glm::vec3(0.5,0.5,0.5)
         );
     }else{
-         game._camera.setPosition(game._player.getPosition()+ glm::vec3(0.,0.,-0.1));
-        /* Move the player model according to the camera */
+
+        /* Move the camera according to the model */
+        game._camera.setPosition(game._player.getPosition()+ glm::vec3(0.,0.,-0.1));
+        /* Move and scale the model to the right place*/
         MMatrix = glm::translate(
             MMatrix,
             glm::vec3(0., 0.8, 0)
         );
     }
     _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+}
+
+void GameRenderer::drawMonsters(Game& game,Player& player, glm::mat4& VMatrix)
+{
+    for(int i=-1; i<2; i++){
+        /* turn back the model from the camera */
+        glm::mat4 MMatrix = glm::rotate(
+            glm::mat4(1.f),
+            float(M_PI),
+            glm::vec3(0.f,1.f,0.f)
+        );
+         /* put the Monster model at the right position */
+        if(i%2==0){
+            MMatrix = glm::translate(
+                MMatrix,
+                glm::vec3(player.getPosition().x+i, player.getPosition().y, player.getPosition().z+2)
+            );
+        }else{
+            MMatrix = glm::translate(
+                MMatrix,
+                glm::vec3(player.getPosition().x+i, player.getPosition().y, player.getPosition().z+3)
+            );
+        }
+
+        if(player._isCrouching){
+        
+            /* Move and scale the model to the right place*/
+            MMatrix = glm::translate(
+                MMatrix,
+                glm::vec3(0., 0.5, 0)
+            );
+
+            MMatrix=glm::scale(
+                MMatrix,
+                glm::vec3(0.5,0.5,0.5)
+            );
+        }else{
+
+            /* Move and scale the model to the right place*/
+            MMatrix = glm::translate(
+                MMatrix,
+                glm::vec3(0., 0.8, 0)
+            );
+        }
+        _monster.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+    }
 }
 
 void GameRenderer::drawSkyBox(glm::mat4& VMatrix)
@@ -349,6 +406,9 @@ void GameRenderer::render(
 
     // DRAW THE PLAYER
     drawPlayer(game ,game._player, VMatrix);
+
+    // DRAW THE MONSTERS
+    drawMonsters(game ,game._player, VMatrix);
 
     // DRAW THE SKYBOX
     drawSkyBox(VMatrix);
