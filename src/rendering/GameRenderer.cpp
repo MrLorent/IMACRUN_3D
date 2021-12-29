@@ -6,27 +6,11 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
      _rotationDirection(0),
      _rotatingIndex(0)
 {
+    /* Initialization of the 3D Models */
     load3DModels();
     
-     /* Initialisation of the fonts */
+    /* Initialization of the fonts */
     _text = Text2D(20, _applicationPath, "PTMono.ttc");
-}
-
-void GameRenderer::setWindowParameters(
-    const unsigned width,
-    const unsigned height,
-    glm::mat4& projection
-)
-{
-    _WINDOW_WIDTH = width;
-    _WINDOW_HEIGHT = height;
-    _PROJECTION_MATRIX = projection;
-    _TEXT_PROJECTION_MATRIX = glm::ortho(
-        0.0f,
-        static_cast<float>(width),
-        0.0f,
-        static_cast<float>(height)
-    );
 }
 
 void GameRenderer::load3DModels()
@@ -83,11 +67,8 @@ void GameRenderer::load3DModels()
     _skybox = Model(params);
 }
 
-void GameRenderer::render(
-    Game& game
-)
-{   
-    // DRAW THE MAP
+void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
+{
     for(size_t i=0; i<game._map.firstLights.size(); ++i)
     {
         currentLights.push_back(game._map.firstLights[i]);
@@ -101,10 +82,6 @@ void GameRenderer::render(
             0.5 - game.getPlayerIndex() - game.getCaseSubdivisionIndex() / game.getCaseSubdivision()
         ) 
     );
-
-    if(game._camera._turning != 0) game._camera.takeTurn();
-
-    auto VMatrix = game._camera.getViewMatrix();
     
     for(unsigned int i=0; i<_renderingLength; ++i)
     {
@@ -230,15 +207,13 @@ void GameRenderer::render(
         }else{
             MMatrix = glm::translate(MMatrix, glm::vec3(-game._map.getMapWidth(), 0.f, 1.f));
         }
-
     }
+}
 
-    // DRAW THE PLAYER
-    if(game._player._isJumping) game._player.jump();
-    /* Place the Player Model into the scene */
-
+void GameRenderer::drawPlayer(Player& player, glm::mat4& VMatrix)
+{
     /* turn back the model from the camera */
-    MMatrix = glm::rotate(
+    glm::mat4 MMatrix = glm::rotate(
         glm::mat4(1.f),
         float(M_PI),
         glm::vec3(0.f,1.f,0.f)
@@ -247,25 +222,36 @@ void GameRenderer::render(
     /* put the player model at the right position */
     MMatrix = glm::translate(
         MMatrix,
-        game._player.getPosition()
+        player.getPosition()
     );
 
     /* Move the player model according to the camera */
     MMatrix=glm::scale(
-                        MMatrix,
-                        glm::vec3(0.5,0.5,0.5)
-                    );
-    _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-    MMatrix=glm::scale(
         MMatrix,
-        glm::vec3(2,2,2) 
+        glm::vec3(0.5,0.5,0.5)
     );
+    _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+}
 
+void GameRenderer::drawSkyBox(glm::mat4& VMatrix)
+{
+    _skybox.draw(_PROJECTION_MATRIX, VMatrix, glm::mat4(10.f), currentLights);
+}
 
-    //Draw the skybox
-    glm::mat4 skyboxMMatrix = glm::mat4(10.f);
+void GameRenderer::render(
+    Game& game
+)
+{
+    glm::mat4 VMatrix = game._camera.getViewMatrix();
+    
+    // DRAW THE MAP
+    drawMap(game, VMatrix);
 
-    _skybox.draw(_PROJECTION_MATRIX, VMatrix, skyboxMMatrix, currentLights);
+    // DRAW THE PLAYER
+    drawPlayer(game._player, VMatrix);
+
+    // DRAW THE SKYBOX
+    drawSkyBox(VMatrix);
 
     //Draw the score
     _text.draw(
@@ -273,5 +259,22 @@ void GameRenderer::render(
         glm::vec2(50.f, 600.f ),
         glm::vec3(1.f),
         _TEXT_PROJECTION_MATRIX
+    );
+}
+
+void GameRenderer::setWindowParameters(
+    const unsigned width,
+    const unsigned height,
+    glm::mat4& projection
+)
+{
+    _WINDOW_WIDTH = width;
+    _WINDOW_HEIGHT = height;
+    _PROJECTION_MATRIX = projection;
+    _TEXT_PROJECTION_MATRIX = glm::ortho(
+        0.0f,
+        static_cast<float>(width),
+        0.0f,
+        static_cast<float>(height)
     );
 }
