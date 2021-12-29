@@ -29,22 +29,6 @@ void GameRenderer::setWindowParameters(
     );
 }
 
-void GameRenderer::rotateCamera(Camera& cam, unsigned int caseSubdivisions){
-    if(_rotatingIndex > caseSubdivisions * 2)
-    {
-        if(cam._mode == Camera::TRACKBALL) cam.rotateHorizontaly(float(M_PI/2 * cam._turning));
-        else cam.rotateHorizontaly(float(M_PI/2 * -cam._turning));
-        cam._turning = 0;
-        _rotatingIndex = 0;
-    }
-    else
-    {
-        if(cam._mode == Camera::TRACKBALL) cam.rotateHorizontaly(float(90.f * 1/(caseSubdivisions * 2) * -cam._turning));
-        else cam.rotateHorizontaly(float(90.f * 1/(caseSubdivisions * 2) * cam._turning));
-        _rotatingIndex++;
-    }
-}
-
 void GameRenderer::load3DModels()
 {
     ModelParams params(_applicationPath);

@@ -37,7 +37,7 @@ private:
     Model _skybox;
 
     // PRIVATE METHODS
-    void rotateCamera(Camera& cam, unsigned int caseSubdivisions);
+    
 
 public:
     GameRenderer(){}
