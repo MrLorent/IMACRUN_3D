@@ -33,6 +33,7 @@ void Game::initGameFromSave(){
     _turn = 0;
     _camera = Camera(_caseSubdivisions);
     _map = Map();
+    _player = Player(_caseSubdivisions);
     
     /* Initialization of the game */
     std::ifstream file("./externals/save.txt");
@@ -49,7 +50,6 @@ void Game::initGameFromSave(){
             file >> coord;
             position[i] = coord;
         }
-        _player = Player(_caseSubdivisions);
         _player.setPosition(position);
 
         //Charger Map courrante
