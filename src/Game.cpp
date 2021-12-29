@@ -99,6 +99,8 @@ void Game::runGame()
 
     if(!_paused && !_finished)
     {
+        if(_camera._turning != 0) _camera.takeTurn();
+        if(_player._isJumping) _player.jump();
         _caseSubdivisionsIndex++;
 
         if(_caseSubdivisionsIndex == _caseSubdivisions){

@@ -20,11 +20,11 @@ uniform vec3 uLightPos4;
 
 //Lumière directionnelle
 const vec3 LightDirection = normalize(vec3(0.8, 0.8, 0.2));
-const vec3 LightColor= vec3(0.2, 0.1, 1.)*2;
+const vec3 LightColor= vec3(14/255, 4/255, 51/255);
 
 //Lumiere ponctuelle
 const vec3 LightPosition = vec3(0., 1., 5.);
-const vec3 LightPonctualColor= vec3(1., 0.97, 0.4)*20;
+const vec3 LightPonctualColor= vec3(0.8, 0.2, 0.)*5;
 
 vec3 Light(vec3 direction, vec3 color){
     vec3 diffuse=clamp(dot(vNormal_vs, direction),0, 1)* texture(uTextureDiffuse, vTexCoords).rgb;

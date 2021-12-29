@@ -35,16 +35,19 @@ private:
     Model _light;
     Model _bottle;
     Model _skybox;
+    Model _arch;
 
     // PRIVATE METHODS
-    void rotateCamera(Camera& cam, unsigned int caseSubdivisions);
+
+    void load3DModels();
+
+    void drawMap(Game& game, glm::mat4& VMatrix);
+    void drawPlayer(Player& player, glm::mat4& VMatrix);
+    void drawSkyBox(glm::mat4& VMatrix);
 
 public:
     GameRenderer(){}
     GameRenderer(glimac::FilePath applicationPath);
-
-    void load3DModels();
-    void initMapRotation(int direction);
 
     // METHODS
 
@@ -52,6 +55,7 @@ public:
         Game& game
     );
 
+    /* Window parameters */
     void setWindowParameters(
         const unsigned width,
         const unsigned height,

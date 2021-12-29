@@ -59,9 +59,9 @@ void Map::initMap()
         'w','f','f','f','w',
         'w','f','c','f','w',
         'w','f','c','f','w',
+        'w','f','f','f','w',
         'w','f','c','f','w',
-        'w','f','c','f','w',
-        'w','f','c','f','l'
+        'w','a','a','a','l'
     };
     for(size_t i=0; i<mapStart.size(); ++i)
     {
@@ -91,11 +91,6 @@ void Map::initMap()
 void Map::add(const char c)
 {
     _map.push_back(c);
-}
-
-void Map::empty()
-{
-    _map.empty();
 }
 
 void Map::reloadMap()
