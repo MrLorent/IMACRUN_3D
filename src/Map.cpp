@@ -60,8 +60,8 @@ void Map::initMap()
         'w','f','c','f','w',
         'w','f','c','f','w',
         'w','f','c','f','w',
-        'w','f','c','f','w',
-        'w','a','a','a','l'
+        'w','f','c','f','l',
+        'w','o','o','o','w'
     };
     for(size_t i=0; i<mapStart.size(); ++i)
     {

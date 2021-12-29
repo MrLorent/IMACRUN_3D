@@ -54,6 +54,7 @@ private:
     Model _bottle;
     Model _skybox;
     Model _arch;
+    Model _plank;
 
     // PRIVATE METHODS
 
@@ -62,30 +63,35 @@ private:
     void drawMap(Game& game, glm::mat4& VMatrix);
     void drawPlayer(Player& player, glm::mat4& VMatrix);
     void drawSkyBox(glm::mat4& VMatrix);
-    void drawWall(glm::mat4 _PROJECTION_MATRIX,
-    glm::mat4 VMatrix,
-    glm::mat4 MMatrix,
-    std::deque<glm::vec3> currentLights);
+    void drawWall(glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights);
 
-    void drawBarel(glm::mat4 _PROJECTION_MATRIX,
-    glm::mat4 VMatrix,
-    glm::mat4 MMatrix,
-    std::deque<glm::vec3> currentLights);
+    void drawBarel(glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights);
 
-    void drawLantern(glm::mat4 _PROJECTION_MATRIX,
-    glm::mat4 VMatrix,
-    glm::mat4 MMatrix,
-    std::deque<glm::vec3> currentLights);
+    void drawLantern(glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights);
 
-    void drawBottle(glm::mat4 _PROJECTION_MATRIX,
-    glm::mat4 VMatrix,
-    glm::mat4 MMatrix,
-    std::deque<glm::vec3> currentLights);
+    void drawBottle(glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights);
 
-    void drawArch(glm::mat4 _PROJECTION_MATRIX,
-    glm::mat4 VMatrix,
-    glm::mat4 MMatrix,
-    std::deque<glm::vec3> currentLights);
+    void drawArch(glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights);
+
+    void drawPlank(glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights);
 
 
 public:
