@@ -3,6 +3,9 @@
 Player::Player(short unsigned int caseSubdivision)
     :_position(glm::vec3(0.f, 0.f, 0.f)),
      _isJumping(false),
+     _isCrouching(false),
+     _crouchingIndex(0),
+     _crouchingTiming(caseSubdivision * 4.5),
      _jumpingIndex(0),
      _jumpingTiming(caseSubdivision * 4.5),
      _score(0)
@@ -49,6 +52,18 @@ void Player::jump()
     {
         _position.y = 1-(_jumpingIndex - float(_jumpingTiming/2)) * (_jumpingIndex - float(_jumpingTiming/2))/28000.f;
         _jumpingIndex++;
+    }
+}
+
+void Player::crouch()
+{
+    if(_crouchingIndex == _crouchingTiming){
+        _isCrouching= false;
+        _crouchingIndex =0;
+    }
+    else
+    {
+        _crouchingIndex++;
     }
 }
 

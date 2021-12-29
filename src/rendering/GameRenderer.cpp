@@ -129,6 +129,7 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
                     }
                     break;
                 case Map::PLANK: 
+                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     if(k==2){
                         drawPlank(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     }
@@ -181,13 +182,13 @@ void GameRenderer::drawPlayer(Player& player, glm::mat4& VMatrix)
     /* Move the player model according to the camera */
     MMatrix = glm::translate(
         MMatrix,
-        glm::vec3(0., 0.5, 0)
+        glm::vec3(0., 0.8, 0)
     );
 
-    MMatrix=glm::scale(
-        MMatrix,
-        glm::vec3(0.5,0.5,0.5)
-    );
+    // MMatrix=glm::scale(
+    //     MMatrix,
+    //     glm::vec3(0.5,0.5,0.5)
+    // );
     _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 }
 
@@ -311,7 +312,18 @@ void GameRenderer::drawPlank(
     glm::mat4 &VMatrix,
     glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
+
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,0.9f,0.f)
+        );
+
         _plank.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,-0.9f,0.f)
+        );
     }
 
 void GameRenderer::render(

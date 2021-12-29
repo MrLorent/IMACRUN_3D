@@ -101,6 +101,7 @@ void Game::runGame()
     {
         if(_camera._turning != 0) _camera.takeTurn();
         if(_player._isJumping) _player.jump();
+        else if(_player._isCrouching) _player.crouch();
         _caseSubdivisionsIndex++;
 
         if(_caseSubdivisionsIndex == _caseSubdivisions){
@@ -160,6 +161,11 @@ void Game::checkPlayerPosition()
             _paused=true;
         }
         break;
+    case Map::PLANK:
+        if(!_player._isCrouching){
+            _finished=true;
+            _paused=true;
+        }
     default:
         break;
     }
@@ -281,6 +287,9 @@ void Game::key_callback(int key, int scancode, int action, int mods)
                 else _player.goRight();
                 _camera.setPosition(_player.getPosition());
             }
+            break;
+        case GLFW_KEY_S: // S
+            _player._isCrouching= true;
             break;
         case GLFW_KEY_SPACE: // SPACEBAR
             _player._isJumping = true;

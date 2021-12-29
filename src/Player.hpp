@@ -12,6 +12,8 @@ class Player
 
         unsigned int _jumpingIndex;
         unsigned int _jumpingTiming;
+        unsigned int _crouchingIndex;
+        unsigned int _crouchingTiming;
     public:
         // CONSTANTS
         static constexpr int LEFT = -1;
@@ -19,6 +21,7 @@ class Player
         static constexpr int RIGHT = 1;
 
         bool _isJumping;
+        bool _isCrouching;
 
         Player(){}
         Player(short unsigned int caseSubdivision);
@@ -36,5 +39,6 @@ class Player
 
         // METHOD
         void jump();
+        void crouch();
         void upScore();
 };
