@@ -54,7 +54,6 @@ public:
     // METHODS
     void initMap();
     void add(const char c);
-    void empty();
     void reloadMap();
     void deleteFirstLigne();
 };

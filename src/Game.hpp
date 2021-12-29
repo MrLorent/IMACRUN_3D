@@ -9,14 +9,11 @@
 
 class Game
 {
-    friend class GameRenderer;
+    // friend class GameRenderer;
 
     private:
         // ATTRIBUTS
 
-        Camera _camera;
-        Map _map;
-        Player _player;
         const short unsigned int _defaultIndex;
         short unsigned int _playerIndex;
 
@@ -28,6 +25,11 @@ class Game
         static constexpr short int LEFT = -1;
         static constexpr short int NONE = 0;
         static constexpr short int RIGHT = 1;
+
+        // ATTRIBUTS
+        Camera _camera;
+        Map _map;
+        Player _player;
 
         bool _running;
         bool _paused;
@@ -42,8 +44,10 @@ class Game
         Game();
 
         // GETTERS
-
-        inline const unsigned int getScore(){ return _player.getScore(); }
+        inline float getCaseSubdivision() const { return _caseSubdivisions; }
+        inline unsigned int getCaseSubdivisionIndex() const { return _caseSubdivisionsIndex; }
+        inline unsigned int getScore() const { return _player.getScore(); }
+        inline unsigned int getPlayerIndex() const { return _playerIndex; }
 
         //  METHODS
         

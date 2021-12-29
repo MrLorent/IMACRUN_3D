@@ -93,11 +93,6 @@ void Map::add(const char c)
     _map.push_back(c);
 }
 
-void Map::empty()
-{
-    _map.empty();
-}
-
 void Map::reloadMap()
 {
     int randomIndex = _distribution(_random);

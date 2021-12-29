@@ -102,14 +102,11 @@ void GameRenderer::load3DModels()
 void GameRenderer::render(
     Game& game
 )
-{
-    
-
+{   
     // DRAW THE MAP
-    Map& map = game._map;
-    for(size_t i=0; i<map.firstLights.size(); ++i)
+    for(size_t i=0; i<game._map.firstLights.size(); ++i)
     {
-        currentLights.push_back(map.firstLights[i]);
+        currentLights.push_back(game._map.firstLights[i]);
     }
 
     glm::mat4 MMatrix = glm::translate(
@@ -117,22 +114,18 @@ void GameRenderer::render(
         glm::vec3(
             -2.f, /* Place of the first left wall */
             0.f,
-            0.5-game._playerIndex-game._caseSubdivisionsIndex/game._caseSubdivisions
+            0.5 - game.getPlayerIndex() - game.getCaseSubdivisionIndex() / game.getCaseSubdivision()
         ) 
     );
 
     if(game._camera._turning != 0) game._camera.takeTurn();
 
-    auto VMatrix= game._camera.getViewMatrix();
-
-
-    /* Move the scene according to the camera */
-    //MVMatrix = game._camera.getViewMatrix() * MVMatrix;
+    auto VMatrix = game._camera.getViewMatrix();
     
     for(unsigned int i=0; i<_renderingLength; ++i)
     {
-        for(unsigned short int k=0; k<map.getMapWidth(); ++k){
-            switch (map[map.getMapWidth() * i + k])
+        for(unsigned short int k=0; k < game._map.getMapWidth(); ++k){
+            switch (game._map[game._map.getMapWidth() * i + k])
             {
                 case Map::FLOOR:
                     _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
@@ -235,13 +228,13 @@ void GameRenderer::render(
         }
 
         /* Detecting turns */
-        if(map[map.getMapWidth() * i] == Map::FLOOR){ _rotationDirection = -1; } /* right turn */
-        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] == Map::FLOOR){ _rotationDirection = 1; } /* left turn*/
+        if(game._map[game._map.getMapWidth() * i] == Map::FLOOR){ _rotationDirection = -1; } /* right turn */
+        else if(game._map[game._map.getMapWidth() * i + game._map.getMapWidth()-1] == Map::FLOOR){ _rotationDirection = 1; } /* left turn*/
         
-        if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL && i >= game._playerIndex){
+        if(game._map[game._map.getMapWidth() * i + (game._map.getMapWidth()-1)/2] == Map::WALL && i >= game.getPlayerIndex()){
             if(_rotationDirection == -1)
             {
-                MMatrix = glm::translate(MMatrix, glm::vec3(-map.getMapWidth(), 0.f, -(map.getMapWidth()-1)));
+                MMatrix = glm::translate(MMatrix, glm::vec3(-game._map.getMapWidth(), 0.f, -(game._map.getMapWidth()-1)));
             }else{
                 MMatrix = glm::translate(MMatrix, glm::vec3(0.f, 0.f, 0.f));
             }
@@ -251,15 +244,13 @@ void GameRenderer::render(
                 glm::vec3(0.f, 1.f, 0.f)
             );
         }else{
-            MMatrix = glm::translate(MMatrix, glm::vec3(-map.getMapWidth(), 0.f, 1.f));
+            MMatrix = glm::translate(MMatrix, glm::vec3(-game._map.getMapWidth(), 0.f, 1.f));
         }
 
     }
 
     // DRAW THE PLAYER
-    Player& player = game._player;
-
-    if(player._isJumping) player.jump();
+    if(game._player._isJumping) game._player.jump();
     /* Place the Player Model into the scene */
 
     /* turn back the model from the camera */
@@ -272,10 +263,8 @@ void GameRenderer::render(
     /* put the player model at the right position */
     MMatrix = glm::translate(
         MMatrix,
-        player.getPosition()
+        game._player.getPosition()
     );
-
-    VMatrix = game._camera.getViewMatrix();
 
     /* Move the player model according to the camera */
     MMatrix=glm::scale(
@@ -290,7 +279,7 @@ void GameRenderer::render(
 
 
     //Draw the skybox
-    glm::mat4 skyboxMMatrix=glm::mat4(10.f);
+    glm::mat4 skyboxMMatrix = glm::mat4(10.f);
 
     _skybox.draw(_PROJECTION_MATRIX, VMatrix, skyboxMMatrix, currentLights);
 
