@@ -209,14 +209,19 @@ void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
 void GameRenderer::drawSkyBox(glm::mat4& VMatrix)
 {
     glm::mat4 id(1.f);
-    _skybox.draw(_PROJECTION_MATRIX, id, glm::mat4(10.f), currentLights);
+    _skybox.draw(
+        _PROJECTION_MATRIX,
+        id,
+        glm::mat4(10.f),
+        currentLights
+    );
 }
 
 void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const short unsigned int rank)
 {
     MMatrix = glm::translate(
         MMatrix,
-        glm::vec3(0.f, 1.f, 4.f)
+        glm::vec3(0.f, 0.f, 5.5f)
     );
 
     if(rank == 0)
@@ -236,7 +241,7 @@ void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLig
 
     MMatrix = glm::translate(
         MMatrix,
-        glm::vec3(0.f, -1.f, -4.f)
+        glm::vec3(0.f, 0.f, -5.5f)
     );
 }
 

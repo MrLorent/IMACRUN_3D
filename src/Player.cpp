@@ -50,7 +50,7 @@ void Player::jump()
     }
     else
     {
-        _position.y = 1-(_jumpingIndex - float(_jumpingTiming/2)) * (_jumpingIndex - float(_jumpingTiming/2))/28000.f;
+        _position.y = 1-(_jumpingIndex - float(_jumpingTiming/2)) * (_jumpingIndex - float(_jumpingTiming/2))/(float(_jumpingTiming/2) * float(_jumpingTiming/2));
         _jumpingIndex++;
     }
 }
