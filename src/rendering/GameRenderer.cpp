@@ -85,7 +85,7 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
 {
     for(size_t i=0; i<game._map.firstLights.size(); ++i)
     {
-        currentLights[i] = game._map.firstLights[i];
+        currentLights.push_back(game._map.firstLights[i]);
     }
     firstlightsInit = false;
 
