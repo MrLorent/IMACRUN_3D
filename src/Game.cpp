@@ -1,9 +1,9 @@
 #include "Game.hpp"
 
 Game::Game()
-    :_caseSubdivisions(75.f),
+    :_caseSubdivisions(50.f),
      _caseSubdivisionsIndex(0),
-     _defaultIndex(3),
+     _defaultIndex(9),
      _playerIndex(_defaultIndex),
      _running(false),
      _paused(false),

@@ -86,7 +86,7 @@ class Model
             glm::mat4 &ProjMatrix,
             glm::mat4 &MVMatrix,
             glm::mat4 const & MMatrix,
-            std::deque<glm::vec3> lights
+            std::deque<glm::vec3>& lights
         );
 
         static glm::mat4 MMatrixLight;

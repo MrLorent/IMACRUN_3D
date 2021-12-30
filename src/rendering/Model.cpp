@@ -25,23 +25,29 @@ Model::Model(ModelParams params)
     // LIGHTS
     _uLightPos1 = glGetUniformLocation(_shaders.getGLId(), "uLightPos1");
     _uLightPos2 = glGetUniformLocation(_shaders.getGLId(), "uLightPos2");
-    _uLightPos3 = glGetUniformLocation(_shaders.getGLId(), "uLightPos3");
-    _uLightPos4 = glGetUniformLocation(_shaders.getGLId(), "uLightPos4");
 }
 
 void Model::draw(
     glm::mat4 &ProjMatrix,
     glm::mat4 &VMatrix,
     glm::mat4 const & MMatrix,
-    std::deque<glm::vec3> lights // Position of the lights in WordCoordinate
+    std::deque<glm::vec3>& lights // Position of the lights in WordCoordinate
 )
 {
     /* Link the shaders of the model */
     _shaders.use();
-
-    auto tmp = glm::column(VMatrix * MMatrixLight,3);
+    
+    glm::vec3 tmp = glm::vec3(glm::vec4(lights[0],1) * VMatrix);
     glUniform3f(
         _uLightPos1,
+        tmp.x,
+        tmp.y,
+        tmp.z
+    );
+
+    tmp = glm::vec3(glm::vec4(lights[1],1) * VMatrix);
+    glUniform3f(
+        _uLightPos2,
         tmp.x,
         tmp.y,
         tmp.z
@@ -54,27 +60,9 @@ void Model::draw(
     // );
 
     // glUniform3fv(
-    //     _uLightPos1,
-    //     1,
-    //     glm::value_ptr(glm::vec4(lights[1],1) * VMatrix)
-    // );
-
-    // glUniform3fv(
     //     _uLightPos2,
     //     1,
-    //     glm::value_ptr(glm::vec4(lights[1],1) * VMatrix * MMatrix)
-    // );
-
-    // glUniform3fv(
-    //     _uLightPos3,
-    //     1,
-    //     glm::value_ptr(glm::vec4(lights[2],1) * VMatrix * MMatrix)
-    // );
-
-    // glUniform3fv(
-    //     _uLightPos4,
-    //     1,
-    //     glm::value_ptr(glm::vec4(lights[3],1) * VMatrix * MMatrix)
+    //     glm::value_ptr(glm::vec3(glm::vec4(lights[1],1) * VMatrix))
     // );
 
    // Model MATRIX

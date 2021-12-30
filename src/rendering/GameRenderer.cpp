@@ -2,7 +2,7 @@
 
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
-     _renderingLength(15), // nb ligne to draw
+     _renderingLength(24), // nb ligne to draw
      _rotationDirection(0),
      _rotatingIndex(0)
 {
@@ -85,8 +85,9 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
 {
     for(size_t i=0; i<game._map.firstLights.size(); ++i)
     {
-        currentLights.push_back(game._map.firstLights[i]);
+        currentLights[i] = game._map.firstLights[i];
     }
+    firstlightsInit = false;
 
     glm::mat4 MMatrix = glm::translate(
         glm::mat4(1.f),
@@ -110,7 +111,11 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
                     break;
                 case Map::WALL:
                     drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights); 
-                    break; 
+                    break;
+                case Map::LIGHT_MARKER:
+                    setLights(MMatrix,game._map.firstLights, currentLights, k);
+                    drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    break;
                 case Map::LIGHT: //Mal positionnée
                     drawLantern(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break; 
@@ -183,7 +188,7 @@ void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
         game._camera.setPosition(glm::vec3(game._player.getPosition().x, (game._player.getPosition().y)-0.5 ,game._player.getPosition().z-0.1));
         MMatrix = glm::translate(
             MMatrix,
-            glm::vec3(0., 0.5, 0)
+            glm::vec3(0.f, 0.5f, 0.f)
         );
 
         MMatrix=glm::scale(
@@ -203,7 +208,36 @@ void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
 
 void GameRenderer::drawSkyBox(glm::mat4& VMatrix)
 {
-    _skybox.draw(_PROJECTION_MATRIX, VMatrix, glm::mat4(10.f), currentLights);
+    glm::mat4 id(1.f);
+    _skybox.draw(_PROJECTION_MATRIX, id, glm::mat4(10.f), currentLights);
+}
+
+void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const short unsigned int rank)
+{
+    MMatrix = glm::translate(
+        MMatrix,
+        glm::vec3(0.f, 1.f, 4.f)
+    );
+
+    if(rank == 0)
+    {
+        lights[0] = glm::vec3(glm::column(MMatrix, 3));
+        if(!firstlightsInit) firstLights[0] = lights[0]; 
+    }
+    else
+    {
+        lights[1] = glm::vec3(glm::column(MMatrix, 3));
+        if(!firstlightsInit)
+        {
+            firstLights[1] = lights[1];
+            firstlightsInit = true;
+        }
+    }
+
+    MMatrix = glm::translate(
+        MMatrix,
+        glm::vec3(0.f, -1.f, -4.f)
+    );
 }
 
 void GameRenderer::drawWall(//a voir si matrice par reference

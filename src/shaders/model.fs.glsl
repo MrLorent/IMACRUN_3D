@@ -35,11 +35,11 @@ vec3 Light(vec3 direction, vec3 color){
 
 
 void main() {
-    float dist = distance(vPosition_vs, uLightPos1);
     fFragColor = Light(LightDirection, LightColor);
+    float dist = distance(vPosition_vs, uLightPos1);
     fFragColor += Light(normalize(uLightPos1 - vPosition_vs), LightPonctualColor/(dist*dist));
-    // dist = distance(vPosition_vs, uLightPos2);
-    // fFragColor += Light(normalize(uLightPos2 - vPosition_vs), LightPonctualColor/(dist*dist));
+    dist = distance(vPosition_vs, uLightPos2);
+    fFragColor += Light(normalize(uLightPos2 - vPosition_vs), LightPonctualColor/(dist*dist));
     // dist = distance(vPosition_vs, uLightPos3);
     // fFragColor += Light(normalize(uLightPos3 - vPosition_vs), LightPonctualColor/(dist*dist));
     // dist = distance(vPosition_vs, uLightPos4);

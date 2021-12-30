@@ -52,20 +52,37 @@ void Map::loadMapElements()
 void Map::initMap()
 {
     std::vector<char> mapStart = {
+        'x','f','f','f','x',
         'w','f','f','f','w',
         'w','f','f','f','w',
         'w','f','f','f','w',
+        'l','f','f','f','l',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'x','f','f','f','x',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w',
+        'l','f','f','f','l',
         'w','f','f','f','w',
         'w','f','f','f','w',
         'w','f','c','f','w',
         'w','f','c','f','w',
+        'x','f','c','f','x',
         'w','f','c','f','w',
-        'w','f','c','f','l',
-        'w','o','o','o','w'
+        'w','f','c','f','w',
+        'w','f','c','f','w',
+        'l','f','f','f','l',
+        'w','f','f','f','w',
+        'w','o','o','o','w',
+        'w','f','f','f','w',
+        'w','f','f','f','w'
     };
     for(size_t i=0; i<mapStart.size(); ++i)
     {
-        if(mapStart[i] == LIGHT && firstLights.size() < 4)
+        if(mapStart[i] == LIGHT && firstLights.size() < 2)
         {
             firstLights.push_back(glm::vec3(
                 i%_mapWidth-2,
