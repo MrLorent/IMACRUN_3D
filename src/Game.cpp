@@ -1,21 +1,73 @@
 #include "Game.hpp"
 
 Game::Game()
-    :_caseSubdivisions(50.f),
+    :_state(WAITING),
+     _caseSubdivisions(50.f),
      _caseSubdivisionsIndex(0),
      _skyBoxMMatrix(glm::mat4(1.f)),
      _defaultIndex(7),
      _playerIndex(_defaultIndex),
-     _running(false),
-     _paused(false),
-     _finished(false),
      _turn(0),
      _wallDistance(3)
 {}
 
-bool Game::isRunning()
+void Game::setState(const short unsigned int newState, const short unsigned int mode)
 {
-    return _running && !_paused && !_finished;
+    switch (_state)
+    {
+    case WAITING:
+        if(newState == RUNNING && mode == CLEAR_START)
+        {
+            /* Initiate game */
+            initGame();
+        }
+        else if(newState == RUNNING && mode == FROM_SAVE)
+        {
+            initGameFromSave();
+        }
+        _state = newState;
+        break;
+    case RUNNING:
+        if(newState == PAUSED)
+        {
+            _state = newState;
+        }
+        else if(newState == FINISHED)
+        {
+            _state = newState;
+        }
+        break;
+    case PAUSED:
+        if(newState == RUNNING && mode == UNPAUSE)
+        {
+            _state = RUNNING;
+        }
+        else if(newState == RUNNING && mode == CLEAR_START)
+        {
+            initGame();
+            _state = RUNNING;
+        }
+        else
+        {
+            saveGame();
+            _state = WAITING;
+        }
+        break;
+    case FINISHED:
+        if(newState == RUNNING)
+        {
+            initGame();
+            _state = RUNNING;
+        }
+        else
+        {
+            _state = WAITING;
+        }
+        break;
+    default:
+        std::cout << "Defaut case of game.setState()" << std::endl;
+        break;
+    }
 }
 
 void Game::initGame()
@@ -98,7 +150,7 @@ void Game::runGame()
 {
     checkPlayerPosition();
 
-    if(!_paused && !_finished)
+    if(_state == RUNNING)
     {
         if(_camera._turning != 0) _camera.takeTurn();
         if(_player._isJumping) _player.jump();
@@ -132,19 +184,13 @@ void Game::checkPlayerPosition()
     case Map::FLOOR:
         break;
     case Map::WALL:
-        _finished = true;
+        setState(FINISHED, 0);
         break;
     case Map::HOLE:
-        if(_player.getPosition().y == 0)
-        {
-            _finished = true;
-        }
+        if(_player.getPosition().y == 0) setState(FINISHED, 0);
         break;
     case Map::BAREL:
-        if(_player.getPosition().y == 0)
-        {
-            _finished = true;
-        }
+        if(_player.getPosition().y == 0) setState(FINISHED, 0);
         break;
     case Map::COLLECTIBLE:
         if(_player.getPosition().y == 0)
@@ -154,14 +200,10 @@ void Game::checkPlayerPosition()
             }
         break;
     case Map::ARCH:
-        if(_player.getPosition().x != 0){
-            _finished=true;
-        }
+        if(_player.getPosition().x != 0) setState(FINISHED, 0);
         break;
     case Map::PLANK:
-        if(!_player._isCrouching){
-            _finished=true;
-        }
+        if(!_player._isCrouching) setState(FINISHED, 0);
     default:
         break;
     }
@@ -264,14 +306,10 @@ void Game::key_callback(int key, int scancode, int action, int mods)
     switch (key)
         {
         case GLFW_KEY_ESCAPE: //ECHAP 
-            if(action != 0) _paused = true;
+            if(action != 0) setState(PAUSED, 0);
             break;
         case GLFW_KEY_P: // 'P'
-            if(action!=0)
-            {
-                if(_paused) _paused = false;
-                else _paused = true;
-            }
+            if(action != 0) setState(PAUSED, 0);
             break;
         case GLFW_KEY_C: // 'C'
             if(action!=0) _camera.switchMode(); 

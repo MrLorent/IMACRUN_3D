@@ -174,31 +174,38 @@ void App::render()
         _menuRenderer.drawGameOver(_menuList[_menuIndex]);
         break;
     case GAME:
-        if(_game._finished)
         {
-            if(_game.getScore() > _scores[_scores.size()-1].score)
+            const short unsigned int gameState = _game.getState();
+            
+            switch (gameState)
             {
-                _menuIndex = SCORE_INPUT;
+                case Game::WAITING:
+                    _game.setState(Game::RUNNING, Game::CLEAR_START);
+                    break;
+                
+                case Game::RUNNING:
+                    /* Running game */
+                    _game.runGame();
+                    _gameRenderer.render(_game);
+                    break;
+                
+                case Game::PAUSED:
+                    _menuIndex = GAME_PAUSED;
+                    break;
+                
+                case Game::FINISHED:
+                    if(_game.getScore() > _scores[_scores.size()-1].score)
+                    {
+                        _menuIndex = SCORE_INPUT;
+                    }
+                    else
+                    {
+                        _menuIndex = GAME_OVER;
+                    }
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                _menuIndex = GAME_OVER;
-            }
-        }
-        else if(_game._paused)
-        {
-            _menuIndex = GAME_PAUSED;
-        }
-        else if(!_game._running)
-        {
-            /* Initiate game */
-            _game.initGame();
-            _game._running = true;
-        }else
-        {
-            /* Running game */
-            _game.runGame();
-            _gameRenderer.render(_game);
         }
         break;
     default:
@@ -211,7 +218,10 @@ void App::key_callback(int key, int scancode, int action, int mods)
     switch (key)
         {
         case GLFW_KEY_ESCAPE: //ECHAP 
-            if(action !=0 && _menuIndex == GAME) _game._paused = false;
+            if(action !=0 && _menuIndex == GAME_PAUSED) _game.setState(Game::PAUSED, 0);
+            break;
+        case GLFW_KEY_P: // 'P'
+            if(action != 0) _game.setState(Game::PAUSED, 0);
             break;
         case GLFW_KEY_DOWN: // down arrow
             if(action != 0) _menuList[_menuIndex].changeCurrentButton(1);
@@ -232,40 +242,46 @@ void App::key_callback(int key, int scancode, int action, int mods)
 
                 switch (PREVIOUS_MENU)
                 {
-                case GAME_PAUSED: 
-                    _game._paused = false;
-                    if(BUTTON_CLICKED != 0)
-                    { // "RECOMMENCER" || "SAUVEGARDER" || "RETOUR AU MENU"
-                       if(BUTTON_CLICKED == 2){
-                            _game.saveGame();
-                            _savedScore = _game.getScore();
+                    case GAME_PAUSED:
+                        {
+                            switch (BUTTON_CLICKED)
+                            {
+                            case 0: // REPRENDRE
+                                _game.setState(Game::RUNNING, Game::UNPAUSE);
+                                break;
+                            
+                            case 1: // RECOMMENCER
+                                _game.setState(Game::RUNNING, Game::CLEAR_START);
+                                break;
+                            
+                            case 2: // SAUVEGARDER ET QUITTER
+                                _game.setState(Game::WAITING, 0);
+                                _savedScore = _game.getScore();
+                                break;
+
+                            default:
+                                break;
+                            }
                         }
-                        _game._running = false;
-                        _game._finished = false;
-                    }
-                    break;
-                case GAME_OVER:
-                    _game._running = false;
-                    _game._finished = false;
-                    break;
-                case SCORE_INPUT:
-                    _game._running = false;
-                    _game._finished = false;
-                    setBestScores();
-                    break;
-                case LOAD_MENU:
-                    if(BUTTON_CLICKED == 0 && _savedScore != -1)
-                    {
-                        _game.initGameFromSave();
-                        _game._running = true;
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+                    case GAME_OVER:
+                        _game.setState(Game::WAITING, 0);
+                        break;
+                    case SCORE_INPUT:
+                        _game.setState(Game::WAITING, 0);
+                        setBestScores();
+                        break;
+                    case LOAD_MENU:
+                        if(BUTTON_CLICKED == 0 && _savedScore != -1)
+                        {
+                            _game.setState(Game::RUNNING, Game::FROM_SAVE);
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
             break;
-        
         default:
                 std::cout << key << std::endl;
             break;

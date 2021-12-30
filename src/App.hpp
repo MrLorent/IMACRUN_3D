@@ -36,7 +36,7 @@ class App
     public:
         // CONSTANTS
         /* Navigation menu */
-        enum AppMenus{
+        enum APP_MENUS{
             MAIN_MENU = 0,
             LOAD_MENU = 1,
             SCORES = 2,
