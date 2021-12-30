@@ -269,7 +269,7 @@ void Game::key_callback(int key, int scancode, int action, int mods)
     switch (key)
         {
         case GLFW_KEY_ESCAPE: //ECHAP 
-            _running = false;
+            if(action != 0) _paused = true;
             break;
         case GLFW_KEY_P: // 'P'
             if(action!=0)

@@ -208,6 +208,9 @@ void App::key_callback(int key, int scancode, int action, int mods)
 {
     switch (key)
         {
+        case GLFW_KEY_ESCAPE: //ECHAP 
+            if(action !=0 && _menuIndex == GAME) _game._paused = false;
+            break;
         case GLFW_KEY_DOWN: // down arrow
             if(action != 0) _menuList[_menuIndex].changeCurrentButton(1);
             break;
