@@ -36,12 +36,14 @@ class App
     public:
         // CONSTANTS
         /* Navigation menu */
-        static constexpr short unsigned int MAIN_MENU = 0;
-        static constexpr short unsigned int GAME = 1;
-        static constexpr short unsigned int GAME_OVER = 2;
-        static constexpr short unsigned int LOAD_MENU = 3;
-        static constexpr short unsigned int SCORES = 4;
-        static constexpr short unsigned int SCORE_INPUT = 5;
+        enum AppMenus{
+            MAIN_MENU = 0,
+            GAME = 1,
+            GAME_OVER = 2,
+            LOAD_MENU = 3,
+            SCORES = 4,
+            SCORE_INPUT = 5,
+        };
         // CONSTRUCTORS
         /* Basic constructors*/
 
