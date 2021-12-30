@@ -37,7 +37,7 @@ void Model::draw(
     /* Link the shaders of the model */
     _shaders.use();
     
-    glm::vec3 tmp = glm::vec3(glm::vec4(lights[0],1) * VMatrix);
+    glm::vec3 tmp = glm::vec3(VMatrix * glm::vec4(lights[0],1));
     glUniform3f(
         _uLightPos1,
         tmp.x,
@@ -45,7 +45,7 @@ void Model::draw(
         tmp.z
     );
 
-    tmp = glm::vec3(glm::vec4(lights[1],1) * VMatrix);
+    tmp = glm::vec3(VMatrix * glm::vec4(lights[1],1));
     glUniform3f(
         _uLightPos2,
         tmp.x,

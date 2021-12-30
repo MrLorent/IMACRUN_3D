@@ -223,7 +223,7 @@ void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLig
 {
     MMatrix = glm::translate(
         MMatrix,
-        glm::vec3(0.f, 0.f, 5.5f)
+        glm::vec3(0.f, 1.2f, 4.f)
     );
 
     if(rank == 0)
@@ -243,7 +243,7 @@ void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLig
 
     MMatrix = glm::translate(
         MMatrix,
-        glm::vec3(0.f, 0.f, -5.5f)
+        glm::vec3(0.f, -1.2f, -4.f)
     );
 }
 
@@ -316,13 +316,13 @@ void GameRenderer::drawBarel(
         drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
         MMatrix = glm::translate(
             MMatrix,
-            glm::vec3(0.f,1.f,0.f)
+            glm::vec3(0.f,0.8f,0.f)
         );
         _light.MMatrixLight = MMatrix;
         _light.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
         MMatrix = glm::translate(
             MMatrix,
-            glm::vec3(0.f,-1.f,0.f)
+            glm::vec3(0.f,-0.8f,0.f)
         );
     }
 
