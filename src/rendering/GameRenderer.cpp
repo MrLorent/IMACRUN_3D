@@ -206,13 +206,13 @@ void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
     _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 }
 
-void GameRenderer::drawSkyBox(glm::mat4& VMatrix)
+void GameRenderer::drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix)
 {
     _skybox.draw(
         _PROJECTION_MATRIX,
         VMatrix,
         glm::scale(
-            glm::mat4(1.f),
+            MMatrix,
             glm::vec3(10)
         ),
         currentLights
@@ -392,7 +392,7 @@ void GameRenderer::render(
     drawPlayer(game ,game._player, VMatrix);
 
     // DRAW THE SKYBOX
-    drawSkyBox(VMatrix);
+    drawSkyBox(VMatrix, game.getSkyBoxMMatrix());
 
     //Draw the score
     _text.draw(

@@ -16,6 +16,7 @@ class Game
 
         const short unsigned int _defaultIndex;
         short unsigned int _playerIndex;
+        glm::mat4 _skyBoxMMatrix;
 
         void checkPlayerPosition();
         void passTurn();
@@ -48,6 +49,7 @@ class Game
         inline unsigned int getCaseSubdivisionIndex() const { return _caseSubdivisionsIndex; }
         inline unsigned int getScore() const { return _player.getScore(); }
         inline unsigned int getPlayerIndex() const { return _playerIndex; }
+        inline glm::mat4& getSkyBoxMMatrix() { return _skyBoxMMatrix; }
 
         //  METHODS
         

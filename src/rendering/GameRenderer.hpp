@@ -63,7 +63,7 @@ private:
 
     void drawMap(Game& game, glm::mat4& VMatrix);
     void drawPlayer(Game& game,Player& player, glm::mat4& VMatrix);
-    void drawSkyBox(glm::mat4& VMatrix);
+    void drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix);
     void setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const short unsigned int rank);
 
     void drawWall(glm::mat4 &_PROJECTION_MATRIX,

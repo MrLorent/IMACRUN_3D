@@ -3,6 +3,7 @@
 Game::Game()
     :_caseSubdivisions(50.f),
      _caseSubdivisionsIndex(0),
+     _skyBoxMMatrix(glm::mat4(1.f)),
      _defaultIndex(7),
      _playerIndex(_defaultIndex),
      _running(false),
@@ -251,6 +252,12 @@ void Game::passTurn()
 
     if(_camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(_camera._turning * 90);
     else _camera.rotateHorizontaly(_turn * 90);
+
+    _skyBoxMMatrix = glm::rotate(
+        _skyBoxMMatrix,
+        float(_camera._turning * 90),
+        glm::vec3(0.f,1.f,0.f)
+    );
 
     /* The user passed the turn obstacle */
     _turn = 0;
