@@ -2,7 +2,7 @@
 
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
-     _renderingLength(24), // nb ligne to draw
+     _renderingLength(20), // nb ligne to draw
      _rotationDirection(0),
      _rotatingIndex(0)
 {
@@ -208,11 +208,13 @@ void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
 
 void GameRenderer::drawSkyBox(glm::mat4& VMatrix)
 {
-    glm::mat4 id(1.f);
     _skybox.draw(
         _PROJECTION_MATRIX,
-        id,
-        glm::mat4(10.f),
+        VMatrix,
+        glm::scale(
+            glm::mat4(1.f),
+            glm::vec3(10)
+        ),
         currentLights
     );
 }

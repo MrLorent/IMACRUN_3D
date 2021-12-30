@@ -3,7 +3,7 @@
 Game::Game()
     :_caseSubdivisions(50.f),
      _caseSubdivisionsIndex(0),
-     _defaultIndex(9),
+     _defaultIndex(7),
      _playerIndex(_defaultIndex),
      _running(false),
      _paused(false),
@@ -115,7 +115,7 @@ void Game::runGame()
                 _map.deleteFirstLigne();
             }
             _caseSubdivisionsIndex = 0;
-            if(_map.getSize() < 80 && _map.getSize()%_map.getMapWidth() == 0) _map.reloadMap();
+            if(_map.getSize() < 125 && _map.getSize()%_map.getMapWidth() == 0) _map.reloadMap();
 
             if(_turn != 0) _wallDistance--;
         }
