@@ -38,11 +38,12 @@ class App
         /* Navigation menu */
         enum AppMenus{
             MAIN_MENU = 0,
-            GAME = 1,
-            GAME_OVER = 2,
-            LOAD_MENU = 3,
-            SCORES = 4,
-            SCORE_INPUT = 5,
+            LOAD_MENU = 1,
+            SCORES = 2,
+            SCORE_INPUT = 3,
+            GAME_PAUSED = 4,
+            GAME_OVER = 5,
+            GAME = 6
         };
         // CONSTRUCTORS
         /* Basic constructors*/

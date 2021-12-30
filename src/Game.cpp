@@ -133,20 +133,17 @@ void Game::checkPlayerPosition()
         break;
     case Map::WALL:
         _finished = true;
-        _paused = true;
         break;
     case Map::HOLE:
         if(_player.getPosition().y == 0)
         {
             _finished = true;
-            _paused = true;
         }
         break;
     case Map::BAREL:
         if(_player.getPosition().y == 0)
         {
             _finished = true;
-            _paused = true;
         }
         break;
     case Map::COLLECTIBLE:
@@ -159,13 +156,11 @@ void Game::checkPlayerPosition()
     case Map::ARCH:
         if(_player.getPosition().x != 0){
             _finished=true;
-            _paused=true;
         }
         break;
     case Map::PLANK:
         if(!_player._isCrouching){
             _finished=true;
-            _paused=true;
         }
     default:
         break;

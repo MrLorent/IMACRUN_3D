@@ -21,25 +21,6 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     
     buttons.clear();
 
-    // GAME PAUSED MENU
-    buttons = {
-        Button("Reprendre", GAME),
-        Button("Recommencer", GAME),
-        Button("Sauvegarder et quitter", MAIN_MENU)
-    };
-    _menuList.push_back(Menu(buttons));
-
-    buttons.clear();
-
-    // GAME OVER MENU
-    buttons = {
-        Button("Recommencer", GAME),
-        Button("Menu Principal", MAIN_MENU)
-    };
-    _menuList.push_back(Menu(buttons));
-
-    buttons.clear();
-
     // LOAD MENU
     buttons = {
         Button("Charger", GAME),
@@ -61,6 +42,25 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     buttons = {
         Button("Enregistrer", SCORES),
         Button("Retour", MAIN_MENU)
+    };
+    _menuList.push_back(Menu(buttons));
+
+    buttons.clear();
+
+    // GAME PAUSED
+    buttons = {
+        Button("Reprendre", GAME),
+        Button("Recommencer", GAME),
+        Button("Sauvegarder et quitter", MAIN_MENU)
+    };
+    _menuList.push_back(Menu(buttons));
+
+    buttons.clear();
+
+    // GAME OVER MENU
+    buttons = {
+        Button("Recommencer", GAME),
+        Button("Menu Principal", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
 
@@ -158,6 +158,21 @@ void App::render()
     case MAIN_MENU:
         _menuRenderer.drawMainMenu(_menuList[_menuIndex]);
         break;
+    case LOAD_MENU:
+        _menuRenderer.drawLoadMenu(_menuList[_menuIndex], _savedScore);
+        break;
+    case SCORES:
+        _menuRenderer.drawScores(_menuList[_menuIndex], _scores);
+        break;
+    case SCORE_INPUT:
+        _menuRenderer.drawScoreInput(_menuList[_menuIndex], _pseudoInput);
+        break;
+    case GAME_PAUSED:
+        _menuRenderer.drawGamePaused(_menuList[GAME_PAUSED]);
+        break;
+    case GAME_OVER:
+        _menuRenderer.drawGameOver(_menuList[_menuIndex]);
+        break;
     case GAME:
         if(_game._finished)
         {
@@ -172,7 +187,7 @@ void App::render()
         }
         else if(_game._paused)
         {
-            _menuRenderer.drawGamePaused(_menuList[_menuIndex]);
+            _menuIndex = GAME_PAUSED;
         }
         else if(!_game._running)
         {
@@ -186,20 +201,7 @@ void App::render()
             _gameRenderer.render(_game);
         }
         break;
-    case GAME_OVER:
-        _menuRenderer.drawGameOver(_menuList[_menuIndex]);
-        break;
-    case LOAD_MENU:
-        _menuRenderer.drawLoadMenu(_menuList[_menuIndex], _savedScore);
-        break;
-    case SCORES:
-        _menuRenderer.drawScores(_menuList[_menuIndex], _scores);
-        break;
-    case SCORE_INPUT:
-        _menuRenderer.drawScoreInput(_menuList[_menuIndex], _pseudoInput);
-        break;
     default:
-        _menuRenderer.render(_menuList, _menuIndex);
         break;
     }
 }
@@ -230,7 +232,7 @@ void App::key_callback(int key, int scancode, int action, int mods)
 
                 switch (PREVIOUS_MENU)
                 {
-                case GAME: 
+                case GAME_PAUSED: 
                     _game._paused = false;
                     if(BUTTON_CLICKED != 0)
                     { // "RECOMMENCER" || "SAUVEGARDER" || "RETOUR AU MENU"
@@ -243,12 +245,10 @@ void App::key_callback(int key, int scancode, int action, int mods)
                     }
                     break;
                 case GAME_OVER:
-                    _game._paused = false;
                     _game._running = false;
                     _game._finished = false;
                     break;
                 case SCORE_INPUT:
-                    _game._paused = false;
                     _game._running = false;
                     _game._finished = false;
                     setBestScores();
