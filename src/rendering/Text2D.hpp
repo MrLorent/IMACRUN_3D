@@ -44,9 +44,34 @@ class Text2D
         unsigned int _window_width, _window_height;
     
     public:
+        // OPERATORS
+        /* Move assignment operator */
+
+        Text2D& operator=(Text2D&& rhs) noexcept;
+
+        /* Copy assignment operator */
+        Text2D& operator=(const Text2D&) = delete; // We disable copying
+
+        // CONSTRUCTORS
+        /* basic constructors */
+
         Text2D(){};
         Text2D(const unsigned int fontSize, glimac::FilePath name, std::string fontName="Arial.ttf");
-        //~Text2D();
+
+        /* Copy constructor */
+
+        Text2D(const Text2D&) = delete; // We disable copying
+
+        /* move constructor */
+        
+        Text2D(Text2D&& rhs) noexcept;
+
+        // DESTRUCTORS
+
+        ~Text2D();
+        
+        // METHODS
+        
         void draw(
             std::string text,   /* Text to write */
             glm::vec2 pos,      /* Position in screen, starting from bottom left */

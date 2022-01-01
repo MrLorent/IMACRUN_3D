@@ -4,11 +4,10 @@
 /* basic constructors */
 
 MenuRenderer::MenuRenderer(glimac::FilePath applicationPath)
-    :_applicationPath(applicationPath)
+    :_applicationPath(applicationPath),
+     _title(std::move(Text2D(40, _applicationPath, "PTMono.ttc"))),
+     _text(std::move(Text2D(30, _applicationPath, "PTMono.ttc")))
 {
-    /* Initialisation of the fonts */
-    _title = Text2D(40, _applicationPath, "PTMono.ttc");
-    _text = Text2D(30, _applicationPath, "PTMono.ttc");
 }
 
 // DESTRUCTORS
