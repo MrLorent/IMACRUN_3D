@@ -338,6 +338,7 @@ void App::mouse_button_callback(int button, int action, int mods)
 
 void App::scroll_callback(double xoffset, double yoffset)
 {
+    if(_menuIndex == CAMERA_SETTINGS) _game._camera.changeDistance(yoffset);
 }
 
 void App::cursor_position_callback(double xpos, double ypos)
