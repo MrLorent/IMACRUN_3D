@@ -7,6 +7,14 @@ Text2D& Text2D::operator=(Text2D&& rhs) noexcept
 {
     if(this != &rhs)
     {
+        // ALPHABET
+        _alphabet.clear();
+        _alphabet = rhs._alphabet;
+        for(size_t i=0; i < _alphabet.size(); i++)
+        {
+            rhs._alphabet[i].TextureID = 0;
+        }
+
         // VBO
         glDeleteBuffers(1, &_vbo);
         _vbo = rhs._vbo;
@@ -20,6 +28,8 @@ Text2D& Text2D::operator=(Text2D&& rhs) noexcept
         // IBO
         _ibo = rhs._ibo;
         rhs._ibo = 0;
+
+        shader = std::move(rhs.shader);
     }
 
     return *this;
