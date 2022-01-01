@@ -311,9 +311,6 @@ void Game::key_callback(int key, int scancode, int action, int mods)
         case GLFW_KEY_P: // 'P'
             if(action != 0) setState(PAUSED, 0);
             break;
-        case GLFW_KEY_C: // 'C'
-            if(action!=0) _camera.switchMode(); 
-            break;
         case GLFW_KEY_A: // 'Q'
             if(action!=0){
                 if(_turn == LEFT) passTurn();
@@ -333,22 +330,6 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             break;
         case GLFW_KEY_SPACE: // SPACEBAR
             _player._isJumping = true;
-            break;
-        case GLFW_KEY_RIGHT: //Fleche droite
-            _camera.rotateHorizontaly(-2.*float(1));
-            
-            break;
-
-        case GLFW_KEY_LEFT: //Fleche gauche
-            _camera.rotateHorizontaly(2.*float(1));
-            break;
-
-        case GLFW_KEY_DOWN: //Fleche bas
-            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateVerticaly(-2.*float(1));
-            break;
-        
-        case GLFW_KEY_UP: //Fleche haut
-            if(action!=0 && _camera._mode == Camera::TRACKBALL) _camera.rotateVerticaly(2.*float(1));
             break;
         default:
             std::cout << key << std::endl;

@@ -14,12 +14,16 @@ private:
     float _distance;
     float _xAngle;
     float _yAngle;
+    float _savedXAngle;
+    float _savedYAngle;
 
     // FREEFLY ATTRIBUTS
     glm::vec3 _position;
     /* look direction */
     float _phi;
     float _theta;
+    float _savedPhi;
+    float _savedTheta;
     /* spacial direction */
     glm::vec3 _frontVector;
     glm::vec3 _leftVector;
@@ -57,4 +61,5 @@ public:
     void rotateHorizontaly(float degrees);
     void rotateVerticaly(float degrees);
     glm::mat4 getViewMatrix() const;
+    void saveSettings();
 };

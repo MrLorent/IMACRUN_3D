@@ -12,10 +12,14 @@ Camera::Camera(short unsigned int caseSubdivisions)
      _distance(2),
      _xAngle(M_PI / 6),    /* horizontal */
      _yAngle(M_PI),    /* vertical */
+     _savedXAngle(M_PI / 6),    /* horizontal */
+     _savedYAngle(M_PI),    /* vertical */
     // FREEFLY
      _position(glm::vec3(0.f, 1.f, 0.1f)),
      _phi(0),    /* horizontal */
-     _theta(0.f)    /* vertical */
+     _theta(0.f),    /* vertical */
+     _savedPhi(0),    /* horizontal */
+     _savedTheta(0.f)    /* vertical */
 {
     computeDirectionVectors();
 }
@@ -80,11 +84,11 @@ void Camera::takeTurn()
     {
         if(_mode == Camera::TRACKBALL)
         {
-            _yAngle = M_PI;
+            _yAngle = _savedYAngle;
         }
         else
         {
-            _phi = 0;
+            _phi = _savedPhi;
         }
         _turning = 0;
         _rotationIndex = 0;
@@ -166,4 +170,13 @@ glm::mat4 Camera::getViewMatrix() const
             _upVector
         );
     }
+}
+
+void Camera::saveSettings()
+{
+    _savedXAngle = _xAngle;
+    _savedYAngle = _yAngle;
+
+    _savedPhi = _phi;
+    _savedTheta = _theta;
 }
