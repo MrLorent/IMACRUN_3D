@@ -1,9 +1,12 @@
 #pragma once
 #define MODEL_H
 
+#include <deque>
 #include <dirent.h>
+#include <tiny_obj_loader.h>
 #include "Mesh.hpp"
 #include "FilePath.hpp"
+
 
 struct ModelParams
 {
@@ -42,9 +45,17 @@ class Model
         std::vector<Mesh> _meshes;
         glimac::Program _shaders;
 
+        GLint _uMMatrix;
         GLint _uMVPMatrix;
-        GLint _uMVMatrix;
+        //GLint _uMVMatrix;
+        GLint _uVMatrix;
         GLint _uNormalMatrix;
+
+        // LIGHTS
+        GLint _uLightPos1;
+        GLint _uLightPos2;
+        GLint _uLightPos3;
+        GLint _uLightPos4;
         
         // PRIVATE METHODS
 
@@ -58,7 +69,8 @@ class Model
         void loadTextures(
             glimac::FilePath appPath,
             std::string filePath,
-            std::vector<Texture>& textures
+            Textures& textures,
+            tinyobj::material_t material
         );
 
     public:
@@ -72,6 +84,10 @@ class Model
         
         void draw(
             glm::mat4 &ProjMatrix,
-            glm::mat4 &MVMatrix
+            glm::mat4 &MVMatrix,
+            glm::mat4 const & MMatrix,
+            std::deque<glm::vec3>& lights
         );
+
+        static glm::mat4 MMatrixLight;
 };

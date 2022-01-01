@@ -4,55 +4,73 @@
 #include <GLFW/glfw3.h>
 
 
+#include "Menu.hpp"
+#include "MenuRenderer.hpp"
 #include "Game.hpp"
 #include "GameRenderer.hpp"
-#include "Text.hpp"
 
 class App
 {
     private:
-        // CONSTANTS
-        /* Navigation menu */
-        static constexpr short unsigned int PRINCIPAL_MENU = 0;
-        static constexpr short unsigned int GAME = 1;
-        static constexpr short unsigned int LOAD_MENU = 2;
-        static constexpr short unsigned int SCORES = 3;
-        static constexpr short unsigned int SCORE_INPUT = 4;
-
+        // ATTRIBUTS
         /* Window parameters */
-        int _width;
-        int _height;
-        glm::mat4 _projectionMatrix;
+        int _WINDOW_WIDTH;
+        int _WINDOW_HEIGHT;
+        glm::mat4 _PROJECTION_MATRIX;
 
         /* External parameters */
-        std::string _applicationPath;
+        glimac::FilePath _applicationPath;
 
-        /* Game elements */
-        short unsigned int _currentScreen;
+        /* Application parameters */
+        std::vector<Score> _scores;
+        std::vector<Menu> _menuList;
+        short unsigned int _menuIndex;
+        MenuRenderer _menuRenderer;
+        std::string _pseudoInput;
+        int _savedScore;
+
+        /* Game entities */
         Game _game;
         GameRenderer _gameRenderer;
 
-        Text _text;
     public:
+        // CONSTANTS
+        /* Navigation menu */
+        enum APP_MENUS{
+            MAIN_MENU = 0,
+            LOAD_MENU = 1,
+            SCORES = 2,
+            SCORE_INPUT = 3,
+            GAME_PAUSED = 4,
+            GAME_OVER = 5,
+            GAME = 6
+        };
         // CONSTRUCTORS
-        /* Basic constructor*/
+        /* Basic constructors*/
 
-        App(GLFWwindow* window, int window_width, int window_height, std::string path);
+        App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path);
         
         // GETTERS
-        Game& getGame();
+
+        inline Game& getGame() { return _game; }
+
+        // SETTERS
 
         // METHODS
+        void getBestScores();
+        void setBestScores();
+        void getSavedScore();
+
+        /* Graphics */
+
+        void render();
+        
         /* Control managers */
 
         void key_callback(int key, int scancode, int action, int mods);
+        void char_callback(unsigned int codepoint);
         void mouse_button_callback(int button, int action, int mods);
         void scroll_callback(double xoffset, double yoffset);
         void cursor_position_callback(double xpos, double ypos);
         void size_callback(GLFWwindow* window, int width, int height);
-        void destroy();
-        
-        /* Graphics */
-
-        void render();
 };

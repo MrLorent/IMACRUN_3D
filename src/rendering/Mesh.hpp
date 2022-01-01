@@ -8,6 +8,13 @@
 #include "Program.hpp"
 #include "Texture.hpp"
 
+struct Textures{
+    Texture diffuse;
+    Texture specular;
+    float shininess; 
+};
+
+
 struct Vertex{
     glm::vec3 position;
     glm::vec3 normal;
@@ -18,6 +25,13 @@ struct Vertex{
     bool operator==(const Vertex& other) const {
         return position == other.position && normal == other.normal && texCoords == other.texCoords;
     }
+
+    // CONSTRUCTOR
+
+    Vertex(){}
+    Vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t)
+        :position(p), normal(n), texCoords(t)
+    {}
 };
 
 namespace std {
@@ -44,22 +58,36 @@ class Mesh
         void initVbo();
         void initIbo();
         void initVao();
+        void bindTexture(int index, GLint textureId, const char* uniformName, const GLuint shadersId) const;
     
     public:
         // PUBLIC ATTRIBUTS
         
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
-        std::vector<Texture> textures;
+        Textures textures;
+
+        // OPERATORS
+        /* Move assignment operator */
+
+        Mesh& operator=(Mesh&& rhs) noexcept;
+
+        /* Copy assignment operator */
+        Mesh& operator=(const Mesh&) = delete; // We disable copying
 
         // CONSTRUCTORS
         /* basic constructor */
         
+        Mesh();
         Mesh(
             const std::vector<Vertex>& vertices,
             const std::vector<unsigned int>& indices,
-            std::vector<Texture>&& textures
+            Textures&& textures
         );
+
+        /* Copy constructor */
+
+        Mesh(const Mesh&) = delete; // We disable copying
 
         /* move constructor */
 
@@ -72,4 +100,5 @@ class Mesh
         // METHODS
         
         void draw(glimac::Program& shaders);
+
 };

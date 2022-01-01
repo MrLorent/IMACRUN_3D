@@ -5,6 +5,10 @@
 #include <deque>
 #include <random>
 #include <iostream>
+#include <fstream>
+
+#include "glm/glm.hpp"
+#include "iostream"
 
 class Map
 {
@@ -18,14 +22,24 @@ private:
     std::uniform_int_distribution<int> _distribution;
 
     void loadMapElements();
-    void initMap();
 
 public:
     // CONSTANTS
     static constexpr char WALL = 'w';
+    static constexpr char LIGHT_MARKER = 'x';
+    static constexpr char LIGHT = 'l';
     static constexpr char FLOOR = 'f';
     static constexpr char HOLE = 'h';
+    static constexpr char BAREL = 'b';
     static constexpr char PASSED_TURN = 'p';
+    static constexpr char COLLECTIBLE = 'c';
+    static constexpr char ARCH = 'a';
+    static constexpr char PLANK = 'o';
+
+
+
+    // ATTRIBUTS
+    std::vector<glm::vec3> firstLights;
 
     // OPERATORS
     const char& operator[](const size_t& i) const;
@@ -38,10 +52,12 @@ public:
     ~Map();
 
     // GETTERS
-    size_t size();
+    size_t getSize();
     unsigned short int getMapWidth();
 
     // METHODS
+    void initMap();
+    void add(const char c);
     void reloadMap();
     void deleteFirstLigne();
 };

@@ -26,6 +26,20 @@ Texture::Texture(Texture&& rhs) noexcept
     rhs._type ="";
 }
 
+/* Move assignment operator */
+
+Texture& Texture::operator=(Texture&& rhs) noexcept
+{
+    if (this != &rhs) // Make sure that we don't do silly things if we try to move an object to itself
+    {
+        glDeleteTextures(1, &_id); // Delete the previous texture
+        _id     = rhs._id;        // Get the new texture id
+        rhs._id = 0;              // Make sure that rhs won't delete the _id we just copied
+    }
+    
+    return *this; // move assignment must return a reference to this, so we do it
+}
+
 // DESTRUCTOR
 
 Texture::~Texture()
@@ -40,12 +54,12 @@ Texture::~Texture()
 bool Texture::load(const std::string& filePath)
 {
     std::unique_ptr<glimac::Image> image = glimac::loadImage(
-        "./assets/models/"+filePath
+        "./assets/"+filePath
     );
     
     if(image == nullptr)
     {
-        std::cout << "Couldn't load " << "./assets/Models/"+filePath << std::endl;
+        std::cout << "Couldn't load " << "./assets/"+filePath << std::endl;
         return false;
     }
 

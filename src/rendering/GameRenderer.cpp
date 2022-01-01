@@ -2,24 +2,15 @@
 
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
-     _renderingLength(15), // nb ligne to draw
+     _renderingLength(20), // nb ligne to draw
      _rotationDirection(0),
      _rotatingIndex(0)
 {
-}
-
-void GameRenderer::rotateCamera(Camera& cam, Player& player, unsigned int caseSubdivisions){
-    if(_rotatingIndex > caseSubdivisions * 2)
-    {
-        cam.rotateHorizontaly(float(M_PI/2 * -player._turning));
-        player._turning = 0;
-        _rotatingIndex = 0;
-    }
-    else
-    {
-        cam.rotateHorizontaly(float(90.f * 1/(caseSubdivisions * 2) * player._turning));
-        _rotatingIndex++;
-    }
+    /* Initialization of the 3D Models */
+    load3DModels();
+    
+    /* Initialization of the fonts */
+    _text = Text2D(20, _applicationPath, "PTMono.ttc");
 }
 
 void GameRenderer::load3DModels()
@@ -27,111 +18,404 @@ void GameRenderer::load3DModels()
     ModelParams params(_applicationPath);
 
     // LOADING OF THE PLAYER MODEL
-    params.fileName = "knight/alliance.obj";
-    params.vsShader = "triangle.vs.glsl";
-    params.fsShader = "triangle.fs.glsl";
+    params.fileName = "wizard/wizard.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
 
     _player = Model(params);
 
     // LOADING OF THE TILE MODEL
-    params.fileName = "box/box.obj";
-    params.vsShader = "triangle.vs.glsl";
-    params.fsShader = "triangle.fs.glsl";
+    params.fileName = "Cobblestones/CobbleStones.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
  
     _floor = Model(params);
+
+    //LOADING OF THE WALL MODEL
+    params.fileName = "wall/wall.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
+ 
+    _wall = Model(params);
+
+    //LOADING OF THE BARREL MODEL
+    params.fileName = "barrel/barrel.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
+ 
+    _barrel = Model(params);
+
+    //LOADING OF THE LIGHT MODEL
+    params.fileName = "lantern/lantern.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
+ 
+    _light = Model(params);
+
+    //LOADING OF THE BOTTLE MODEL
+    params.fileName = "bottle/bottle.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl";
+ 
+    _bottle = Model(params);
+
+    //LOADING OF THE ARCH MODEL
+    params.fileName = "gate_1/gate_1.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl"; 
+ 
+    _arch = Model(params);   
+
+    //LOADING OF THE PLANK MODEL
+    params.fileName = "plank/plank.obj";
+    params.vsShader = "model.vs.glsl";
+    params.fsShader = "model.fs.glsl"; 
+ 
+    _plank = Model(params);   
+ 
+    //LOADING OF THE SKYBOX MODEL
+    params.fileName = "skybox/skybox.obj";
+    params.vsShader = "skybox.vs.glsl";
+    params.fsShader = "skybox.fs.glsl";
+ 
+    _skybox = Model(params);
 }
 
-void GameRenderer::render(
-    glm::mat4 projectionMatrix,
-    Game& game
-)
+void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
 {
-    // DRAW THE PLAYER
-    Player& player = game._player;
-    /* Place the Player Model into the scene */
+    for(size_t i=0; i<game._map.firstLights.size(); ++i)
+    {
+        currentLights.push_back(game._map.firstLights[i]);
+    }
+    firstlightsInit = false;
 
-    /* turn back the model from the camera */
-    glm::mat4 MVMatrix = glm::rotate(
-        glm::mat4(1.f),
-        float(M_PI),
-        glm::vec3(0.f,1.f,0.f)
-    );
-
-    /* put the player model at the right position */
-    MVMatrix = glm::translate(
-        MVMatrix,
-        player.getPosition()
-    );
-
-    /* Move the player model according to the camera */
-    MVMatrix = game._camera.getViewMatrix() * MVMatrix;
-
-    _player.draw(projectionMatrix, MVMatrix);
-
-    // DRAW THE MAP
-    Map& map = game._map;
-    MVMatrix = glm::translate(
+    glm::mat4 MMatrix = glm::translate(
         glm::mat4(1.f),
         glm::vec3(
             -2.f, /* Place of the first left wall */
             0.f,
-            0.5-game._playerIndex-game._caseSubdivisionsIndex/game._caseSubdivisions
-        )
+            0.5 - game.getPlayerIndex() - game.getCaseSubdivisionIndex() / game.getCaseSubdivision()
+        ) 
     );
-
-    if(player._turning != 0) rotateCamera(game._camera, player, game._caseSubdivisions);
-    
-    /* Move the scene according to the camera */
-    MVMatrix = game._camera.getViewMatrix() * MVMatrix;
-    
+   // matrix matrice= matrix(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
     for(unsigned int i=0; i<_renderingLength; ++i)
     {
-        for(unsigned short int k=0; k<map.getMapWidth(); ++k){
-            switch (map[map.getMapWidth() * i + k])
+        for(unsigned short int k=0; k < game._map.getMapWidth(); ++k){
+            switch (game._map[game._map.getMapWidth() * i + k])
             {
                 case Map::FLOOR:
-                    _floor.draw(projectionMatrix, MVMatrix);
-                    break;
+                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    break; 
                 case Map::PASSED_TURN:
-                    _floor.draw(projectionMatrix, MVMatrix);
+                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::WALL:
-                    MVMatrix = glm::translate(
-                        MVMatrix,
-                        glm::vec3(0.f,1.f,0.f)
-                    );
-                    _floor.draw(projectionMatrix, MVMatrix);
-                    MVMatrix = glm::translate(
-                        MVMatrix,
-                        glm::vec3(0.f,-1.f,0.f)
-                    );
+                    drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights); 
                     break;
-                case Map::HOLE:
+                case Map::LIGHT_MARKER:
+                    setLights(MMatrix,game._map.firstLights, currentLights, k);
+                    drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
+                case Map::LIGHT: //Mal positionnée
+                    drawLantern(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    break; 
+                case Map::HOLE:  
+                    break; 
+                case Map::BAREL:
+                    drawBarel(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    break;
+                case Map::COLLECTIBLE:
+                    drawBottle(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    break;
+                case Map::ARCH:
+                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    if(k==1){
+                        drawArch(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    }
+                    break;
+                case Map::PLANK: 
+                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    if(k==2){
+                        drawPlank(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    }
                 default:
                     break;
             }
-            MVMatrix = glm::translate(MVMatrix, glm::vec3(1.f, 0.f, 0.f));
+           
+            MMatrix = glm::translate(MMatrix, glm::vec3(1.f, 0.f, 0.f));
         }
 
         /* Detecting turns */
-        if(map[map.getMapWidth() * i] != Map::WALL && map[map.getMapWidth() * i] != Map::PASSED_TURN){ _rotationDirection = -1; } /* right turn */
-        else if(map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::WALL && map[map.getMapWidth() * i + map.getMapWidth()-1] != Map::PASSED_TURN){ _rotationDirection = 1; } /* left turn*/
+        if(game._map[game._map.getMapWidth() * i] == Map::FLOOR){ _rotationDirection = -1; } /* right turn */
+        else if(game._map[game._map.getMapWidth() * i + game._map.getMapWidth()-1] == Map::FLOOR){ _rotationDirection = 1; } /* left turn*/
         
-        if(map[map.getMapWidth() * i + (map.getMapWidth()-1)/2] == Map::WALL){
+        if(game._map[game._map.getMapWidth() * i + (game._map.getMapWidth()-1)/2] == Map::WALL && i >= game.getPlayerIndex()){
             if(_rotationDirection == -1)
             {
-                MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, -(map.getMapWidth()-1)));
+                MMatrix = glm::translate(MMatrix, glm::vec3(-game._map.getMapWidth(), 0.f, -(game._map.getMapWidth()-1)));
             }else{
-                MVMatrix = glm::translate(MVMatrix, glm::vec3(0.f, 0.f, 0.f));
+                MMatrix = glm::translate(MMatrix, glm::vec3(0.f, 0.f, 0.f));
             }
-            MVMatrix = glm::rotate(
-                MVMatrix,
-                float(M_PI/2*_rotationDirection),
+            MMatrix = glm::rotate(
+                MMatrix,
+                glm::pi<float>()/2*_rotationDirection,
                 glm::vec3(0.f, 1.f, 0.f)
             );
         }else{
-            MVMatrix = glm::translate(MVMatrix, glm::vec3(-map.getMapWidth(), 0.f, 1.f));
+            MMatrix = glm::translate(MMatrix, glm::vec3(-game._map.getMapWidth(), 0.f, 1.f));
         }
     }
+}
+
+
+
+void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
+{
+    /* turn back the model from the camera */
+        glm::mat4 MMatrix = glm::rotate(
+            glm::mat4(1.f),
+            float(M_PI),
+            glm::vec3(0.f,1.f,0.f)
+        );
+    /* put the player model at the right position */
+        MMatrix = glm::translate(
+            MMatrix,
+            player.getPosition()
+        );
+
+    if(player._isCrouching){
+        /* Move the player model according to the camera */
+        game._camera.setPosition(glm::vec3(game._player.getPosition().x, (game._player.getPosition().y)-0.5 ,game._player.getPosition().z-0.1));
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f, 0.5f, 0.f)
+        );
+
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(0.5,0.5,0.5)
+        );
+    }else{
+         game._camera.setPosition(game._player.getPosition()+ glm::vec3(0.,0.,-0.1));
+        /* Move the player model according to the camera */
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0., 0.8, 0)
+        );
+    }
+    _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+}
+
+void GameRenderer::drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix)
+{
+    _skybox.draw(
+        _PROJECTION_MATRIX,
+        VMatrix,
+        glm::scale(
+            MMatrix,
+            glm::vec3(10)
+        ),
+        currentLights
+    );
+}
+
+void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const short unsigned int rank)
+{
+    MMatrix = glm::translate(
+        MMatrix,
+        glm::vec3(0.f, 1.2f, 4.f)
+    );
+
+    if(rank == 0)
+    {
+        lights[0] = glm::vec3(glm::column(MMatrix, 3));
+        if(!firstlightsInit) firstLights[0] = lights[0]; 
+    }
+    else
+    {
+        lights[1] = glm::vec3(glm::column(MMatrix, 3));
+        if(!firstlightsInit)
+        {
+            firstLights[1] = lights[1];
+            firstlightsInit = true;
+        }
+    }
+
+    MMatrix = glm::translate(
+        MMatrix,
+        glm::vec3(0.f, -1.2f, -4.f)
+    );
+}
+
+void GameRenderer::drawWall(//a voir si matrice par reference
+    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights
+    )
+    {
+    MMatrix = glm::translate(
+        MMatrix,
+        glm::vec3(0.05f,0.5f,0.f)
+    );                    
+
+    _wall.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+
+    MMatrix = glm::translate(
+        MMatrix,
+        glm::vec3(-0.05f,-0.5f,0.f) 
+    );
+
+    /*
+     matrice.MMatrix = glm::translate(
+        matrice.MMatrix,
+        glm::vec3(0.05f,0.5f,0.f)
+    );                    
+
+    _wall.draw(matrice._PROJECTION_MATRIX, matrice.VMatrix, matrice.MMatrix, matrice.currentLights);
+
+    matrice.MMatrix = glm::translate(
+        matrice.MMatrix,
+        glm::vec3(-0.05f,-0.5f,0.f) 
+    );*/
+}
+
+void GameRenderer::drawBarel(
+    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights
+    ){
+        _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,0.35f,0.f)
+        );
+
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(0.5,0.5,0.5)
+        );
+        _barrel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(2,2,2)
+        );
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,-0.35f,0.f)
+        );
+    }
+
+ void GameRenderer::drawLantern(
+    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights){
+        drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,0.8f,0.f)
+        );
+        _light.MMatrixLight = MMatrix;
+        _light.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,-0.8f,0.f)
+        );
+    }
+
+void GameRenderer::drawBottle(
+    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights){
+         _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(0.25,0.25,0.25)
+        );
+        _bottle.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix=glm::scale(
+            MMatrix,
+            glm::vec3(4,4,4)
+        );
+    }
+
+void GameRenderer::drawArch(
+    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights){
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(1.f,0.f,0.f)
+        );
+        _arch.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(-1.f,0.f,0.f)
+        );
+    }
+
+void GameRenderer::drawPlank(
+    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &VMatrix,
+    glm::mat4 &MMatrix,
+    std::deque<glm::vec3> &currentLights){
+
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,0.9f,0.f)
+        );
+
+        _plank.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+
+        MMatrix = glm::translate(
+            MMatrix,
+            glm::vec3(0.f,-0.9f,0.f)
+        );
+    }
+
+void GameRenderer::render(
+    Game& game
+)
+{
+    //game._camera.setPosition(game._player.getPosition()+ glm::vec3(0.,0.,-0.1));
+    glm::mat4 VMatrix = game._camera.getViewMatrix();
+    
+    // DRAW THE MAP
+    drawMap(game, VMatrix);
+
+    // DRAW THE PLAYER
+    drawPlayer(game ,game._player, VMatrix);
+
+    // DRAW THE SKYBOX
+    drawSkyBox(VMatrix, game.getSkyBoxMMatrix());
+
+    //Draw the score
+    _text.draw(
+        "Score : "+std::to_string(game._player.getScore()),
+        glm::vec2(50.f, 600.f ),
+        glm::vec3(1.f),
+        _TEXT_PROJECTION_MATRIX
+    );
+}
+
+void GameRenderer::setWindowParameters(
+    const unsigned width,
+    const unsigned height,
+    glm::mat4& projection
+)
+{
+    _WINDOW_WIDTH = width;
+    _WINDOW_HEIGHT = height;
+    _PROJECTION_MATRIX = projection;
+    _TEXT_PROJECTION_MATRIX = glm::ortho(
+        0.0f,
+        static_cast<float>(width),
+        0.0f,
+        static_cast<float>(height)
+    );
 }

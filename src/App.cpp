@@ -1,58 +1,212 @@
 #include "App.hpp"
-#include "Text.hpp"
 
-App::App(GLFWwindow* window, int window_width, int window_height, std::string path)
-    :_applicationPath(path)
-{
-    /* Initialization of the window size */
-    size_callback(window, window_width, window_height);
-    _width = window_width;
-    _height = window_height;
-    
+// CONSTRUCTORS
+/* basic constructors */
+
+App::App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
+    :_applicationPath(glimac::FilePath(path))
+{   
+    /* Initialization of the best scores */
+    getBestScores();
+    getSavedScore();
+
     /* Initialization of the navigation */
-    _currentScreen = PRINCIPAL_MENU;
+    // MAIN MENU
+    std::vector<Button> buttons = {
+        Button("Nouvelle Partie", GAME),
+        Button("Charger Partie", LOAD_MENU),
+        Button("Scores", SCORES)
+    };
+    _menuList.push_back(Menu(buttons));
+    
+    buttons.clear();
 
-    _text=Text(48, glimac::FilePath(_applicationPath));
-    _gameRenderer = GameRenderer(glimac::FilePath(_applicationPath));
-}
+    // LOAD MENU
+    buttons = {
+        Button("Charger", GAME),
+        Button("Retour", MAIN_MENU)
+    };
+    _menuList.push_back(Menu(buttons));
 
-// GETTERS
+    buttons.clear();
 
-Game& App::getGame()
-{
-    return _game;
+    // SCORES
+    buttons = {
+        Button("Retour", MAIN_MENU)
+    };
+    _menuList.push_back(Menu(buttons));
+
+    buttons.clear();
+
+    // SCORE INPUT
+    buttons = {
+        Button("Enregistrer", SCORES),
+        Button("Retour", MAIN_MENU)
+    };
+    _menuList.push_back(Menu(buttons));
+
+    buttons.clear();
+
+    // GAME PAUSED
+    buttons = {
+        Button("Reprendre", GAME),
+        Button("Recommencer", GAME),
+        Button("Sauvegarder et quitter", MAIN_MENU)
+    };
+    _menuList.push_back(Menu(buttons));
+
+    buttons.clear();
+
+    // GAME OVER MENU
+    buttons = {
+        Button("Recommencer", GAME),
+        Button("Menu Principal", MAIN_MENU)
+    };
+    _menuList.push_back(Menu(buttons));
+
+    _menuIndex = MAIN_MENU;
+    _menuRenderer = MenuRenderer(_applicationPath);
+
+    _gameRenderer = GameRenderer(_applicationPath);
+
+    /* Initialization of the window size */
+    size_callback(window, width, height);
 }
 
 // METHODS
 
+void App::getSavedScore()
+{
+    std::ifstream file;
+    std::string const fileName("./externals/save.txt");
+    file.open(fileName, std::ios::out | std::ios::binary);
+
+    if(file.is_open())
+    {
+        file >> _savedScore;
+
+        file.close();
+    }
+    else
+    {
+        std::cout << "ERROR FORM [APP | getSavedScore() ]: Impossible to open scores.txt." << std::endl;
+    }
+}
+
+void App::getBestScores()
+{
+    std::ifstream file("./externals/scores.txt");
+    if(file) {
+        std::string pseudo;
+        unsigned int score;
+
+        for(short unsigned int i=0; i<3;++i)
+        {
+            file >> pseudo;
+            file >> score;
+
+            _scores.push_back(Score(i+1, pseudo, score));
+        }
+
+        file.close();
+    }else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le scores.txt." << std::endl;
+    }
+}
+
+void App::setBestScores()
+{
+    short unsigned int index = 0;
+    bool registered = false;
+
+    while(!registered && index < _scores.size())
+    {
+        if(_game.getScore() > _scores[index].score)
+        {
+            _scores[index] = Score(index+1, _pseudoInput, _game.getScore());
+            registered = true;
+        }
+        index++;
+    }
+    _pseudoInput = "";
+
+    std::ofstream file;
+    std::string const fileName("./externals/scores.txt");
+    file.open(fileName, std::ios::out | std::ios::binary);
+
+    if(file.is_open())
+    {
+
+        for(short unsigned int i=0; i<_scores.size();++i)
+        {
+            file << _scores[i].name << std::endl;
+            file << _scores[i].score << std::endl;
+        }
+
+        file.close();
+    }else
+    {
+        std::cout << "ERREUR: Impossible d'ouvrir le scores.txt." << std::endl;
+    }
+}
 /* Graphics */
 void App::render()
 {
-    switch (_currentScreen)
+    switch (_menuIndex)
     {
-    case PRINCIPAL_MENU:
-        //glClearColor(1.000f, 0.992f, 0.735f, 1.000f);
-        _text.draw("Tanguy gros BG", glm::vec2(50.f, 50.f), glm::vec3(182.f/255.f, 102.f/255.f, 210.f/255.f), _width, _height);
-        break;
-    case GAME:
-        if(_game._running)
-        {
-            _game.runGame();
-            _gameRenderer.render(_projectionMatrix, _game);
-        }
-        else
-        {
-            _currentScreen = PRINCIPAL_MENU;
-        }
+    case MAIN_MENU:
+        _menuRenderer.drawMainMenu(_menuList[_menuIndex]);
         break;
     case LOAD_MENU:
-        glClearColor(1.f, 0.f, 0.f, 1.f);
+        _menuRenderer.drawLoadMenu(_menuList[_menuIndex], _savedScore);
         break;
     case SCORES:
-        glClearColor(0.f, 1.f, 0.0f, 1.f);
+        _menuRenderer.drawScores(_menuList[_menuIndex], _scores);
         break;
     case SCORE_INPUT:
-        glClearColor(0.f, 0.f, 1.f, 1.f);
+        _menuRenderer.drawScoreInput(_menuList[_menuIndex], _pseudoInput);
+        break;
+    case GAME_PAUSED:
+        _menuRenderer.drawGamePaused(_menuList[GAME_PAUSED]);
+        break;
+    case GAME_OVER:
+        _menuRenderer.drawGameOver(_menuList[_menuIndex]);
+        break;
+    case GAME:
+        {
+            const short unsigned int gameState = _game.getState();
+            
+            switch (gameState)
+            {
+                case Game::WAITING:
+                    _game.setState(Game::RUNNING, Game::CLEAR_START);
+                    break;
+                
+                case Game::RUNNING:
+                    /* Running game */
+                    _game.runGame();
+                    _gameRenderer.render(_game);
+                    break;
+                
+                case Game::PAUSED:
+                    _menuIndex = GAME_PAUSED;
+                    break;
+                
+                case Game::FINISHED:
+                    if(_game.getScore() > _scores[_scores.size()-1].score)
+                    {
+                        _menuIndex = SCORE_INPUT;
+                    }
+                    else
+                    {
+                        _menuIndex = GAME_OVER;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
         break;
     default:
         break;
@@ -63,32 +217,81 @@ void App::key_callback(int key, int scancode, int action, int mods)
 {
     switch (key)
         {
-        case 320: // "0" NUM PAD
-            _currentScreen = PRINCIPAL_MENU;
+        case GLFW_KEY_ESCAPE: //ECHAP 
+            if(action !=0 && _menuIndex == GAME_PAUSED) _game.setState(Game::PAUSED, 0);
             break;
-        case 71: // "1" NUM PAD
-            _currentScreen = GAME;
-            if(!_game._running)
+        case GLFW_KEY_P: // 'P'
+            if(action != 0) _game.setState(Game::PAUSED, 0);
+            break;
+        case GLFW_KEY_DOWN: // down arrow
+            if(action != 0) _menuList[_menuIndex].changeCurrentButton(1);
+            break;
+        case GLFW_KEY_UP: // up arrow
+            if(action != 0) _menuList[_menuIndex].changeCurrentButton(-1);
+            break;
+        case GLFW_KEY_BACKSPACE:
+            if(action !=0 && _menuIndex == SCORE_INPUT) _pseudoInput.pop_back();
+            break;
+        case GLFW_KEY_ENTER: // Enter
+            if(action !=0)
             {
-                _game.initGame();
-                _gameRenderer.load3DModels();
-                _game._running = true;
+                const short unsigned int PREVIOUS_MENU = _menuIndex;
+                const short unsigned int BUTTON_CLICKED = _menuList[PREVIOUS_MENU].getButtonIndex();
+                _menuIndex = _menuList[_menuIndex].getCurrentButtonLink();
+                _menuList[PREVIOUS_MENU].setCurrentButton(0);
+
+                switch (PREVIOUS_MENU)
+                {
+                    case GAME_PAUSED:
+                        {
+                            switch (BUTTON_CLICKED)
+                            {
+                            case 0: // REPRENDRE
+                                _game.setState(Game::RUNNING, Game::UNPAUSE);
+                                break;
+                            
+                            case 1: // RECOMMENCER
+                                _game.setState(Game::RUNNING, Game::CLEAR_START);
+                                break;
+                            
+                            case 2: // SAUVEGARDER ET QUITTER
+                                _game.setState(Game::WAITING, 0);
+                                _savedScore = _game.getScore();
+                                break;
+
+                            default:
+                                break;
+                            }
+                        }
+                        break;
+                    case GAME_OVER:
+                        _game.setState(Game::WAITING, 0);
+                        break;
+                    case SCORE_INPUT:
+                        _game.setState(Game::WAITING, 0);
+                        setBestScores();
+                        break;
+                    case LOAD_MENU:
+                        if(BUTTON_CLICKED == 0 && _savedScore != -1)
+                        {
+                            _game.setState(Game::RUNNING, Game::FROM_SAVE);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
             break;
-        case 322: // "2" NUM PAD
-            _currentScreen = LOAD_MENU;
-            break;
-        case 323: // "3" NUM PAD
-            _currentScreen = SCORES;
-            break;
-        case 324: // "4" NUM PAD
-            _currentScreen = SCORE_INPUT;
-            break;
-
         default:
-            std::cout << key << std::endl;
+                std::cout << key << std::endl;
             break;
         }
+}
+
+void App::char_callback(unsigned int codepoint)
+{
+    if(_menuIndex == SCORE_INPUT && _pseudoInput.size() < 3) _pseudoInput.push_back(std::toupper(char(codepoint)));
+    else std::cout << "code point: " << codepoint << std::endl;
 }
 
 void App::mouse_button_callback(int button, int action, int mods)
@@ -107,14 +310,18 @@ void App::size_callback(GLFWwindow* window, int width, int height)
 {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
-    _projectionMatrix = glm::perspectiveFov(
+    
+    _PROJECTION_MATRIX = glm::perspectiveFov(
         glm::radians(70.0f),
         float(width),
         float(height),
         0.1f,
         100.0f
     );
-    /* We store the size of the window just in case */
-    _width = width;
-    _height = height;
+
+    _WINDOW_WIDTH = width;
+    _WINDOW_HEIGHT = height;
+
+    _menuRenderer.setWindowParameters(width, height, _PROJECTION_MATRIX);
+    _gameRenderer.setWindowParameters(width, height, _PROJECTION_MATRIX);
 }
