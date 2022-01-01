@@ -121,8 +121,6 @@ Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, std::string f
 
 // Text2D::Text2D(Text2D&& rhs) noexcept
 //     :_alphabet(rhs._alphabet),
-//      _ft(rhs._ft),
-//      _font(rhs._font),
 //      _vao(rhs._vao),
 //      _vbo(rhs._vbo),
 //      _ibo(rhs._ibo)

@@ -38,8 +38,6 @@ class Text2D
         GLuint _vao;
         GLuint _vbo; 
         GLuint _ibo;
-        
-        unsigned int _window_width, _window_height;
     
     public:
         // OPERATORS
