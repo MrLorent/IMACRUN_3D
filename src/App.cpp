@@ -288,8 +288,11 @@ void App::key_callback(int key, int scancode, int action, int mods)
                             case 1: // RECOMMENCER
                                 _game.setState(Game::RUNNING, Game::CLEAR_START);
                                 break;
+
+                            case 2: // PARAMETRER LA CAMERA
+                                break;
                             
-                            case 2: // SAUVEGARDER ET QUITTER
+                            case 3: // SAUVEGARDER ET QUITTER
                                 _game.setState(Game::WAITING, 0);
                                 _savedScore = _game.getScore();
                                 break;
