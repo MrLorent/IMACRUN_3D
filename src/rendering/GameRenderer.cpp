@@ -4,13 +4,11 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
      _renderingLength(20), // nb ligne to draw
      _rotationDirection(0),
-     _rotatingIndex(0)
+     _rotatingIndex(0),
+     _text(std::move(Text2D(20, _applicationPath, "PTMono.ttc")))
 {
     /* Initialization of the 3D Models */
     load3DModels();
-    
-    /* Initialization of the fonts */
-    _text = Text2D(20, _applicationPath, "PTMono.ttc");
 }
 
 void GameRenderer::load3DModels()

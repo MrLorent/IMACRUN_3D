@@ -3,27 +3,27 @@
 // OPERATORS
 /* Move assignment operator */
 
-// Text2D& Text2D::operator=(Text2D&& rhs) noexcept
-// {
-//     if(this != &rhs)
-//     {
-//         // VBO
-//         glDeleteBuffers(1, &_vbo);
-//         _vbo = rhs._vbo;
-//         rhs._vbo = 0;
+Text2D& Text2D::operator=(Text2D&& rhs) noexcept
+{
+    if(this != &rhs)
+    {
+        // VBO
+        glDeleteBuffers(1, &_vbo);
+        _vbo = rhs._vbo;
+        rhs._vbo = 0;
 
-//         // VAO
-//         glDeleteVertexArrays(1, &_vao);
-//         _vao = rhs._vao;
-//         rhs._vao = 0;
+        // VAO
+        glDeleteVertexArrays(1, &_vao);
+        _vao = rhs._vao;
+        rhs._vao = 0;
 
-//         // IBO
-//         _ibo = rhs._ibo;
-//         rhs._ibo = 0;
-//     }
+        // IBO
+        _ibo = rhs._ibo;
+        rhs._ibo = 0;
+    }
 
-//     return *this;
-// }
+    return *this;
+}
 
 // CONSTRUCTORS
 /* basic constructor */
@@ -119,24 +119,33 @@ Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, std::string f
 
 /* move constructor */
 
-// Text2D::Text2D(Text2D&& rhs) noexcept
-//     :_alphabet(rhs._alphabet),
-//      _vao(rhs._vao),
-//      _vbo(rhs._vbo),
-//      _ibo(rhs._ibo)
-// {
-//     rhs._vao = 0;
-//     rhs._vbo = 0;
-//     rhs._ibo = 0;
-// }
+Text2D::Text2D(Text2D&& rhs) noexcept
+    :_alphabet(rhs._alphabet),
+     _vao(rhs._vao),
+     _vbo(rhs._vbo),
+     _ibo(rhs._ibo),
+     shader(std::move(rhs.shader))
+{
+    for(size_t i=0; i < _alphabet.size(); i++)
+    {
+        rhs._alphabet[i].TextureID = 0;
+    }
+    rhs._vao = 0;
+    rhs._vbo = 0;
+    rhs._ibo = 0;
+}
 
 /* DESTRUCTOR */
 
-// Text2D::~Text2D()
-// {
-//     glDeleteBuffers(1, &_vbo);
-//     glDeleteVertexArrays(1, &_vao);
-// }
+Text2D::~Text2D()
+{
+    for(size_t i=0; i < _alphabet.size(); i++)
+    {
+        glDeleteTextures(1, &_alphabet[i].TextureID);
+    }
+    glDeleteBuffers(1, &_vbo);
+    glDeleteVertexArrays(1, &_vao);
+}
 
 void Text2D::draw(std::string text, glm::vec2 pos, glm::vec3 color, glm::mat4 projectionMatrix){
 

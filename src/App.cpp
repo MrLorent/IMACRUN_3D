@@ -4,7 +4,10 @@
 /* basic constructors */
 
 App::App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
-    :_applicationPath(glimac::FilePath(path))
+    :_applicationPath(glimac::FilePath(path)),
+     _menuIndex(MAIN_MENU),
+     _menuRenderer(MenuRenderer(_applicationPath)),
+     _gameRenderer(GameRenderer(_applicationPath))
 {   
     /* Initialization of the best scores */
     getBestScores();
@@ -63,11 +66,6 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
         Button("Menu Principal", MAIN_MENU)
     };
     _menuList.push_back(Menu(buttons));
-
-    _menuIndex = MAIN_MENU;
-    _menuRenderer = MenuRenderer(_applicationPath);
-
-    _gameRenderer = GameRenderer(_applicationPath);
 
     /* Initialization of the window size */
     size_callback(window, width, height);

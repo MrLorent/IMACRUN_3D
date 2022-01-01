@@ -43,10 +43,10 @@ class Text2D
         // OPERATORS
         /* Move assignment operator */
 
-        //Text2D& operator=(Text2D&& rhs) noexcept;
+        Text2D& operator=(Text2D&& rhs) noexcept;
 
         /* Copy assignment operator */
-        //Text2D& operator=(const Text2D&) = delete; // We disable copying
+        Text2D& operator=(const Text2D&) = delete; // We disable copying
 
         // CONSTRUCTORS
         /* basic constructors */
@@ -56,15 +56,15 @@ class Text2D
 
         /* Copy constructor */
 
-        //Text2D(const Text2D&) = delete; // We disable copying
+        Text2D(const Text2D&) = delete; // We disable copying
 
         /* move constructor */
         
-        //Text2D(Text2D&& rhs) noexcept;
+        Text2D(Text2D&& rhs) noexcept;
 
         // DESTRUCTORS
 
-        //~Text2D();
+        ~Text2D();
         
         // METHODS
         
