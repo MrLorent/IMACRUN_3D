@@ -311,6 +311,10 @@ void Game::key_callback(int key, int scancode, int action, int mods)
         case GLFW_KEY_P: // 'P'
             if(action != 0) setState(PAUSED, 0);
             break;
+        case GLFW_KEY_L: // 'L'
+            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.saveSettings();
+            if(action != 0) _camera.switchState();
+            break;
         case GLFW_KEY_A: // 'Q'
             if(action!=0){
                 if(_turn == LEFT) passTurn();
@@ -331,6 +335,22 @@ void Game::key_callback(int key, int scancode, int action, int mods)
         case GLFW_KEY_SPACE: // SPACEBAR
             _player._isJumping = true;
             break;
+        case GLFW_KEY_RIGHT: //Fleche droite
+            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.rotateHorizontaly(-2.*float(1));
+            
+            break;
+
+        case GLFW_KEY_LEFT: //Fleche gauche
+            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.rotateHorizontaly(2.*float(1));
+            break;
+
+        case GLFW_KEY_DOWN: //Fleche bas
+            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.rotateVerticaly(-2.*float(1));
+            break;
+        
+        case GLFW_KEY_UP: //Fleche haut
+            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.rotateVerticaly(2.*float(1));
+            break;
         default:
             std::cout << key << std::endl;
             break;
@@ -343,7 +363,7 @@ void Game::mouse_button_callback(int button, int action, int mods)
 
 void Game::scroll_callback(double xoffset, double yoffset)
 {
-    _camera.changeDistance(yoffset);
+    if(_camera.getState() == Camera::UNLOCKED) _camera.changeDistance(yoffset);
 }
 
 void Game::cursor_position_callback(double xpos, double ypos)

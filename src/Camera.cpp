@@ -4,7 +4,8 @@
 /* basic constructor */
 
 Camera::Camera(short unsigned int caseSubdivisions)
-    :_mode(TRACKBALL),
+    :_state(LOCKED),
+     _mode(TRACKBALL),
      _turning(0),
      _rotationIndex(0),
      _rotationDuration(caseSubdivisions * 2),
@@ -38,6 +39,14 @@ void Camera::switchMode()
     {
         _mode = TRACKBALL;
     }
+}
+
+void Camera::switchState()
+{
+    if(_state == LOCKED)
+        _state = UNLOCKED;
+    else
+        _state = LOCKED;
 }
 
 // TRACKBALL METHODS
