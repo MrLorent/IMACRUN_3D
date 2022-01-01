@@ -31,15 +31,31 @@ private:
 
     void drawButtons(Menu& current);
 public:
+    // OPERATORS
+    /* Move assignment operator */
+
+    MenuRenderer& operator=(MenuRenderer&& rhs) noexcept;
+
+    /* Copy assignment operator */
+    MenuRenderer& operator=(const MenuRenderer&) = delete; // We disable copying
+
     // CONSTRUCTORS
     /* basic constructors */
 
     MenuRenderer(){}
     MenuRenderer(glimac::FilePath applicationPath);
 
+    /* Copy constructor */
+
+    MenuRenderer(const MenuRenderer&) = delete; // We disable copying
+
+    /* move constructor */
+    
+    MenuRenderer(MenuRenderer&& rhs) noexcept;
+
     // DESTRUCTORS
 
-    //~MenuRenderer();
+    ~MenuRenderer();
 
     // METHODS
     void setWindowParameters(
