@@ -275,7 +275,7 @@ void GameRenderer::drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix)
         VMatrix,
         glm::scale(
             MMatrix,
-            glm::vec3(12.5)
+            glm::vec3(10)
         ),
         currentLights
     );

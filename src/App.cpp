@@ -257,10 +257,10 @@ void App::key_callback(int key, int scancode, int action, int mods)
             if(action!=0) _game._camera.rotateHorizontaly(-2.*float(1));
             break;
         case GLFW_KEY_DOWN: // down arrow
-            if(action != 0) _menuList[_menuIndex].changeCurrentButton(1);
+            if(action != 0 && !(_menuIndex == LOAD_MENU && _savedScore == -1)) _menuList[_menuIndex].changeCurrentButton(1);
             break;
         case GLFW_KEY_UP: // up arrow
-            if(action != 0) _menuList[_menuIndex].changeCurrentButton(-1);
+            if(action != 0 && !(_menuIndex == LOAD_MENU && _savedScore == -1)) _menuList[_menuIndex].changeCurrentButton(-1);
             break;
         case GLFW_KEY_BACKSPACE:
             if(action !=0 && _menuIndex == SCORE_INPUT) _pseudoInput.pop_back();
@@ -271,6 +271,10 @@ void App::key_callback(int key, int scancode, int action, int mods)
                 const short unsigned int PREVIOUS_MENU = _menuIndex;
                 const short unsigned int BUTTON_CLICKED = _menuList[PREVIOUS_MENU].getButtonIndex();
                 _menuIndex = _menuList[_menuIndex].getCurrentButtonLink();
+                if(_menuIndex == LOAD_MENU && _savedScore == -1)
+                {
+                    _menuList[LOAD_MENU].setCurrentButton(1);
+                }
                 _menuList[PREVIOUS_MENU].setCurrentButton(0);
 
                 switch (PREVIOUS_MENU)

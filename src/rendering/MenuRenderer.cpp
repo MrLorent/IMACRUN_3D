@@ -170,7 +170,6 @@ void MenuRenderer::drawLoadMenu(Menu& menu, const int savedScore)
             _TEXT_PROJECTION_MATRIX
         );
     }
-
     drawButtons(menu);
 }
 
