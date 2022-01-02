@@ -316,7 +316,6 @@ void GameRenderer::drawBarel(
             MMatrix,
             glm::vec3(0.f,0.8f,0.f)
         );
-        _light.MMatrixLight = MMatrix;
         _light.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
         MMatrix = glm::translate(
             MMatrix,

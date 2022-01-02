@@ -46,16 +46,13 @@ class Model
         glimac::Program _shaders;
 
         GLint _uMMatrix;
-        GLint _uMVPMatrix;
-        //GLint _uMVMatrix;
         GLint _uVMatrix;
+        GLint _uMVPMatrix;
         GLint _uNormalMatrix;
 
         // LIGHTS
         GLint _uLightPos1;
         GLint _uLightPos2;
-        GLint _uLightPos3;
-        GLint _uLightPos4;
         
         // PRIVATE METHODS
 
@@ -72,11 +69,31 @@ class Model
         );
 
     public:
+        // OPERATORS
+        /* Move assignment operator */
+
+        Model& operator=(Model&& rhs) noexcept;
+
+        /* Copy assignment operator */
+        Model& operator=(const Model&) = delete; // We disable copying
+
         // CONSTRUCTORS
         /* basic constructors */
         
-        Model(){};
+        Model(){}
         Model(ModelParams params);
+
+        /* Copy constructor */
+
+        Model(const Model&) = delete; // We disable copying
+
+        /* move constructor */
+        
+        Model(Model&& rhs) noexcept;
+
+        // DESTRUCTOR
+
+        ~Model(){}
 
         // METHODS
         
@@ -86,6 +103,4 @@ class Model
             glm::mat4 const & MMatrix,
             std::deque<glm::vec3>& lights
         );
-
-        static glm::mat4 MMatrixLight;
 };
