@@ -19,7 +19,7 @@ Texture& Texture::operator=(Texture&& rhs) noexcept
 /* basic constructors */
 
 Texture::Texture()
-    :_id(0),_type(""){}
+    :_id(0),_type(""){} 
 
 Texture::Texture(const std::string filePath)
     :_id(0)

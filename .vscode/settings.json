@@ -83,6 +83,7 @@
         "ios": "cpp",
         "locale": "cpp",
         "stack": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "__availability": "cpp"
     }
 }
