@@ -14,7 +14,7 @@ MenuRenderer& MenuRenderer::operator=(MenuRenderer&& rhs) noexcept
 
         _applicationPath = rhs._applicationPath;
         _title = std::move(rhs._title);
-        _text = std::move(rhs._title);
+        _text = std::move(rhs._text);
     }
 
     return *this;

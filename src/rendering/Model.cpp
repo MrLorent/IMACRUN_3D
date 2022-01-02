@@ -6,18 +6,23 @@
 
 Model& Model::operator=(Model&& rhs) noexcept
 {
-    _meshes         = std::move(rhs._meshes);
-    _shaders        = std::move(rhs._shaders);
-    
-    // MATRICES
-    _uMMatrix       = rhs._uMMatrix;
-    _uVMatrix       = rhs._uVMatrix;
-    _uMVPMatrix     = rhs._uMVPMatrix;
-    _uNormalMatrix  = rhs._uNormalMatrix;
-    
-    // LIGTHS
-    _uLightPos1     = rhs._uLightPos1;
-    _uLightPos2     = rhs._uLightPos2;
+    if(this != &rhs)
+    {
+        _meshes         = std::move(rhs._meshes);
+        _shaders        = std::move(rhs._shaders);
+        
+        // MATRICES
+        _uMMatrix       = rhs._uMMatrix;
+        _uVMatrix       = rhs._uVMatrix;
+        _uMVPMatrix     = rhs._uMVPMatrix;
+        _uNormalMatrix  = rhs._uNormalMatrix;
+        
+        // LIGTHS
+        _uLightPos1     = rhs._uLightPos1;
+        _uLightPos2     = rhs._uLightPos2;
+    }
+
+    return *this;
 }
 
 // CONSTRUCTORS

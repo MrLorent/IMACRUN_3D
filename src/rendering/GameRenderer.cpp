@@ -1,14 +1,76 @@
 #include "GameRenderer.hpp"
 
+// OPERATORS
+/* Move assignment operator */
+
+GameRenderer& GameRenderer::operator=(GameRenderer&& rhs) noexcept
+{
+    if(this != &rhs)
+    {
+        _WINDOW_WIDTH = rhs._WINDOW_WIDTH;
+        _WINDOW_HEIGHT = rhs._WINDOW_HEIGHT;
+        _PROJECTION_MATRIX = rhs._PROJECTION_MATRIX;
+        _TEXT_PROJECTION_MATRIX = rhs._TEXT_PROJECTION_MATRIX;
+
+        _applicationPath = rhs._applicationPath;
+        _renderingLength = rhs._renderingLength;
+        _rotationDirection = rhs._rotationDirection;
+        _text = std::move(rhs._text);
+
+        currentLights = rhs.currentLights;
+
+        _player3DModel = std::move(rhs._player3DModel);
+        _wall3DModel = std::move(rhs._wall3DModel);
+        _floor3DModel = std::move(rhs._floor3DModel);
+        _barrel3DModel = std::move(rhs._barrel3DModel);
+        _light3DModel = std::move(rhs._light3DModel);
+        _bottle3DModel = std::move(rhs._bottle3DModel);
+        _skybox3DModel = std::move(rhs._skybox3DModel);
+        _arch3DModel = std::move(rhs._arch3DModel);
+        _plank3DModel = std::move(rhs._plank3DModel);
+    }
+
+    return *this;
+}
+
+// CONSTRUCTORS
+/* basic constructors */
+
 GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
      _renderingLength(20), // nb ligne to draw
      _rotationDirection(0),
-     _rotatingIndex(0),
      _text(std::move(Text2D(20, _applicationPath, "PTMono.ttc")))
 {
     /* Initialization of the 3D Models */
     load3DModels();
+}
+
+/* move constructor */
+    
+GameRenderer::GameRenderer(GameRenderer&& rhs) noexcept
+    :_WINDOW_WIDTH(rhs._WINDOW_WIDTH),
+     _WINDOW_HEIGHT(rhs._WINDOW_HEIGHT),
+     _PROJECTION_MATRIX(rhs._PROJECTION_MATRIX),
+     _TEXT_PROJECTION_MATRIX(rhs._TEXT_PROJECTION_MATRIX),
+
+     _applicationPath(rhs._applicationPath),
+     _renderingLength(rhs._renderingLength),
+     _rotationDirection(rhs._rotationDirection),
+     _text(std::move(rhs._text)),
+
+     currentLights(rhs.currentLights),
+
+     _player3DModel(std::move(rhs._player3DModel)),
+     _wall3DModel(std::move(rhs._wall3DModel)),
+     _floor3DModel(std::move(rhs._floor3DModel)),
+     _barrel3DModel(std::move(rhs._barrel3DModel)),
+     _light3DModel(std::move(rhs._light3DModel)),
+     _bottle3DModel(std::move(rhs._bottle3DModel)),
+     _skybox3DModel(std::move(rhs._skybox3DModel)),
+     _arch3DModel(std::move(rhs._arch3DModel)),
+     _plank3DModel(std::move(rhs._plank3DModel))
+{
 }
 
 void GameRenderer::load3DModels()
@@ -81,11 +143,13 @@ void GameRenderer::load3DModels()
 
 void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
 {
+    currentLights.clear();
     for(size_t i=0; i<game._map.firstLights.size(); ++i)
     {
         currentLights.push_back(game._map.firstLights[i]);
     }
-    firstlightsInit = false;
+
+    game._map.firstLights.clear();
 
     glm::mat4 MMatrix = glm::translate(
         glm::mat4(1.f),
@@ -227,16 +291,12 @@ void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLig
     if(rank == 0)
     {
         lights[0] = glm::vec3(glm::column(MMatrix, 3));
-        if(!firstlightsInit) firstLights[0] = lights[0]; 
+        if(firstLights.size()<2) firstLights[0] = lights[0]; 
     }
     else
     {
         lights[1] = glm::vec3(glm::column(MMatrix, 3));
-        if(!firstlightsInit)
-        {
-            firstLights[1] = lights[1];
-            firstlightsInit = true;
-        }
+        if(firstLights.size()<2) firstLights[1] = lights[1];
     }
 
     MMatrix = glm::translate(
