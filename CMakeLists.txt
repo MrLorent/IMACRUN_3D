@@ -17,16 +17,12 @@ set(EXECUTABLE_OUTPUT_PATH
 )
 # Add header files
 file(GLOB_RECURSE HEADER_FILES  
-	${CMAKE_SOURCE_DIR}/src/*.hpp
-    ${CMAKE_SOURCE_DIR}/src/glimac/*.hpp
-    ${CMAKE_SOURCE_DIR}/src/rendering/*.hpp 
+	${CMAKE_SOURCE_DIR}/src/*.hpp 
 )
 
 # Add source files
 file(GLOB_RECURSE SOURCE_FILES 
 	${CMAKE_SOURCE_DIR}/src/*.cpp
-    ${CMAKE_SOURCE_DIR}/src/glimac/*.cpp
-    ${CMAKE_SOURCE_DIR}/src/rendering/*.cpp
 )
 
 # create the executable file
@@ -63,6 +59,16 @@ target_link_libraries(${PROJECT_NAME} PUBLIC freetype)
 # ---Add tinyobjloader---
 add_subdirectory(${LIB_DIR}/tinyobjloader)
 target_link_libraries(${PROJECT_NAME} PUBLIC tinyobjloader)
+
+# ---Add doxygen---
+# add_subdirectory(${LIB_DIR}/doxygen)
+# configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/doc/Doxyfile @ONLY)
+# add_custom_target(
+#     doc
+#     ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#     COMMENT "Generating API documentation with Doxygen" VERBATIM
+# )
 
 # ---Add header librairies---
 include_directories(
