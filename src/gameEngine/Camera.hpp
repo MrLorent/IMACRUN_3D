@@ -5,6 +5,8 @@
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
+//! The Camera class contains two different modes : Trackball and Freefly
+
 class Camera
 {
 private:

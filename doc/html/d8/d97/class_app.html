@@ -70,6 +70,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>The <a class="el" href="../../d8/d97/class_app.html" title="The App class deals with the navigation throught the different menus, and the game.">App</a> class deals with the navigation throught the different menus, and the game.  
+ <a href="../../d8/d97/class_app.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../d6/dad/_app_8hpp_source.html">App.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
@@ -91,8 +94,10 @@ Public Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab3b25bc319516a0a1eecce00a49dac5f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d97/class_app.html#ab3b25bc319516a0a1eecce00a49dac5f">App</a> (GLFWwindow *window, const unsigned int width, const unsigned int height, const std::string path)</td></tr>
+<tr class="memdesc:ab3b25bc319516a0a1eecce00a49dac5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="../../d8/d97/class_app.html#ab3b25bc319516a0a1eecce00a49dac5f">More...</a><br /></td></tr>
 <tr class="separator:ab3b25bc319516a0a1eecce00a49dac5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f1f253b1cef5f4ecbac66eaf6964ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d97/class_app.html#a34f1f253b1cef5f4ecbac66eaf6964ec">~App</a> ()</td></tr>
+<tr class="memdesc:a34f1f253b1cef5f4ecbac66eaf6964ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="../../d8/d97/class_app.html#a34f1f253b1cef5f4ecbac66eaf6964ec">More...</a><br /></td></tr>
 <tr class="separator:a34f1f253b1cef5f4ecbac66eaf6964ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf66afe474cd5969ce5968c5bd1180ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d1f/class_game.html">Game</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d97/class_app.html#aaf66afe474cd5969ce5968c5bd1180ea">getGame</a> ()</td></tr>
 <tr class="separator:aaf66afe474cd5969ce5968c5bd1180ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,7 +124,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab49582521491da5b7a3f28fcc60c1c51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d97/class_app.html#ab49582521491da5b7a3f28fcc60c1c51">size_callback</a> (GLFWwindow *window, int width, int height)</td></tr>
 <tr class="separator:ab49582521491da5b7a3f28fcc60c1c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >The <a class="el" href="../../d8/d97/class_app.html" title="The App class deals with the navigation throught the different menus, and the game.">App</a> class deals with the navigation throught the different menus, and the game. </p>
+<p >The <a class="el" href="../../d8/d97/class_app.html" title="The App class deals with the navigation throught the different menus, and the game.">App</a> class contains a <a class="el" href="../../d2/dee/class_menu_renderer.html">MenuRenderer</a> object and deals with the navigation throught the different according to the Strategy design pattern. It also contains a <a class="el" href="../../dd/d1f/class_game.html">Game</a> object and a <a class="el" href="../../de/d0d/class_game_renderer.html">GameRenderer</a> object to launch the game. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a46d05e18e033e92e1a069a626ea196cf" name="a46d05e18e033e92e1a069a626ea196cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46d05e18e033e92e1a069a626ea196cf">&#9670;&nbsp;</a></span>APP_MENUS</h2>
 
@@ -183,6 +191,17 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">window</td><td>: pointer to a GLFWwindow </td></tr>
+    <tr><td class="paramname">width</td><td>: width of the GLFWwindow </td></tr>
+    <tr><td class="paramname">height</td><td>: height of the GLFWwindow </td></tr>
+    <tr><td class="paramname">path</td><td>: local path to the application root directory </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a34f1f253b1cef5f4ecbac66eaf6964ec" name="a34f1f253b1cef5f4ecbac66eaf6964ec"></a>
@@ -207,6 +226,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Destructor. </p>
+<p >Default destructor </p>
 
 </div>
 </div>

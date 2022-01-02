@@ -9,6 +9,16 @@
 #include "Game.hpp"
 #include "GameRenderer.hpp"
 
+//! The App class deals with the navigation throught the different menus, and the game.
+
+/*!
+ *  The App class contains a MenuRenderer object and
+ *  deals with the navigation throught the different
+ *  according to the Strategy design pattern. It also
+ *  contains a Game object and a GameRenderer object
+ *  to launch the game.
+ */
+
 class App
 {
     private:
@@ -49,13 +59,31 @@ class App
         // CONSTRUCTORS
         /* Basic constructors*/
 
+        //! Constructor
+        /*!
+         *\fn App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
+         *\param window : pointer to a GLFWwindow
+         *\param width : width of the GLFWwindow
+         *\param height : height of the GLFWwindow
+         *\param path : local path to the application root directory
+         */
         App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path);
         
         // DESTRUCTORS
+
+        //! Destructor
+        /*!
+         * Destructor by default.
+         */
         ~App(){};
 
         // GETTERS
 
+        //! Getter
+        /*!
+         *\fn inline Game& getGame()
+         *\return a reference on the game.
+         */
         inline Game& getGame() { return _game; }
         inline short unsigned int getCurrentMenu() { return _menuIndex; }
 
