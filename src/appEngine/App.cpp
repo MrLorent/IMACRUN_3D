@@ -328,7 +328,9 @@ void App::key_callback(const int key, const int scancode, const int action, cons
 
 void App::char_callback(const unsigned int codepoint)
 {
-    if(_menuIndex == SCORE_INPUT && _pseudoInput.size() < 3) _pseudoInput.push_back(std::toupper(char(codepoint)));
+    if(_menuIndex == SCORE_INPUT && _pseudoInput.size() < 3) {
+        _pseudoInput.push_back(std::toupper(char(codepoint)));
+    }
 }
 
 void App::mouse_button_callback(const int button,const int action,const int mods)

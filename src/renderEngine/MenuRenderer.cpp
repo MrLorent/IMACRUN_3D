@@ -202,7 +202,7 @@ void MenuRenderer::drawScores(const Menu& menu, const std::vector<Score>& scores
     drawButtons(menu);
 }
 
-void MenuRenderer::drawScoreInput(const Menu& menu, std::string &pseudo)
+void MenuRenderer::drawScoreInput(const Menu& menu, std::string pseudo)
 {
     for(size_t i=pseudo.size(); i<3; ++i) pseudo += "_";
     _title.draw(

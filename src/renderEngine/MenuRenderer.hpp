@@ -75,5 +75,5 @@ public:
     void drawCameraSetting(const Menu& menu);
     void drawLoadMenu(const Menu& menu, const int savedScore);
     void drawScores(const Menu& menu, const std::vector<Score>& scores);
-    void drawScoreInput(const Menu& menu, std::string &pseudo);
+    void drawScoreInput(const Menu& menu, std::string pseudo);
 };
