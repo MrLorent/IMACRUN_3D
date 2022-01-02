@@ -364,7 +364,7 @@ void Game::key_callback(const int key, const int scancode, const int action, con
         default:
             break;
         }
-}
+} 
 
 void Game::mouse_button_callback(const int button, int action, int mods)
 {

@@ -409,12 +409,12 @@ void GameRenderer::render(
         _TEXT_PROJECTION_MATRIX
     );
 }
-
+ 
 void GameRenderer::setWindowParameters(
     const unsigned width,
-    const unsigned height,
+    const unsigned height, 
     glm::mat4& projection
-)
+) 
 {
     _WINDOW_WIDTH = width;
     _WINDOW_HEIGHT = height;
@@ -424,5 +424,5 @@ void GameRenderer::setWindowParameters(
         static_cast<float>(width),
         0.0f,
         static_cast<float>(height)
-    );
+    ); 
 }

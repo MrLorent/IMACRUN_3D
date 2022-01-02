@@ -20,7 +20,6 @@ const vec3 LightDirection = normalize(vec3(0.8, 0.8, 0.2));
 const vec3 LightColor= vec3(98.f/255, 85.f/255, 128.f/255);
 
 //Lumiere ponctuelle
-const vec3 LightPosition = vec3(0., 1., 5.);
 const vec3 LightPonctualColor= vec3(0.8, 0.2, 0.)*5;
 
 vec3 Light(vec3 direction, vec3 color){
