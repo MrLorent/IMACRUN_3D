@@ -1,10 +1,32 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "Model.hpp"
 
+// OPERATORS
+/* Move assignment operator */
+
+Model& Model::operator=(Model&& rhs) noexcept
+{
+    if(this != &rhs)
+    {
+        _meshes         = std::move(rhs._meshes);
+        _shaders        = std::move(rhs._shaders);
+        
+        // MATRICES
+        _uMMatrix       = rhs._uMMatrix;
+        _uVMatrix       = rhs._uVMatrix;
+        _uMVPMatrix     = rhs._uMVPMatrix;
+        _uNormalMatrix  = rhs._uNormalMatrix;
+        
+        // LIGTHS
+        _uLightPos1     = rhs._uLightPos1;
+        _uLightPos2     = rhs._uLightPos2;
+    }
+
+    return *this;
+}
+
 // CONSTRUCTORS
 /* basic constructeur */
-
-glm::mat4 Model::MMatrixLight = glm::mat4(1.f);
 
 Model::Model(ModelParams params)
     :_shaders(loadProgram(
@@ -17,7 +39,6 @@ Model::Model(ModelParams params)
     
     /* Link the matrix attribut to the shaders matrix */
     _uMVPMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVPMatrix");
-    //_uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
     _uVMatrix = glGetUniformLocation(_shaders.getGLId(), "uVMatrix");
     _uNormalMatrix = glGetUniformLocation(_shaders.getGLId(), "uNormalMatrix");
     _uMMatrix = glGetUniformLocation(_shaders.getGLId(), "uMMatrix");
@@ -36,36 +57,22 @@ void Model::draw(
 {
     /* Link the shaders of the model */
     _shaders.use();
-    
-    glm::vec3 tmp = glm::vec3(VMatrix * glm::vec4(lights[0],1));
-    glUniform3f(
+
+    glUniform3fv(
         _uLightPos1,
-        tmp.x,
-        tmp.y,
-        tmp.z
+        1,
+        /* Compute the position of the first light in MVMatrix */
+        glm::value_ptr(glm::vec3(VMatrix * glm::vec4(lights[0],1)))
     );
 
-    tmp = glm::vec3(VMatrix * glm::vec4(lights[1],1));
-    glUniform3f(
+    glUniform3fv(
         _uLightPos2,
-        tmp.x,
-        tmp.y,
-        tmp.z
+        1,
+        /* Compute the position of the second light in MVMatrix */
+        glm::value_ptr(glm::vec3(VMatrix * glm::vec4(lights[1],1)))
     );
 
-    // glUniform3fv(
-    //     _uLightPos1,
-    //     1,
-    //     glm::value_ptr(glm::vec3(glm::vec4(lights[0],1) * VMatrix))
-    // );
-
-    // glUniform3fv(
-    //     _uLightPos2,
-    //     1,
-    //     glm::value_ptr(glm::vec3(glm::vec4(lights[1],1) * VMatrix))
-    // );
-
-   // Model MATRIX
+   // MODEL MATRIX
     glUniformMatrix4fv(
         _uMMatrix,
         1,
@@ -73,7 +80,7 @@ void Model::draw(
         glm::value_ptr(MMatrix)
     );
 
-    // V MATRIX
+    // VIEW MATRIX
     glUniformMatrix4fv(
         _uVMatrix,
         1,
@@ -81,7 +88,7 @@ void Model::draw(
         glm::value_ptr(VMatrix)
     );
     
-    // MVPMATRIX
+    // MODEL VIEW PROJECTION MATRIX
     glUniformMatrix4fv(
         _uMVPMatrix,
         1,
@@ -102,6 +109,22 @@ void Model::draw(
     {
         _meshes[i].draw(_shaders);
     }
+}
+
+/* move constructor */
+        
+Model::Model(Model&& rhs) noexcept
+    :_meshes(std::move(rhs._meshes)),
+     _shaders(std::move(rhs._shaders)),
+     // MATRICES
+     _uMMatrix(rhs._uMMatrix),
+     _uVMatrix(rhs._uVMatrix),
+     _uMVPMatrix(rhs._uMVPMatrix),
+     _uNormalMatrix(rhs._uNormalMatrix),
+     // LIGTHS
+     _uLightPos1(rhs._uLightPos1),
+     _uLightPos2(rhs._uLightPos2)
+{
 }
 
 // PRIVATE METHODS

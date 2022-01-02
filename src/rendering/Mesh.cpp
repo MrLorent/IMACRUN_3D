@@ -29,7 +29,7 @@ Mesh::Mesh()
     :_vbo(0), _ibo(0), _vao(0)
 {
 }
- 
+
 Mesh::Mesh(
     const std::vector<Vertex>& vertices,
     const std::vector<unsigned int>& indices,

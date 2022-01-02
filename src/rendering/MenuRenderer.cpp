@@ -1,21 +1,53 @@
 #include "MenuRenderer.hpp"
 
+// OPERATORS
+/* Move assignment operator */
+
+MenuRenderer& MenuRenderer::operator=(MenuRenderer&& rhs) noexcept
+{
+    if(this != &rhs)
+    {
+        _WINDOW_WIDTH = rhs._WINDOW_WIDTH;
+        _WINDOW_HEIGHT = rhs._WINDOW_HEIGHT;
+        _PROJECTION_MATRIX = rhs._PROJECTION_MATRIX;
+        _TEXT_PROJECTION_MATRIX = rhs._TEXT_PROJECTION_MATRIX;
+
+        _applicationPath = rhs._applicationPath;
+        _title = std::move(rhs._title);
+        _text = std::move(rhs._text);
+    }
+
+    return *this;
+}
+
 // CONSTRUCTORS
 /* basic constructors */
 
 MenuRenderer::MenuRenderer(glimac::FilePath applicationPath)
-    :_applicationPath(applicationPath)
+    :_applicationPath(applicationPath),
+     _title(std::move(Text2D(40, _applicationPath, "PTMono.ttc"))),
+     _text(std::move(Text2D(30, _applicationPath, "PTMono.ttc")))
 {
-    /* Initialisation of the fonts */
-    _title = Text2D(40, _applicationPath, "PTMono.ttc");
-    _text = Text2D(30, _applicationPath, "PTMono.ttc");
+}
+
+/* move constructor */
+
+MenuRenderer::MenuRenderer(MenuRenderer&& rhs) noexcept
+    :_WINDOW_WIDTH(rhs._WINDOW_WIDTH),
+     _WINDOW_HEIGHT(rhs._WINDOW_HEIGHT),
+     _PROJECTION_MATRIX(rhs._PROJECTION_MATRIX),
+     _TEXT_PROJECTION_MATRIX(rhs._TEXT_PROJECTION_MATRIX),
+     _applicationPath(rhs._applicationPath),
+     _title(std::move(rhs._title)),
+     _text(std::move(rhs._text))
+{
 }
 
 // DESTRUCTORS
 
-// MenuRenderer::~MenuRenderer()
-// {
-// }
+MenuRenderer::~MenuRenderer()
+{
+}
 
 // METHODS
 

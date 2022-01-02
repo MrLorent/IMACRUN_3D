@@ -39,23 +39,21 @@ private:
     glimac::FilePath _applicationPath;
     unsigned int _renderingLength;
     short int _rotationDirection;
-    unsigned int _rotatingIndex;
     Text2D _text;
 
 
     std::deque<glm::vec3> currentLights;
-    bool firstlightsInit;
 
     /* 3D Models */
-    Model _player;
-    Model _wall;
-    Model _floor;
-    Model _barrel;
-    Model _light;
-    Model _bottle;
-    Model _skybox;
-    Model _arch;
-    Model _plank;
+    Model _player3DModel;
+    Model _wall3DModel;
+    Model _floor3DModel;
+    Model _barrel3DModel;
+    Model _light3DModel;
+    Model _bottle3DModel;
+    Model _skybox3DModel;
+    Model _arch3DModel;
+    Model _plank3DModel;
 
     // PRIVATE METHODS
 
@@ -98,8 +96,29 @@ private:
 
 
 public:
+    // OPERATORS
+    /* Move assignment operator */
+
+    GameRenderer& operator=(GameRenderer&& rhs) noexcept;
+
+    /* Copy assignment operator */
+    GameRenderer& operator=(const GameRenderer&) = delete; // We disable copying
+    
+    // CONSTRUCTORS
+    /* basic constructors */
     GameRenderer(){}
     GameRenderer(glimac::FilePath applicationPath);
+
+    /* Copy constructor */
+
+    GameRenderer(const GameRenderer&) = delete; // We disable copying
+
+    /* move constructor */
+    
+    GameRenderer(GameRenderer&& rhs) noexcept;
+
+    // DESTRUCTOR
+    ~GameRenderer(){}
 
     // METHODS
 

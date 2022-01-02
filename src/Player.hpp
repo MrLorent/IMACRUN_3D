@@ -25,7 +25,9 @@ class Player
 
         Player(){}
         Player(short unsigned int caseSubdivision);
-        // ~Player();
+        
+        // DESTRUCTORS
+        ~Player(){};
 
         // GETTER
         glm::vec3 getPosition() const;
