@@ -25,8 +25,10 @@ Map::~Map()
 
 void Map::loadMapElements()
 {
-    std::ifstream file("./assets/map/map_elements.txt");
-    if(file) {
+    std::ifstream file;
+    try 
+    {
+        file.open("./assets/map/map_elements.txt");
         std::vector<char> element;
         char caractere;
         int nbElements;
@@ -43,7 +45,7 @@ void Map::loadMapElements()
             element.clear();
         }
         file.close();
-    }else
+    }catch(const std::ifstream::failure& e)
     {
         std::cout << "ERREUR: Impossible d'ouvrir le fichier map_element.txt." << std::endl;
     }
