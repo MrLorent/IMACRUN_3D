@@ -61,14 +61,14 @@ add_subdirectory(${LIB_DIR}/tinyobjloader)
 target_link_libraries(${PROJECT_NAME} PUBLIC tinyobjloader)
 
 # ---Add doxygen---
-add_subdirectory(${LIB_DIR}/doxygen)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/doc/Doxyfile @ONLY)
-add_custom_target(
-    doc
-    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Generating API documentation with Doxygen" VERBATIM
-)
+# add_subdirectory(${LIB_DIR}/doxygen)
+# configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/doc/Doxyfile @ONLY)
+# add_custom_target(
+#     doc
+#     ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#     COMMENT "Generating API documentation with Doxygen" VERBATIM
+# )
 
 # ---Add header librairies---
 include_directories(
