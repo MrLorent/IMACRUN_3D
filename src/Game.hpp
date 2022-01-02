@@ -52,7 +52,13 @@ class Game
         short int _turn;
         short unsigned int _wallDistance;
         
+        // CONSTRUCTORS
+        /* basic constructors */
+
         Game();
+
+        // DESTRUCTORS
+        ~Game(){};
 
         // GETTERS
         inline short unsigned int getState() const { return _state; }
