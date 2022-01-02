@@ -183,8 +183,6 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
                 case Map::LIGHT: //Mal positionnée
                     drawLantern(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break; 
-                case Map::HOLE:  
-                    break; 
                 case Map::BAREL:
                     drawBarel(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;

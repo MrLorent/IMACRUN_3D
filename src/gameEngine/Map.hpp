@@ -29,7 +29,6 @@ public:
     static constexpr char LIGHT_MARKER = 'x';
     static constexpr char LIGHT = 'l';
     static constexpr char FLOOR = 'f';
-    static constexpr char HOLE = 'h';
     static constexpr char BAREL = 'b';
     static constexpr char PASSED_TURN = 'p';
     static constexpr char COLLECTIBLE = 'c';

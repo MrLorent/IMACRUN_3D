@@ -186,9 +186,6 @@ void Game::checkPlayerPosition()
     case Map::WALL:
         setState(FINISHED, 0);
         break;
-    case Map::HOLE:
-        if(_player.getPosition().y == 0) setState(FINISHED, 0);
-        break;
     case Map::BAREL:
         if(_player.getPosition().y == 0) setState(FINISHED, 0);
         break;
