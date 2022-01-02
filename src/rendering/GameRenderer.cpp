@@ -20,63 +20,63 @@ void GameRenderer::load3DModels()
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl";
 
-    _player = Model(params);
+    _player3DModel = Model(params);
 
     // LOADING OF THE TILE MODEL
     params.fileName = "Cobblestones/CobbleStones.obj";
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl";
  
-    _floor = Model(params);
+    _floor3DModel = Model(params);
 
     //LOADING OF THE WALL MODEL
     params.fileName = "wall/wall.obj";
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl";
  
-    _wall = Model(params);
+    _wall3DModel = Model(params);
 
     //LOADING OF THE BARREL MODEL
     params.fileName = "barrel/barrel.obj";
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl";
  
-    _barrel = Model(params);
+    _barrel3DModel = Model(params);
 
     //LOADING OF THE LIGHT MODEL
     params.fileName = "lantern/lantern.obj";
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl";
  
-    _light = Model(params);
+    _light3DModel = Model(params);
 
     //LOADING OF THE BOTTLE MODEL
     params.fileName = "bottle/bottle.obj";
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl";
  
-    _bottle = Model(params);
+    _bottle3DModel = Model(params);
 
     //LOADING OF THE ARCH MODEL
     params.fileName = "gate_1/gate_1.obj";
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl"; 
  
-    _arch = Model(params);   
+    _arch3DModel = Model(params);   
 
     //LOADING OF THE PLANK MODEL
     params.fileName = "plank/plank.obj";
     params.vsShader = "model.vs.glsl";
     params.fsShader = "model.fs.glsl"; 
  
-    _plank = Model(params);   
+    _plank3DModel = Model(params);   
  
     //LOADING OF THE SKYBOX MODEL
     params.fileName = "skybox/skybox.obj";
     params.vsShader = "skybox.vs.glsl";
     params.fsShader = "skybox.fs.glsl";
  
-    _skybox = Model(params);
+    _skybox3DModel = Model(params);
 }
 
 void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
@@ -102,10 +102,10 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
             switch (game._map[game._map.getMapWidth() * i + k])
             {
                 case Map::FLOOR:
-                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    _floor3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break; 
                 case Map::PASSED_TURN:
-                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    _floor3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::WALL:
                     drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights); 
@@ -126,13 +126,13 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
                     drawBottle(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     break;
                 case Map::ARCH:
-                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    _floor3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     if(k==1){
                         drawArch(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     }
                     break;
                 case Map::PLANK: 
-                    _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+                    _floor3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     if(k==2){
                         drawPlank(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
                     }
@@ -201,12 +201,12 @@ void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
             glm::vec3(0., 0.8, 0)
         );
     }
-    _player.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+    _player3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 }
 
 void GameRenderer::drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix)
 {
-    _skybox.draw(
+    _skybox3DModel.draw(
         _PROJECTION_MATRIX,
         VMatrix,
         glm::scale(
@@ -257,25 +257,12 @@ void GameRenderer::drawWall(//a voir si matrice par reference
         glm::vec3(0.05f,0.5f,0.f)
     );                    
 
-    _wall.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+    _wall3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 
     MMatrix = glm::translate(
         MMatrix,
         glm::vec3(-0.05f,-0.5f,0.f) 
     );
-
-    /*
-     matrice.MMatrix = glm::translate(
-        matrice.MMatrix,
-        glm::vec3(0.05f,0.5f,0.f)
-    );                    
-
-    _wall.draw(matrice._PROJECTION_MATRIX, matrice.VMatrix, matrice.MMatrix, matrice.currentLights);
-
-    matrice.MMatrix = glm::translate(
-        matrice.MMatrix,
-        glm::vec3(-0.05f,-0.5f,0.f) 
-    );*/
 }
 
 void GameRenderer::drawBarel(
@@ -284,7 +271,7 @@ void GameRenderer::drawBarel(
     glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights
     ){
-        _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        _floor3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
         MMatrix = glm::translate(
             MMatrix,
             glm::vec3(0.f,0.35f,0.f)
@@ -294,7 +281,7 @@ void GameRenderer::drawBarel(
             MMatrix,
             glm::vec3(0.5,0.5,0.5)
         );
-        _barrel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        _barrel3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 
         MMatrix=glm::scale(
             MMatrix,
@@ -316,7 +303,7 @@ void GameRenderer::drawBarel(
             MMatrix,
             glm::vec3(0.f,0.8f,0.f)
         );
-        _light.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        _light3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
         MMatrix = glm::translate(
             MMatrix,
             glm::vec3(0.f,-0.8f,0.f)
@@ -328,12 +315,12 @@ void GameRenderer::drawBottle(
     glm::mat4 &VMatrix,
     glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
-         _floor.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+         _floor3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
         MMatrix=glm::scale(
             MMatrix,
             glm::vec3(0.25,0.25,0.25)
         );
-        _bottle.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        _bottle3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
         MMatrix=glm::scale(
             MMatrix,
             glm::vec3(4,4,4)
@@ -349,7 +336,7 @@ void GameRenderer::drawArch(
             MMatrix,
             glm::vec3(1.f,0.f,0.f)
         );
-        _arch.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        _arch3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
         MMatrix = glm::translate(
             MMatrix,
             glm::vec3(-1.f,0.f,0.f)
@@ -367,7 +354,7 @@ void GameRenderer::drawPlank(
             glm::vec3(0.f,0.9f,0.f)
         );
 
-        _plank.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
+        _plank3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
 
         MMatrix = glm::translate(
             MMatrix,
@@ -379,7 +366,6 @@ void GameRenderer::render(
     Game& game
 )
 {
-    //game._camera.setPosition(game._player.getPosition()+ glm::vec3(0.,0.,-0.1));
     glm::mat4 VMatrix = game._camera.getViewMatrix();
     
     // DRAW THE MAP

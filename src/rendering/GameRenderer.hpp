@@ -47,15 +47,15 @@ private:
     bool firstlightsInit;
 
     /* 3D Models */
-    Model _player;
-    Model _wall;
-    Model _floor;
-    Model _barrel;
-    Model _light;
-    Model _bottle;
-    Model _skybox;
-    Model _arch;
-    Model _plank;
+    Model _player3DModel;
+    Model _wall3DModel;
+    Model _floor3DModel;
+    Model _barrel3DModel;
+    Model _light3DModel;
+    Model _bottle3DModel;
+    Model _skybox3DModel;
+    Model _arch3DModel;
+    Model _plank3DModel;
 
     // PRIVATE METHODS
 
