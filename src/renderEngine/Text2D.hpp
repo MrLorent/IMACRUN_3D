@@ -25,8 +25,8 @@ struct Shader{
     Shader(){}
     Shader(const glimac::FilePath& applicationPath)
     :program(glimac::loadProgram(
-        applicationPath.dirPath() + "src/shaders/text2D.vs.glsl",
-        applicationPath.dirPath() + "src/shaders/text2D.fs.glsl")
+        applicationPath.dirPath() + "src/renderEngine/shaders/text2D.vs.glsl",
+        applicationPath.dirPath() + "src/renderEngine/shaders/text2D.fs.glsl")
     )
     {}
 };

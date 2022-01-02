@@ -36,8 +36,11 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_11)
 # Include the directories containing our code
 include_directories(
     src
+    src/appEngine
+    src/gameEngine
     src/glimac
-    src/rendering
+    src/renderEngine
+
 )
 
 # ---Add GLFW---
@@ -78,5 +81,5 @@ add_custom_command(
 )
 endfunction()
 copy_folder_to_the_output_folder("assets")
-copy_folder_to_the_output_folder("src/shaders")
+copy_folder_to_the_output_folder("src/renderEngine/shaders")
 copy_folder_to_the_output_folder("externals")

@@ -30,8 +30,8 @@ Model& Model::operator=(Model&& rhs) noexcept
 
 Model::Model(ModelParams params)
     :_shaders(loadProgram(
-        params.appPath.dirPath() + "src/shaders/"+params.vsShader,
-        params.appPath.dirPath() + "src/shaders/"+params.fsShader
+        params.appPath.dirPath() + "src/renderEngine/shaders/"+params.vsShader,
+        params.appPath.dirPath() + "src/renderEngine/shaders/"+params.fsShader
 ))
 {
     /* Load the model and its textures */
