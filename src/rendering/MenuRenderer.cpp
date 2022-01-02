@@ -94,6 +94,11 @@ void MenuRenderer::drawGamePaused(Menu& menu)
     drawButtons(menu);
 }
 
+void MenuRenderer::drawCameraSetting(Menu& menu)
+{
+    drawButtons(menu);
+}
+
 void MenuRenderer::drawGameOver(Menu& menu)
 {
     _title.draw(

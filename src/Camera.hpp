@@ -1,12 +1,14 @@
 #pragma once
 #define CAMERA_HPP
 
+#include <iostream>
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 class Camera
 {
 private:
+    short unsigned int _state;
     unsigned int _rotationIndex;
     unsigned int _rotationDuration;
 
@@ -14,12 +16,16 @@ private:
     float _distance;
     float _xAngle;
     float _yAngle;
+    float _savedXAngle;
+    float _savedYAngle;
 
     // FREEFLY ATTRIBUTS
     glm::vec3 _position;
     /* look direction */
     float _phi;
     float _theta;
+    float _savedPhi;
+    float _savedTheta;
     /* spacial direction */
     glm::vec3 _frontVector;
     glm::vec3 _leftVector;
@@ -29,6 +35,11 @@ private:
 
 public:
     // CONSTANTS
+    enum CAMERA_STATE
+    {
+        LOCKED = 0,
+        UNLOCKED = 1
+    };
     static constexpr short unsigned int TRACKBALL = 0;
     static constexpr short unsigned int FREEFLY = 1;
 
@@ -39,7 +50,11 @@ public:
     Camera(short unsigned int caseSubdivisions);
     ~Camera();
 
-    void switchMode();
+    // GETTERS
+
+    inline short unsigned int getState() const { return _state; }
+
+    // SETTERS
 
     // TRACKBALLCAMERA
 
@@ -53,8 +68,11 @@ public:
     };
     
     // COMMON METHODS
+    void switchMode();
+    void switchState();
     void takeTurn();
     void rotateHorizontaly(float degrees);
     void rotateVerticaly(float degrees);
     glm::mat4 getViewMatrix() const;
+    void saveSettings();
 };

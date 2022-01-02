@@ -42,8 +42,9 @@ class App
             SCORES = 2,
             SCORE_INPUT = 3,
             GAME_PAUSED = 4,
-            GAME_OVER = 5,
-            GAME = 6
+            CAMERA_SETTINGS = 5,
+            GAME_OVER = 6,
+            GAME = 7
         };
         // CONSTRUCTORS
         /* Basic constructors*/
@@ -53,6 +54,7 @@ class App
         // GETTERS
 
         inline Game& getGame() { return _game; }
+        inline short unsigned int getCurrentMenu() { return _menuIndex; }
 
         // SETTERS
 

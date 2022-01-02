@@ -51,7 +51,17 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
     buttons = {
         Button("Reprendre", GAME),
         Button("Recommencer", GAME),
+        Button("Configurer la Camera", CAMERA_SETTINGS),
         Button("Sauvegarder et quitter", MAIN_MENU)
+    };
+    _menuList.push_back(Menu(buttons));
+
+    buttons.clear();
+
+    // CAMERA SETTINGS
+    buttons = {
+        Button("Enregistrer", GAME_PAUSED),
+        Button("Retour", GAME_PAUSED)
     };
     _menuList.push_back(Menu(buttons));
 
@@ -170,6 +180,10 @@ void App::render()
     case GAME_PAUSED:
         _menuRenderer.drawGamePaused(_menuList[GAME_PAUSED]);
         break;
+    case CAMERA_SETTINGS:
+        _gameRenderer.render(_game);
+        _menuRenderer.drawCameraSetting(_menuList[CAMERA_SETTINGS]);
+        break;
     case GAME_OVER:
         _menuRenderer.drawGameOver(_menuList[_menuIndex]);
         break;
@@ -221,7 +235,28 @@ void App::key_callback(int key, int scancode, int action, int mods)
             if(action !=0 && _menuIndex == GAME_PAUSED) _game.setState(Game::PAUSED, 0);
             break;
         case GLFW_KEY_P: // 'P'
-            if(action != 0) _game.setState(Game::PAUSED, 0);
+            if(action != 0 && _menuIndex == GAME) _game.setState(Game::PAUSED, 0);
+            break;
+        case GLFW_KEY_C: // 'C'
+            if(action!=0 && _menuIndex == CAMERA_SETTINGS) _game._camera.switchMode(); 
+            break;
+        case GLFW_KEY_I: // 'I'
+            if(action!=0 && _menuIndex == CAMERA_SETTINGS)
+            {
+                if(_game._camera._mode == Camera::TRACKBALL) _game._camera.rotateVerticaly(2.*float(1));
+            } 
+            break;
+        case GLFW_KEY_K: // 'K'
+            if(action!=0 && _menuIndex == CAMERA_SETTINGS)
+            {
+                if(action!=0 && _game._camera._mode == Camera::TRACKBALL) _game._camera.rotateVerticaly(-2.*float(1));
+            } 
+            break;
+        case GLFW_KEY_J:
+            if(action!=0) _game._camera.rotateHorizontaly(2.*float(1));
+            break;
+        case GLFW_KEY_L:
+            if(action!=0) _game._camera.rotateHorizontaly(-2.*float(1));
             break;
         case GLFW_KEY_DOWN: // down arrow
             if(action != 0) _menuList[_menuIndex].changeCurrentButton(1);
@@ -253,8 +288,11 @@ void App::key_callback(int key, int scancode, int action, int mods)
                             case 1: // RECOMMENCER
                                 _game.setState(Game::RUNNING, Game::CLEAR_START);
                                 break;
+
+                            case 2: // PARAMETRER LA CAMERA
+                                break;
                             
-                            case 2: // SAUVEGARDER ET QUITTER
+                            case 3: // SAUVEGARDER ET QUITTER
                                 _game.setState(Game::WAITING, 0);
                                 _savedScore = _game.getScore();
                                 break;
@@ -263,6 +301,9 @@ void App::key_callback(int key, int scancode, int action, int mods)
                                 break;
                             }
                         }
+                        break;
+                    case CAMERA_SETTINGS:
+                        if(BUTTON_CLICKED == 0) _game._camera.saveSettings();
                         break;
                     case GAME_OVER:
                         _game.setState(Game::WAITING, 0);
@@ -283,7 +324,7 @@ void App::key_callback(int key, int scancode, int action, int mods)
             }
             break;
         default:
-                std::cout << key << std::endl;
+            if(action != 0) std::cout << key << std::endl;
             break;
         }
 }
@@ -300,6 +341,7 @@ void App::mouse_button_callback(int button, int action, int mods)
 
 void App::scroll_callback(double xoffset, double yoffset)
 {
+    if(_menuIndex == CAMERA_SETTINGS) _game._camera.changeDistance(yoffset);
 }
 
 void App::cursor_position_callback(double xpos, double ypos)
