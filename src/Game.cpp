@@ -152,7 +152,7 @@ void Game::runGame()
 
     if(_state == RUNNING)
     {
-        if(_camera._turning != 0) _camera.takeTurn();
+        if(_camera.getState() == Camera::TURNING) _camera.takeTurn();
         if(_player._isJumping) _player.jump();
         else if(_player._isCrouching) _player.crouch();
         _caseSubdivisionsIndex++;
@@ -222,14 +222,16 @@ void Game::passTurn()
 {
     if(_turn == LEFT)
     {
-        _camera._turning = RIGHT; /* Camera turns on opposite side */
+        _camera.setRotationDirection(RIGHT); /* Camera turns on opposite side */
+        _camera.setState(Camera::TURNING);
         _map[(_playerIndex-(3-_wallDistance)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
         _map[(_playerIndex-(2-_wallDistance)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
         _map[(_playerIndex-(1-_wallDistance)) * _map.getMapWidth() + _map.getMapWidth() - 1] = 'p';
     }
     else
     {
-        _camera._turning = LEFT;
+        _camera.setRotationDirection(LEFT);
+        _camera.setState(Camera::TURNING);
         _map[(_playerIndex-(3-_wallDistance)) * _map.getMapWidth()] = 'p';
         _map[(_playerIndex-(2-_wallDistance)) * _map.getMapWidth()] = 'p';
         _map[(_playerIndex-(1-_wallDistance)) * _map.getMapWidth()] = 'p';
@@ -246,7 +248,7 @@ void Game::passTurn()
     switch (xPlayerPosition)
     {
     case Player::LEFT:
-        if(_camera._turning == RIGHT)
+        if(_turn == LEFT)
         {
             if(_wallDistance == 3) _playerIndex += 2;
             else if(_wallDistance == 2 ) _playerIndex += 1;
@@ -258,7 +260,7 @@ void Game::passTurn()
         }
         break;
     case Player::MIDDLE:
-        if(_camera._turning == RIGHT)
+        if(_turn == LEFT)
         {
             if(_wallDistance == 3) _playerIndex += 1;
             else if(_wallDistance == 1) _playerIndex -= 1;
@@ -270,7 +272,7 @@ void Game::passTurn()
         }
         break;
     case Player::RIGHT:
-        if(_camera._turning == RIGHT)
+        if(_turn == LEFT)
         {
             if(_wallDistance == 2) _playerIndex -= 1;
             else if(_wallDistance == 1) _playerIndex -= 2;
@@ -287,12 +289,21 @@ void Game::passTurn()
 
     _player.setPosition(glm::vec3(_turn * (-2 + _wallDistance), 0.f, 0.f));
 
-    if(_camera._mode == Camera::TRACKBALL) _camera.rotateHorizontaly(_camera._turning * 90);
-    else _camera.rotateHorizontaly(_turn * 90);
+    short int cameraTurn;
+    if(_camera.getMode() == Camera::TRACKBALL)
+    {
+        _camera.rotate90Horizontaly(-_turn);
+        cameraTurn = -_turn;
+    }
+    else
+    {
+        _camera.rotate90Horizontaly(_turn);
+        cameraTurn = _turn;
+    }
 
     _skyBoxMMatrix = glm::rotate(
         _skyBoxMMatrix,
-        float(_camera._turning * 90),
+        float(cameraTurn * 90),
         glm::vec3(0.f,1.f,0.f)
     );
 
@@ -312,8 +323,10 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             if(action != 0) setState(PAUSED, 0);
             break;
         case GLFW_KEY_L: // 'L'
-            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.saveSettings();
-            if(action != 0) _camera.switchState();
+            if(action != 0) _camera.toggleCameraLock();
+            break;
+        case GLFW_KEY_C: // 'C'
+            if(action!=0) _camera.switchMode(); 
             break;
         case GLFW_KEY_A: // 'Q'
             if(action!=0){
@@ -336,20 +349,20 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             _player._isJumping = true;
             break;
         case GLFW_KEY_RIGHT: //Fleche droite
-            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.rotateHorizontaly(-2.*float(1));
+            if(action != 0) _camera.rotateHorizontaly(-2.*float(1));
             
             break;
 
         case GLFW_KEY_LEFT: //Fleche gauche
-            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.rotateHorizontaly(2.*float(1));
+            if(action != 0) _camera.rotateHorizontaly(2.*float(1));
             break;
 
         case GLFW_KEY_DOWN: //Fleche bas
-            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.rotateVerticaly(-2.*float(1));
+            if(action != 0) _camera.rotateVerticaly(-2.*float(1));
             break;
         
         case GLFW_KEY_UP: //Fleche haut
-            if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.rotateVerticaly(2.*float(1));
+            if(action != 0) _camera.rotateVerticaly(2.*float(1));
             break;
         default:
             std::cout << key << std::endl;
@@ -363,7 +376,7 @@ void Game::mouse_button_callback(int button, int action, int mods)
 
 void Game::scroll_callback(double xoffset, double yoffset)
 {
-    if(_camera.getState() == Camera::UNLOCKED) _camera.changeDistance(yoffset);
+    _camera.changeDistance(yoffset);
 }
 
 void Game::cursor_position_callback(double xpos, double ypos)

@@ -6,7 +6,7 @@
 Camera::Camera(short unsigned int caseSubdivisions)
     :_state(LOCKED),
      _mode(TRACKBALL),
-     _turning(0),
+     _rotationDirection(0),
      _rotationIndex(0),
      _rotationDuration(caseSubdivisions * 2),
     // TRACKBALL
@@ -29,6 +29,35 @@ Camera::Camera(short unsigned int caseSubdivisions)
 
 Camera::~Camera(){}
 
+// SETTERS
+
+void Camera::setState(const short unsigned int newState)
+{
+    switch (_state)
+    {
+    case LOCKED:
+        _state = UNLOCKED;
+        break;
+    case UNLOCKED:
+        saveSettings();
+        _state = newState;
+        break;
+    case TURNING:
+        _state = newState;
+        break;
+    default:
+        break;
+    }
+    _state = newState;
+}
+
+void Camera::setRotationDirection(const short int direction)
+{
+    _rotationDirection = direction;
+}
+
+// METHODS
+
 void Camera::switchMode()
 {
     if(_mode == TRACKBALL)
@@ -41,12 +70,16 @@ void Camera::switchMode()
     }
 }
 
-void Camera::switchState()
+void Camera::toggleCameraLock()
 {
-    if(_state == LOCKED)
-        _state = UNLOCKED;
-    else
-        _state = LOCKED;
+    if(_state == Camera::UNLOCKED)
+    {
+        setState(Camera::LOCKED);
+    }
+    else if(_state == Camera::LOCKED)
+    {
+        setState(Camera::UNLOCKED);
+    }
 }
 
 // TRACKBALL METHODS
@@ -85,8 +118,6 @@ void Camera::setPosition(const glm::vec3 position)
     _position.z = -position.z;
 }
 
-// COMMON METHODS
-
 void Camera::takeTurn()
 {
     if(_rotationIndex > _rotationDuration)
@@ -99,18 +130,18 @@ void Camera::takeTurn()
         {
             _phi = _savedPhi;
         }
-        _turning = 0;
+        _state = LOCKED;
         _rotationIndex = 0;
     }
     else
     {
-        if(_mode == Camera::TRACKBALL)
+        if(_mode == TRACKBALL)
         {
-            rotateHorizontaly(float(90.f * 1/_rotationDuration * -_turning));
+            _yAngle += glm::radians(float(90.f * 1/_rotationDuration * -_rotationDirection));
         }
         else
         {
-            rotateHorizontaly(float(90.f * 1/_rotationDuration * _turning));
+            _phi += glm::radians(float(90.f * 1/_rotationDuration * -_rotationDirection));
         }
         _rotationIndex++;
     }
@@ -118,13 +149,30 @@ void Camera::takeTurn()
 
 void Camera::rotateHorizontaly(float degrees)
 {
+    if(_state == UNLOCKED)
+    {
+        if(_mode == TRACKBALL)
+        {
+            _yAngle += glm::radians(degrees);
+        }
+        else
+        {
+            _phi += glm::radians(degrees);
+            _phi=glm::clamp(_phi, glm::radians(-30.f), glm::radians(30.f));
+            computeDirectionVectors();
+        }
+    }
+}
+
+void Camera::rotate90Horizontaly(short int direction)
+{
     if(_mode == TRACKBALL)
     {
-        _yAngle += glm::radians(degrees);
+        _yAngle += glm::radians(90.f * direction);
     }
     else
     {
-        _phi += glm::radians(degrees);
+        _phi += glm::radians(90.f * direction);
         _phi=glm::clamp(_phi, glm::radians(-30.f), glm::radians(30.f));
         computeDirectionVectors();
     }
@@ -132,14 +180,17 @@ void Camera::rotateHorizontaly(float degrees)
 
 void Camera::rotateVerticaly(float degrees)
 {
-    if(_mode == TRACKBALL)
+    if(_mode == UNLOCKED)
     {
-        _xAngle += glm::radians(degrees);
-    }
-    else
-    {
-        _theta += glm::radians(degrees);
-        computeDirectionVectors();
+        if(_mode == TRACKBALL)
+        {
+            _xAngle += glm::radians(degrees);
+        }
+        else
+        {
+            _theta += glm::radians(degrees);
+            computeDirectionVectors();
+        }
     }
 }
 
