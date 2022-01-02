@@ -239,22 +239,16 @@ void App::key_callback(int key, int scancode, int action, int mods)
             if(action!=0 && _menuIndex == CAMERA_SETTINGS) _game._camera.switchMode(); 
             break;
         case GLFW_KEY_I: // 'I'
-            if(action!=0 && _menuIndex == CAMERA_SETTINGS)
-            {
-                if(_game._camera._mode == Camera::TRACKBALL) _game._camera.rotateVerticaly(2.*float(1));
-            } 
+            if(action!=0 && _menuIndex == CAMERA_SETTINGS) _game._camera.rotateVerticaly(2.*float(1));
             break;
         case GLFW_KEY_K: // 'K'
-            if(action!=0 && _menuIndex == CAMERA_SETTINGS)
-            {
-                if(action!=0 && _game._camera._mode == Camera::TRACKBALL) _game._camera.rotateVerticaly(-2.*float(1));
-            } 
+            if(action!=0 && _menuIndex == CAMERA_SETTINGS) _game._camera.rotateVerticaly(-2.*float(1));
             break;
         case GLFW_KEY_J:
-            if(action!=0) _game._camera.rotateHorizontaly(2.*float(1));
+            if(action!=0 && _menuIndex == CAMERA_SETTINGS) _game._camera.rotateHorizontaly(2.*float(1));
             break;
         case GLFW_KEY_L:
-            if(action!=0) _game._camera.rotateHorizontaly(-2.*float(1));
+            if(action!=0 && _menuIndex == CAMERA_SETTINGS) _game._camera.rotateHorizontaly(-2.*float(1));
             break;
         case GLFW_KEY_DOWN: // down arrow
             if(action != 0 && !(_menuIndex == LOAD_MENU && _savedScore == -1)) _menuList[_menuIndex].changeCurrentButton(1);
@@ -292,6 +286,7 @@ void App::key_callback(int key, int scancode, int action, int mods)
                                 break;
 
                             case 2: // PARAMETRER LA CAMERA
+                                _game._camera.setState(Camera::UNLOCKED);
                                 break;
                             
                             case 3: // SAUVEGARDER ET QUITTER
@@ -306,6 +301,7 @@ void App::key_callback(int key, int scancode, int action, int mods)
                         break;
                     case CAMERA_SETTINGS:
                         if(BUTTON_CLICKED == 0) _game._camera.saveSettings();
+                        _game._camera.setState(Camera::LOCKED);
                         break;
                     case GAME_OVER:
                         _game.setState(Game::WAITING, 0);

@@ -9,6 +9,8 @@ class Camera
 {
 private:
     short unsigned int _state;
+    short unsigned int _mode;
+    short int _rotationDirection;
     unsigned int _rotationIndex;
     unsigned int _rotationDuration;
 
@@ -38,7 +40,8 @@ public:
     enum CAMERA_STATE
     {
         LOCKED = 0,
-        UNLOCKED = 1
+        UNLOCKED = 1,
+        TURNING = 2
     };
     enum CAMERA_MODE
     {
@@ -46,35 +49,39 @@ public:
         FREEFLY = 1
     };
 
-    short unsigned int _mode;
-    short int _turning;
+    // CONSTRUCTORS
+    /* basic constructors */
 
     Camera(){};
     Camera(short unsigned int caseSubdivisions);
+
+    // DESTRUCTOR
+
     ~Camera();
 
     // GETTERS
 
     inline short unsigned int getState() const { return _state; }
+    inline short unsigned int getMode() const { return _mode; }
+    inline short int getRotationDirection() const { return _rotationDirection; }
 
     // SETTERS
 
-    // TRACKBALLCAMERA
+    void setState(const short unsigned int newState);
+    void setRotationDirection(const short int direction);
+
+    // METHODS
 
     void changeDistance(float delta);
-
-    // FREEFLY CAMERA
-
     void setPosition(glm::vec3 position);
         glm::vec3 getPosition(){
         return _position;
     };
-    
-    // COMMON METHODS
     void switchMode();
-    void switchState();
+    void toggleCameraLock();
     void takeTurn();
     void rotateHorizontaly(float degrees);
+    void rotate90Horizontaly(short int direction);
     void rotateVerticaly(float degrees);
     glm::mat4 getViewMatrix() const;
     void saveSettings();
