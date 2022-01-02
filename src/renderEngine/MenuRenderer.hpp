@@ -10,7 +10,7 @@ struct Score
     std::string name;
     unsigned int score;
 
-    Score(short unsigned int p, std::string n, unsigned int s)
+    Score(short unsigned int p, std::string &n, unsigned int s)
         :place(p), name(n), score(s)
     {}
 };
@@ -74,6 +74,6 @@ public:
     void drawGamePaused(Menu& menu);
     void drawCameraSetting(Menu& menu);
     void drawLoadMenu(Menu& menu, const int savedScore);
-    void drawScores(Menu& menu, std::vector<Score>& scores);
+    void drawScores(Menu& menu, const std::vector<Score>& scores);
     void drawScoreInput(Menu& menu, std::string pseudo);
 };

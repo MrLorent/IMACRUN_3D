@@ -26,7 +26,9 @@ MenuRenderer& MenuRenderer::operator=(MenuRenderer&& rhs) noexcept
 MenuRenderer::MenuRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
      _title(std::move(Text2D(40, _applicationPath, "PTMono.ttc"))),
-     _text(std::move(Text2D(30, _applicationPath, "PTMono.ttc")))
+     _text(std::move(Text2D(30, _applicationPath, "PTMono.ttc"))),
+     _WINDOW_WIDTH(0),
+     _WINDOW_HEIGHT(0)
 {
 }
 
@@ -173,7 +175,7 @@ void MenuRenderer::drawLoadMenu(Menu& menu, const int savedScore)
     drawButtons(menu);
 }
 
-void MenuRenderer::drawScores(Menu& menu, std::vector<Score>& scores)
+void MenuRenderer::drawScores(Menu& menu, const std::vector<Score>& scores)
 {
     _title.draw(
         "MEILLEURS SCORES",

@@ -37,9 +37,9 @@ Text2D& Text2D::operator=(Text2D&& rhs) noexcept
 
 // CONSTRUCTORS
 /* basic constructor */
-Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, std::string fontName):shader(path)
+Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, const std::string &fontName):shader(path)
 {
-    FT_Library ft;
+    FT_Library ft; 
     FT_Face font;
     
     if (FT_Init_FreeType(&ft))
@@ -185,7 +185,7 @@ void Text2D::draw(std::string text, glm::vec2 pos, glm::vec3 color, glm::mat4 pr
 
     // iterate through all characters
     std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++) 
+    for (c = text.begin(); c != text.end(); ++c) 
     {
         Character ch = _alphabet[*c];
         float xpos = pos.x + ch.Bearing.x;

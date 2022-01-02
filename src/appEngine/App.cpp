@@ -3,7 +3,7 @@
 // CONSTRUCTORS
 /* basic constructors */
 
-App::App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
+App::App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string &path)
     :_applicationPath(glimac::FilePath(path)),
      _menuIndex(MAIN_MENU),
      _menuRenderer(MenuRenderer(_applicationPath)),
@@ -15,7 +15,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 
     /* Initialization of the navigation */
     // MAIN MENU
-    std::vector<Button> buttons = {
+    std::vector<Button> buttons = { 
         Button("Nouvelle Partie", GAME),
         Button("Charger Partie", LOAD_MENU),
         Button("Scores", SCORES)

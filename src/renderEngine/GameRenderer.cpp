@@ -40,7 +40,9 @@ GameRenderer::GameRenderer(glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
      _renderingLength(20), // nb ligne to draw
      _rotationDirection(0),
-     _text(std::move(Text2D(20, _applicationPath, "PTMono.ttc")))
+     _text(std::move(Text2D(20, _applicationPath, "PTMono.ttc"))),
+     _WINDOW_HEIGHT(0),
+     _WINDOW_WIDTH(0)
 {
     /* Initialization of the 3D Models */
     load3DModels();
@@ -291,12 +293,12 @@ void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLig
     if(rank == 0)
     {
         lights[0] = glm::vec3(glm::column(MMatrix, 3));
-        if(firstLights.size()<2) firstLights[0] = lights[0]; 
+        if(firstLights.size()<2) firstLights.push_back(lights[0]); 
     }
     else
     {
         lights[1] = glm::vec3(glm::column(MMatrix, 3));
-        if(firstLights.size()<2) firstLights[1] = lights[1];
+        if(firstLights.size()<2) firstLights.push_back(lights[1]);
     }
 
     MMatrix = glm::translate(

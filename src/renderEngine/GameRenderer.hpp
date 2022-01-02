@@ -18,7 +18,7 @@ struct matrix{
     matrix(glm::mat4 projMatrix,
     glm::mat4 ViewMatrix,
     glm::mat4 ModelMatrix,
-    std::deque<glm::vec3> Lights):
+    std::deque<glm::vec3> &Lights):
     _PROJECTION_MATRIX(projMatrix),
     VMatrix(ViewMatrix),
     MMatrix(ModelMatrix),

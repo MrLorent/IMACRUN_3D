@@ -25,8 +25,8 @@ Mesh& Mesh::operator=(Mesh&& rhs) noexcept
 
 // CONSTRUCTORS
 /* basic constructors */
-Mesh::Mesh()
-    :_vbo(0), _ibo(0), _vao(0)
+Mesh::Mesh() 
+    :_vbo(0), _ibo(0), _vao(0) 
 {
 }
 

@@ -46,9 +46,10 @@ void Camera::setState(const short unsigned int newState)
         _state = newState;
         break;
     default:
+        std::cerr << "Le newState demandé n'existe pas" << std::endl;
         break;
     }
-    _state = newState;
+    
 }
 
 void Camera::setRotationDirection(const short int direction)

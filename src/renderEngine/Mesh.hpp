@@ -12,6 +12,8 @@ struct Textures{
     Texture diffuse;
     Texture specular;
     float shininess; 
+
+    Textures():shininess(0){};
 };
 
 

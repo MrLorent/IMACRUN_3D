@@ -5,7 +5,7 @@
 // CONSTRUCTORS
 /* basic constructor */
 
-Menu::Menu(std::vector<Button> buttons)
+Menu::Menu(std::vector<Button> &buttons)
     :_buttons(buttons),
      _currentButton(0)
 {

@@ -13,6 +13,7 @@ struct Button
     Button(std::string label, short unsigned int link)
         :label(label), link(link)
     {}
+
 };
 
 
@@ -27,7 +28,7 @@ public:
     // CONSTRUCTORS
     /* basic constructors */
     
-    Menu(std::vector<Button> buttons);
+    Menu(std::vector<Button> &buttons);
     
     // DESTRUCTOR
 

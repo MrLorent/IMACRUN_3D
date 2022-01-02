@@ -25,7 +25,7 @@ class Texture
         /* basic constructor */
         
         Texture();
-        Texture(const std::string filePath);
+        Texture(const std::string &filePath);
         
         /* Copy constructor */
 

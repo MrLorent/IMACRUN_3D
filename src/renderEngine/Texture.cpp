@@ -21,7 +21,7 @@ Texture& Texture::operator=(Texture&& rhs) noexcept
 Texture::Texture()
     :_id(0),_type(""){} 
 
-Texture::Texture(const std::string filePath)
+Texture::Texture(const std::string &filePath)
     :_id(0)
 {
     const size_t lastSlashIndex = filePath.rfind('/');
@@ -93,13 +93,4 @@ bool Texture::load(const std::string& filePath)
     glBindTexture(GL_TEXTURE_2D,0);
 
     return true;
-}
-
-void Texture::bind(const int index)
-{
-    if(_id != 0)
-    {
-        glActiveTexture(GL_TEXTURE0 + index);
-        glBindTexture(GL_TEXTURE_2D, _id);
-    }
 }

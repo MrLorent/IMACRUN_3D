@@ -18,9 +18,9 @@ struct ModelParams
     // CONSTRUCTOR
     ModelParams(
         glimac::FilePath appPath,
-        std::string fileName,
-        std::string vsShader,
-        std::string fsShader
+        std::string &fileName,
+        std::string &vsShader,
+        std::string &fsShader 
     ):
     appPath(appPath),
     fileName(fileName),
