@@ -36,7 +36,7 @@ void Camera::setState(const short unsigned int newState)
     switch (_state)
     {
     case LOCKED:
-        _state = UNLOCKED;
+        _state = newState;
         break;
     case UNLOCKED:
         saveSettings();
