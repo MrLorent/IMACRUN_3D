@@ -17,7 +17,6 @@ Model::Model(ModelParams params)
     
     /* Link the matrix attribut to the shaders matrix */
     _uMVPMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVPMatrix");
-    //_uMVMatrix = glGetUniformLocation(_shaders.getGLId(), "uMVMatrix"); 
     _uVMatrix = glGetUniformLocation(_shaders.getGLId(), "uVMatrix");
     _uNormalMatrix = glGetUniformLocation(_shaders.getGLId(), "uNormalMatrix");
     _uMMatrix = glGetUniformLocation(_shaders.getGLId(), "uMMatrix");

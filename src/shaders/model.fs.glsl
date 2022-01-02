@@ -12,11 +12,8 @@ uniform sampler2D uTextureSpecular;
 uniform float uShininess;
 uniform mat4 uMVMatrix;
 
-uniform vec3 uLightPos1; // In MVMatrix
+uniform vec3 uLightPos1;
 uniform vec3 uLightPos2;
-uniform vec3 uLightPos3;
-uniform vec3 uLightPos4;
-
 
 //Lumière directionnelle
 const vec3 LightDirection = normalize(vec3(0.8, 0.8, 0.2));
@@ -40,8 +37,4 @@ void main() {
     fFragColor += Light(normalize(uLightPos1 - vPosition_vs), LightPonctualColor/(dist*dist));
     dist = distance(vPosition_vs, uLightPos2);
     fFragColor += Light(normalize(uLightPos2 - vPosition_vs), LightPonctualColor/(dist*dist));
-    // dist = distance(vPosition_vs, uLightPos3);
-    // fFragColor += Light(normalize(uLightPos3 - vPosition_vs), LightPonctualColor/(dist*dist));
-    // dist = distance(vPosition_vs, uLightPos4);
-    // fFragColor += Light(normalize(uLightPos4 - vPosition_vs), LightPonctualColor/(dist*dist));
 }

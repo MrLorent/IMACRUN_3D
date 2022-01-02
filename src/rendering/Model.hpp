@@ -64,8 +64,6 @@ class Model
             const std::string& fileName
         );
 
-        void linkMatrix();
-
         void loadTextures(
             glimac::FilePath appPath,
             std::string filePath,
