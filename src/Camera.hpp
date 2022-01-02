@@ -40,8 +40,11 @@ public:
         LOCKED = 0,
         UNLOCKED = 1
     };
-    static constexpr short unsigned int TRACKBALL = 0;
-    static constexpr short unsigned int FREEFLY = 1;
+    enum CAMERA_MODE
+    {
+        TRACKBALL = 0,
+        FREEFLY = 1
+    };
 
     short unsigned int _mode;
     short int _turning;
@@ -63,7 +66,7 @@ public:
     // FREEFLY CAMERA
 
     void setPosition(glm::vec3 position);
-    glm::vec3 getPosition(){
+        glm::vec3 getPosition(){
         return _position;
     };
     

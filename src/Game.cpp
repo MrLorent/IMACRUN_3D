@@ -315,6 +315,9 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             if(action != 0 && _camera.getState() == Camera::UNLOCKED) _camera.saveSettings();
             if(action != 0) _camera.switchState();
             break;
+        case GLFW_KEY_C: // 'C'
+            if(action!=0 && _camera.getState() == Camera::UNLOCKED) _camera.switchMode(); 
+            break;
         case GLFW_KEY_A: // 'Q'
             if(action!=0){
                 if(_turn == LEFT) passTurn();
