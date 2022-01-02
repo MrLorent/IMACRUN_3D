@@ -50,6 +50,9 @@ class App
 
         App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path);
         
+        // DESTRUCTORS
+        ~App(){};
+
         // GETTERS
 
         inline Game& getGame() { return _game; }
