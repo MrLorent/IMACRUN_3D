@@ -181,7 +181,7 @@ void Camera::rotate90Horizontaly(short int direction)
 
 void Camera::rotateVerticaly(float degrees)
 {
-    if(_mode == UNLOCKED)
+    if(_state == UNLOCKED)
     {
         if(_mode == TRACKBALL)
         {

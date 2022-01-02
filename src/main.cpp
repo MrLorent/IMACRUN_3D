@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 
     /* Intialize glad (loads the OpenGL functions) */
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        std::cerr << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 

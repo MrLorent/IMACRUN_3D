@@ -47,7 +47,7 @@ void Map::loadMapElements()
         file.close();
     }catch(const std::ifstream::failure& e)
     {
-        std::cout << "ERREUR: Impossible d'ouvrir le fichier map_element.txt." << std::endl;
+        std::cerr << "ERREUR: Impossible d'ouvrir le fichier map_element.txt." << std::endl;
     }
 }
 

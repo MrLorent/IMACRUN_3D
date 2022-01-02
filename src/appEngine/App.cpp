@@ -97,7 +97,7 @@ void App::getSavedScore()
     }
     else
     {
-        std::cout << "ERROR FORM [APP | getSavedScore() ]: Impossible to open scores.txt." << std::endl;
+        std::cerr << "ERROR FORM [APP | getSavedScore() ]: Impossible to open scores.txt." << std::endl;
     }
 }
 
@@ -119,7 +119,7 @@ void App::getBestScores()
         file.close();
     }else
     {
-        std::cout << "ERREUR: Impossible d'ouvrir le scores.txt." << std::endl;
+        std::cerr << "ERREUR: Impossible d'ouvrir le scores.txt." << std::endl;
     }
 }
 
@@ -155,7 +155,7 @@ void App::setBestScores()
         file.close();
     }else
     {
-        std::cout << "ERREUR: Impossible d'ouvrir le scores.txt." << std::endl;
+        std::cerr << "ERREUR: Impossible d'ouvrir le scores.txt." << std::endl;
     }
 }
 /* Graphics */
@@ -322,7 +322,6 @@ void App::key_callback(int key, int scancode, int action, int mods)
             }
             break;
         default:
-            if(action != 0) std::cout << key << std::endl;
             break;
         }
 }
@@ -330,7 +329,6 @@ void App::key_callback(int key, int scancode, int action, int mods)
 void App::char_callback(unsigned int codepoint)
 {
     if(_menuIndex == SCORE_INPUT && _pseudoInput.size() < 3) _pseudoInput.push_back(std::toupper(char(codepoint)));
-    else std::cout << "code point: " << codepoint << std::endl;
 }
 
 void App::mouse_button_callback(int button, int action, int mods)

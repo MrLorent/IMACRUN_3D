@@ -60,7 +60,7 @@ bool Texture::load(const std::string& filePath)
     
     if(image == nullptr)
     {
-        std::cout << "Couldn't load " << "./assets/"+filePath << std::endl;
+        std::cerr << "Couldn't load " << "./assets/"+filePath << std::endl;
         return false;
     }
 

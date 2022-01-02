@@ -44,12 +44,12 @@ Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, const std::st
     
     if (FT_Init_FreeType(&ft))
     {
-        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+        std::cerr << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
     }
 
     if (FT_New_Face(ft, ("./assets/fonts/"+fontName).c_str() , 0, &font))
     {
-        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;  
+        std::cerr << "ERROR::FREETYPE: Failed to load font" << std::endl;  
     }
     else
     {
@@ -62,7 +62,7 @@ Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, const std::st
             // load character glyph 
             if (FT_Load_Char(font, c, FT_LOAD_RENDER))
             {
-                std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+                std::cerr << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
                 continue;
             }
             // generate texture

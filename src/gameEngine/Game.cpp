@@ -65,7 +65,7 @@ void Game::setState(const short unsigned int newState, const short unsigned int 
         }
         break;
     default:
-        std::cout << "Defaut case of game.setState()" << std::endl;
+        std::cerr << "Defaut case of game.setState()" << std::endl;
         break;
     }
 }
@@ -116,7 +116,7 @@ void Game::initGameFromSave(){
         file.close();
     }else
     {
-        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+        std::cerr << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
     }
 }
 
@@ -138,11 +138,11 @@ void Game::saveGame(){
             if(i%_map.getMapWidth() == _map.getMapWidth()-1) file << std::endl;
         }            
         file.close();
-        std::cout << "La partie a ete sauvegardee." << std::endl;  
+        std::cerr << "La partie a ete sauvegardee." << std::endl;  
     }
     else
     {
-        std::cout << "ERREUR: Impossible d'ouvrir le fichier." << std::endl;
+        std::cerr << "ERREUR: Impossible d'ouvrir le fichier." << std::endl;
     }
 }
 
@@ -365,7 +365,6 @@ void Game::key_callback(int key, int scancode, int action, int mods)
             if(action != 0) _camera.rotateVerticaly(2.*float(1));
             break;
         default:
-            std::cout << key << std::endl;
             break;
         }
 }

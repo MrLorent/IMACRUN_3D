@@ -171,7 +171,7 @@ void Model::loadModel(
 
     if (!reader.Warning().empty())
     {
-        std::cout << "TinyObjReader: " << reader.Warning();
+        std::cerr << "TinyObjReader: " << reader.Warning();
     }
 
     auto& attrib = reader.GetAttrib();
