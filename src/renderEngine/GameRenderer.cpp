@@ -406,7 +406,7 @@ void GameRenderer::render(
     //Draw the score
     _text.draw(
         "Score : "+std::to_string(game._player.getScore()),
-        glm::vec2(50.f, 600.f ),
+        glm::vec2(1*_WINDOW_WIDTH/20, 20*_WINDOW_HEIGHT/21),
         glm::vec3(1.f),
         _TEXT_PROJECTION_MATRIX
     );
