@@ -314,7 +314,7 @@ void App::size_callback(GLFWwindow* window, int width, int height)
         float(width),
         float(height),
         0.1f,
-        100.0f
+        150.0f
     );
 
     _WINDOW_WIDTH = width;
