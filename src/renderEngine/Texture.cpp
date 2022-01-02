@@ -50,7 +50,7 @@ Texture::~Texture()
     _type ="";
 }
 
-// METHODS
+// METHODS 
 
 bool Texture::load(const std::string& filePath)
 {

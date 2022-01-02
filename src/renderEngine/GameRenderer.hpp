@@ -15,10 +15,10 @@ struct matrix{
     std::deque<glm::vec3> currentLights;
 
 
-    matrix(glm::mat4 projMatrix,
-    glm::mat4 ViewMatrix,
-    glm::mat4 ModelMatrix,
-    std::deque<glm::vec3> &Lights):
+    matrix(const glm::mat4 &projMatrix,
+    const glm::mat4 &ViewMatrix,
+    const glm::mat4 &ModelMatrix,
+    const std::deque<glm::vec3> &Lights):
     _PROJECTION_MATRIX(projMatrix),
     VMatrix(ViewMatrix),
     MMatrix(ModelMatrix),
@@ -60,38 +60,38 @@ private:
     void load3DModels();
 
     void drawMap(Game& game, glm::mat4& VMatrix);
-    void drawPlayer(Game& game,Player& player, glm::mat4& VMatrix);
-    void drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix);
-    void setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const short unsigned int rank);
+    void drawPlayer(Game& game,const Player& player, glm::mat4& VMatrix);
+    void drawSkyBox(glm::mat4& VMatrix,glm::mat4& MMatrix);
+    void setLights(const glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const unsigned short  int rank);
 
     void drawWall(glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights);
 
     void drawBarel(glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights);
 
     void drawLantern(glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights);
 
     void drawBottle(glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights);
 
     void drawArch(glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights);
 
     void drawPlank(glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights);
 
 

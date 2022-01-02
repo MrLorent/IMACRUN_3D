@@ -10,7 +10,7 @@ struct Score
     std::string name;
     unsigned int score;
 
-    Score(short unsigned int p, std::string &n, unsigned int s)
+    Score(const unsigned short int p, const std::string &n,const unsigned int s)
         :place(p), name(n), score(s)
     {}
 };
@@ -29,7 +29,7 @@ private:
     Text2D _title;
     Text2D _text;
 
-    void drawButtons(Menu& current);
+    void drawButtons(const Menu& current);
 public:
     // OPERATORS
     /* Move assignment operator */
@@ -43,7 +43,7 @@ public:
     /* basic constructors */
 
     MenuRenderer(){}
-    MenuRenderer(glimac::FilePath applicationPath);
+    MenuRenderer(const glimac::FilePath applicationPath);
 
     /* Copy constructor */
 
@@ -61,19 +61,19 @@ public:
     void setWindowParameters(
         const unsigned width,
         const unsigned height,
-        glm::mat4& projection
+        const glm::mat4& projection
     );
 
     void render(
-        std::vector<Menu> menu_list,
-        short unsigned int menu_index
+        const std::vector<Menu> &menu_list,
+        const short unsigned int menu_index
     );
 
-    void drawMainMenu(Menu& menu);
-    void drawGameOver(Menu& menu);
-    void drawGamePaused(Menu& menu);
-    void drawCameraSetting(Menu& menu);
-    void drawLoadMenu(Menu& menu, const int savedScore);
-    void drawScores(Menu& menu, const std::vector<Score>& scores);
-    void drawScoreInput(Menu& menu, std::string pseudo);
+    void drawMainMenu(const Menu& menu);
+    void drawGameOver(const Menu& menu);
+    void drawGamePaused(const Menu& menu);
+    void drawCameraSetting(const Menu& menu);
+    void drawLoadMenu(const Menu& menu, const int savedScore);
+    void drawScores(const Menu& menu, const std::vector<Score>& scores);
+    void drawScoreInput(const Menu& menu, std::string &pseudo);
 };

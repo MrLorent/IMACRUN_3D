@@ -1,6 +1,6 @@
 #include "Mesh.hpp"
 
-// OPERATORS
+// OPERATORS 
 /* Move assignment operator */
 
 Mesh& Mesh::operator=(Mesh&& rhs) noexcept
@@ -154,7 +154,7 @@ void Mesh::initVao()
 
 // PUBLIC METHODS
 
-void Mesh::draw(glimac::Program& shaders) 
+void Mesh::draw(glimac::Program& shaders)
 
 { 
     shaders.use();  
@@ -174,10 +174,10 @@ void Mesh::draw(glimac::Program& shaders)
     glBindVertexArray(0);
 }
 
-void Mesh::bindTexture(int index, GLint textureId, const char* uniformName, const GLuint shadersId) const{
+void Mesh::bindTexture(const int index,const GLint textureId, const char* uniformName, const GLuint shadersId) const{
         glActiveTexture(GL_TEXTURE0 + index); // activate proper texture unit before binding
         glBindTexture(GL_TEXTURE_2D, textureId);
 
-        auto textureLocation = glGetUniformLocation(shadersId, uniformName);
+        GLint textureLocation = glGetUniformLocation(shadersId, uniformName);
         glUniform1i(textureLocation, index);
 }

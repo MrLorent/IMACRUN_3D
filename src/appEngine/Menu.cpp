@@ -1,11 +1,11 @@
 #include "Menu.hpp"
 
 // OPERATORS
-
+ 
 // CONSTRUCTORS
 /* basic constructor */
 
-Menu::Menu(std::vector<Button> &buttons)
+Menu::Menu(const std::vector<Button> &buttons)
     :_buttons(buttons),
      _currentButton(0)
 {
@@ -24,7 +24,7 @@ void Menu::setCurrentButton(const short unsigned int index)
 
 // METHOD
 
-void Menu::changeCurrentButton(short int direction)
+void Menu::changeCurrentButton(const short int direction)
 {
     if(_currentButton == 0 && direction == -1)
     {

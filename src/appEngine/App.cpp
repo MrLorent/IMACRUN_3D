@@ -225,7 +225,7 @@ void App::render()
     }
 }
 
-void App::key_callback(int key, int scancode, int action, int mods)
+void App::key_callback(const int key, const int scancode, const int action, const int mods)
 {
     switch (key)
         {
@@ -320,27 +320,27 @@ void App::key_callback(int key, int scancode, int action, int mods)
                         break;
                 }
             }
-            break;
+            break; 
         default:
             break;
         }
 }
 
-void App::char_callback(unsigned int codepoint)
+void App::char_callback(const unsigned int codepoint)
 {
     if(_menuIndex == SCORE_INPUT && _pseudoInput.size() < 3) _pseudoInput.push_back(std::toupper(char(codepoint)));
 }
 
-void App::mouse_button_callback(int button, int action, int mods)
+void App::mouse_button_callback(const int button,const int action,const int mods)
 {
 }
 
-void App::scroll_callback(double xoffset, double yoffset)
+void App::scroll_callback(const double xoffset,const double yoffset)
 {
     if(_menuIndex == CAMERA_SETTINGS) _game._camera.changeDistance(yoffset);
 }
 
-void App::cursor_position_callback(double xpos, double ypos)
+void App::cursor_position_callback(const double xpos,const double ypos)
 {
 }
 

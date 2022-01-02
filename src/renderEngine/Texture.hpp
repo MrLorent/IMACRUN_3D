@@ -41,11 +41,10 @@ class Texture
 
         // ACCESSORS
         
-        inline GLuint getId(){ return _id; }
-        inline std::string getType(){return _type;}
+        inline GLuint getId()const{ return _id; }
+        inline std::string getType()const{return _type;}
 
         // METHODS
         
         bool load(const std::string& filePath);
-        void bind(const int index);
 };

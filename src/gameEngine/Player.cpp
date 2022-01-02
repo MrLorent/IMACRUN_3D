@@ -1,9 +1,9 @@
 #include "Player.hpp"
 
-Player::Player(short unsigned int caseSubdivision)
+Player::Player(const unsigned short int caseSubdivision)
     :_position(glm::vec3(0.f, 0.f, 0.f)),
      _isJumping(false),
-     _isCrouching(false),
+     _isCrouching(false), 
      _crouchingIndex(0),
      _crouchingTiming(caseSubdivision * 3.5),
      _jumpingIndex(0),

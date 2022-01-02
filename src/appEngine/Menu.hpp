@@ -8,9 +8,9 @@
 struct Button
 {
     std::string label;
-    short unsigned int link;
+    unsigned short int link; 
 
-    Button(std::string label, short unsigned int link)
+    Button(const std::string label,const unsigned short int link)
         :label(label), link(link)
     {}
 
@@ -28,22 +28,22 @@ public:
     // CONSTRUCTORS
     /* basic constructors */
     
-    Menu(std::vector<Button> &buttons);
+    Menu(const std::vector<Button> &buttons);
     
     // DESTRUCTOR
 
     ~Menu();
 
     // GETTER
-    inline size_t getNumberOfButtons() { return _buttons.size(); }
-    inline short unsigned int getButtonIndex() { return _currentButton; }
-    inline short unsigned int getCurrentButtonLink() { return _buttons[_currentButton].link; }
+    inline size_t getNumberOfButtons() const { return _buttons.size(); }
+    inline short unsigned int getButtonIndex() const  { return _currentButton; }
+    inline short unsigned int getCurrentButtonLink() const { return _buttons[_currentButton].link; }
 
-    Button getButtonAt(short unsigned int index) { return _buttons[index]; }
+    Button getButtonAt(const unsigned short int index) const { return _buttons[index]; }
 
     // SETTER
-    void setCurrentButton(const short unsigned int index);
+    void setCurrentButton(const unsigned short int index);
 
     // METHODS
-    void changeCurrentButton(short int direction);
+    void changeCurrentButton(const short int direction);
 };

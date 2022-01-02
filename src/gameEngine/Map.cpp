@@ -40,7 +40,7 @@ void Map::loadMapElements()
             for(int j=0; j<_mapWidth*linePerElement; ++j){ 
                 file >> caractere;
                 element.push_back(caractere);
-            }
+            } 
             _mapElements.push_back(element);
             element.clear();
         }
@@ -120,12 +120,12 @@ void Map::reloadMap()
     }
 }
 
-size_t Map::getSize()
+size_t Map::getSize() const
 {
     return _map.size();
 }
 
-unsigned short int Map::getMapWidth()
+unsigned short int Map::getMapWidth() const
 {
     return _mapWidth;
 }

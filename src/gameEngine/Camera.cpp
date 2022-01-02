@@ -3,7 +3,7 @@
 // CONSTRUCTOR
 /* basic constructor */
 
-Camera::Camera(short unsigned int caseSubdivisions)
+Camera::Camera( const unsigned short int caseSubdivisions)
     :_state(LOCKED),
      _mode(TRACKBALL),
      _rotationDirection(0),
@@ -85,7 +85,7 @@ void Camera::toggleCameraLock()
 
 // TRACKBALL METHODS
 
-void Camera::changeDistance(float delta)
+void Camera::changeDistance(const float delta)
 {
     _distance -= delta;
 }
@@ -148,7 +148,7 @@ void Camera::takeTurn()
     }
 }
 
-void Camera::rotateHorizontaly(float degrees)
+void Camera::rotateHorizontaly(const float degrees)
 {
     if(_state == UNLOCKED)
     {
@@ -165,7 +165,7 @@ void Camera::rotateHorizontaly(float degrees)
     }
 }
 
-void Camera::rotate90Horizontaly(short int direction)
+void Camera::rotate90Horizontaly(const short int direction)
 {
     if(_mode == TRACKBALL)
     {
@@ -179,7 +179,7 @@ void Camera::rotate90Horizontaly(short int direction)
     }
 }
 
-void Camera::rotateVerticaly(float degrees)
+void Camera::rotateVerticaly(const float degrees)
 {
     if(_state == UNLOCKED)
     {

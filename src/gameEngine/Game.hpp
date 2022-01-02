@@ -77,10 +77,10 @@ class Game
         void initGame();
         void initGameFromSave();
         void runGame();
-        void saveGame();
+        void saveGame(); 
 
-        void key_callback(int key, int scancode, int action, int mods);
-        void mouse_button_callback(int button, int action, int mods);
-        void scroll_callback(double xoffset, double yoffset);
-        void cursor_position_callback(double xpos, double ypos);
+        void key_callback(const int key, const int scancode, const int action, const int mods);
+        void mouse_button_callback(const int button, const int action, const int mods);
+        void scroll_callback(const double xoffset, const double yoffset);
+        void cursor_position_callback(const double xpos, const double ypos);
 };

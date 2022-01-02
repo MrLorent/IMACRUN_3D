@@ -52,7 +52,7 @@ class Text2D
         /* basic constructors */
 
         Text2D(){};
-        Text2D(const unsigned int fontSize, glimac::FilePath name, const std::string &fontName="Arial.ttf");
+        Text2D(const unsigned int fontSize,const glimac::FilePath path, const std::string &fontName="Arial.ttf");
 
         /* Copy constructor */
 
@@ -75,5 +75,6 @@ class Text2D
             glm::mat4 projectionMatrix
         );
 
+        //PUBLIC ATTRIBUTES
         Shader shader;
 };

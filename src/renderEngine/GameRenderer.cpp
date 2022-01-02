@@ -233,7 +233,7 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
 
 
 
-void GameRenderer::drawPlayer(Game& game,Player& player, glm::mat4& VMatrix)
+void GameRenderer::drawPlayer(Game& game,const Player& player, glm::mat4& VMatrix)
 {
     /* turn back the model from the camera */
         glm::mat4 MMatrix = glm::rotate(
@@ -283,145 +283,109 @@ void GameRenderer::drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix)
     );
 }
 
-void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const short unsigned int rank)
+void GameRenderer::setLights(const glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const unsigned short int rank)
 {
-    MMatrix = glm::translate(
+    glm::mat4 ModelMatrix = glm::translate(
         MMatrix,
         glm::vec3(0.f, 1.2f, 4.f)
-    );
+    ); 
 
     if(rank == 0)
     {
-        lights[0] = glm::vec3(glm::column(MMatrix, 3));
+        lights[0] = glm::vec3(glm::column(ModelMatrix, 3));
         if(firstLights.size()<2) firstLights.push_back(lights[0]); 
     }
     else
     {
-        lights[1] = glm::vec3(glm::column(MMatrix, 3));
+        lights[1] = glm::vec3(glm::column(ModelMatrix, 3));
         if(firstLights.size()<2) firstLights.push_back(lights[1]);
     }
-
-    MMatrix = glm::translate(
-        MMatrix,
-        glm::vec3(0.f, -1.2f, -4.f)
-    );
 }
 
 void GameRenderer::drawWall(//a voir si matrice par reference
     glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights
     )
     {
-    MMatrix = glm::translate(
+    glm::mat4 ModelMatrix = glm::translate(
         MMatrix,
         glm::vec3(0.05f,0.5f,0.f)
     );                    
 
-    _wall3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-
-    MMatrix = glm::translate(
-        MMatrix,
-        glm::vec3(-0.05f,-0.5f,0.f) 
-    );
+    _wall3DModel.draw(_PROJECTION_MATRIX, VMatrix, ModelMatrix, currentLights);
 }
 
 void GameRenderer::drawBarel(
     glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights
     ){
         _floor3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-        MMatrix = glm::translate(
+        glm::mat4 ModelMatrix = glm::translate(
             MMatrix,
             glm::vec3(0.f,0.35f,0.f)
         );
 
-        MMatrix=glm::scale(
-            MMatrix,
+        ModelMatrix=glm::scale(
+            ModelMatrix,
             glm::vec3(0.5,0.5,0.5)
         );
-        _barrel3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-
-        MMatrix=glm::scale(
-            MMatrix,
-            glm::vec3(2,2,2)
-        );
-        MMatrix = glm::translate(
-            MMatrix,
-            glm::vec3(0.f,-0.35f,0.f)
-        );
+        _barrel3DModel.draw(_PROJECTION_MATRIX, VMatrix, ModelMatrix, currentLights);
     }
 
  void GameRenderer::drawLantern(
     glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
         drawWall(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-        MMatrix = glm::translate(
+        glm::mat4 ModelMatrix = glm::translate(
             MMatrix,
             glm::vec3(0.f,0.8f,0.f)
         );
-        _light3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-        MMatrix = glm::translate(
-            MMatrix,
-            glm::vec3(0.f,-0.8f,0.f)
-        );
+        _light3DModel.draw(_PROJECTION_MATRIX, VMatrix, ModelMatrix, currentLights);
     }
 
 void GameRenderer::drawBottle(
     glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
          _floor3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-        MMatrix=glm::scale(
+        glm::mat4 ModelMatrix=glm::scale(
             MMatrix,
             glm::vec3(0.25,0.25,0.25)
         );
-        _bottle3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-        MMatrix=glm::scale(
-            MMatrix,
-            glm::vec3(4,4,4)
-        );
+        _bottle3DModel.draw(_PROJECTION_MATRIX, VMatrix, ModelMatrix, currentLights);
     }
 
 void GameRenderer::drawArch(
     glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
-        MMatrix = glm::translate(
+        glm::mat4 ModelMatrix = glm::translate(
             MMatrix,
             glm::vec3(1.f,0.f,0.f)
         );
-        _arch3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-        MMatrix = glm::translate(
-            MMatrix,
-            glm::vec3(-1.f,0.f,0.f)
-        );
+        _arch3DModel.draw(_PROJECTION_MATRIX, VMatrix, ModelMatrix, currentLights);
     }
 
 void GameRenderer::drawPlank(
     glm::mat4 &_PROJECTION_MATRIX,
     glm::mat4 &VMatrix,
-    glm::mat4 &MMatrix,
+    const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
 
-        MMatrix = glm::translate(
+        glm::mat4 ModelMatrix = glm::translate(
             MMatrix,
             glm::vec3(0.f,0.9f,0.f)
         );
 
-        _plank3DModel.draw(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
-
-        MMatrix = glm::translate(
-            MMatrix,
-            glm::vec3(0.f,-0.9f,0.f)
-        );
+        _plank3DModel.draw(_PROJECTION_MATRIX, VMatrix, ModelMatrix, currentLights);
     }
 
 void GameRenderer::render(

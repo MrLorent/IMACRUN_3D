@@ -49,10 +49,10 @@ Model::Model(ModelParams params)
 }
 
 void Model::draw(
-    glm::mat4 &ProjMatrix,
-    glm::mat4 &VMatrix,
-    glm::mat4 const & MMatrix,
-    std::deque<glm::vec3>& lights // Position of the lights in WordCoordinate
+    const glm::mat4 &ProjMatrix,
+    const glm::mat4 &VMatrix,
+    const glm::mat4 & MMatrix,
+    const std::deque<glm::vec3>& lights // Position of the lights in WordCoordinate
 )
 {
     /* Link the shaders of the model */
@@ -130,8 +130,8 @@ Model::Model(Model&& rhs) noexcept
 // PRIVATE METHODS
 
 void Model::loadModel(
-    const glimac::FilePath appPath,
-    const std::string& filePath
+    glimac::FilePath &appPath,
+    std::string& filePath
 )
 {
     // VARIABLES TEMPORAIRES
@@ -168,7 +168,7 @@ void Model::loadModel(
         }
         exit(1);
     }
-
+ 
     if (!reader.Warning().empty())
     {
         std::cerr << "TinyObjReader: " << reader.Warning();
@@ -249,8 +249,8 @@ void Model::loadModel(
 }
 
 void Model::loadTextures( 
-    glimac::FilePath appPath,
-    std::string filePath,
+    glimac::FilePath &appPath,
+    std::string &filePath,
     Textures& textures,
     tinyobj::material_t material 
 )

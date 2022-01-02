@@ -52,8 +52,8 @@ public:
     ~Map();
 
     // GETTERS
-    size_t getSize();
-    unsigned short int getMapWidth();
+    size_t getSize() const;
+    unsigned short int getMapWidth() const ;
 
     // METHODS
     void initMap();

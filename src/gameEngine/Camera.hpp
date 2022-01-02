@@ -53,7 +53,7 @@ public:
     /* basic constructors */
 
     Camera(){};
-    Camera(short unsigned int caseSubdivisions);
+    Camera(const unsigned short int caseSubdivisions);
 
     // DESTRUCTOR
 
@@ -72,17 +72,17 @@ public:
 
     // METHODS
 
-    void changeDistance(float delta);
-    void setPosition(glm::vec3 position);
-        glm::vec3 getPosition(){
+    void changeDistance(const float delta);
+    void setPosition(const glm::vec3 position);
+    glm::vec3 getPosition() const {
         return _position;
     };
     void switchMode();
     void toggleCameraLock();
     void takeTurn();
-    void rotateHorizontaly(float degrees);
-    void rotate90Horizontaly(short int direction);
-    void rotateVerticaly(float degrees);
+    void rotateHorizontaly(const float degrees);
+    void rotate90Horizontaly(const short int direction);
+    void rotateVerticaly(const float degrees);
     glm::mat4 getViewMatrix() const;
     void saveSettings();
 };

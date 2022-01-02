@@ -37,7 +37,7 @@ Text2D& Text2D::operator=(Text2D&& rhs) noexcept
 
 // CONSTRUCTORS
 /* basic constructor */
-Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, const std::string &fontName):shader(path)
+Text2D::Text2D(const unsigned int fontSize,const glimac::FilePath path, const std::string &fontName):shader(path)
 {
     FT_Library ft; 
     FT_Face font;
@@ -65,7 +65,7 @@ Text2D::Text2D(const unsigned int fontSize, glimac::FilePath path, const std::st
                 std::cerr << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
                 continue;
             }
-            // generate texture
+            // generate texture 
             unsigned int texture;
             glGenTextures(1, &texture);
             glBindTexture(GL_TEXTURE_2D, texture);
@@ -157,7 +157,7 @@ Text2D::~Text2D()
     glDeleteVertexArrays(1, &_vao);
 }
 
-void Text2D::draw(std::string text, glm::vec2 pos, glm::vec3 color, glm::mat4 projectionMatrix){
+void Text2D::draw(std::string text, glm::vec2 pos,glm::vec3 color, glm::mat4 projectionMatrix){
 
     // activate corresponding render state	
     shader.program.use();

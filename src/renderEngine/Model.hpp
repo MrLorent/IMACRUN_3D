@@ -17,10 +17,10 @@ struct ModelParams
 
     // CONSTRUCTOR
     ModelParams(
-        glimac::FilePath appPath,
-        std::string &fileName,
-        std::string &vsShader,
-        std::string &fsShader 
+        const glimac::FilePath &appPath,
+        const std::string &fileName,
+        const std::string &vsShader,
+        const std::string &fsShader 
     ):
     appPath(appPath),
     fileName(fileName),
@@ -29,7 +29,7 @@ struct ModelParams
     {}
 
     ModelParams(
-        glimac::FilePath appPath
+        glimac::FilePath &appPath
     ):appPath(appPath),
       fileName("unknown"),
       vsShader("unknown"),
@@ -57,13 +57,13 @@ class Model
         // PRIVATE METHODS
 
         void loadModel(
-            const glimac::FilePath appPath,
-            const std::string& fileName
+            glimac::FilePath& appPath,
+            std::string& fileName
         );
 
         void loadTextures(
-            glimac::FilePath appPath,
-            std::string filePath,
+            glimac::FilePath& appPath,
+            std::string& filePath,
             Textures& textures,
             tinyobj::material_t material
         );
@@ -98,9 +98,9 @@ class Model
         // METHODS
         
         void draw(
-            glm::mat4 &ProjMatrix,
-            glm::mat4 &MVMatrix,
-            glm::mat4 const & MMatrix,
-            std::deque<glm::vec3>& lights
+            const glm::mat4 &ProjMatrix,
+            const glm::mat4 &MVMatrix,
+            const glm::mat4 & MMatrix,
+            const std::deque<glm::vec3>& lights
         );
 };

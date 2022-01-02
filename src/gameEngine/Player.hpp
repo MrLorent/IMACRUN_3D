@@ -24,7 +24,7 @@ class Player
         bool _isCrouching;
 
         Player(){}
-        Player(short unsigned int caseSubdivision);
+        Player(const unsigned short int caseSubdivision);
         
         // DESTRUCTORS
         ~Player(){};

@@ -312,7 +312,7 @@ void Game::passTurn()
     _wallDistance = 3;
 }
 
-void Game::key_callback(int key, int scancode, int action, int mods)
+void Game::key_callback(const int key, const int scancode, const int action, const int mods)
 {
     switch (key)
         {
@@ -355,7 +355,7 @@ void Game::key_callback(int key, int scancode, int action, int mods)
 
         case GLFW_KEY_LEFT: //Fleche gauche
             if(action != 0) _camera.rotateHorizontaly(2.*float(1));
-            break;
+            break; 
 
         case GLFW_KEY_DOWN: //Fleche bas
             if(action != 0) _camera.rotateVerticaly(-2.*float(1));
@@ -369,15 +369,15 @@ void Game::key_callback(int key, int scancode, int action, int mods)
         }
 }
 
-void Game::mouse_button_callback(int button, int action, int mods)
+void Game::mouse_button_callback(const int button, int action, int mods)
 {
 }
 
-void Game::scroll_callback(double xoffset, double yoffset)
+void Game::scroll_callback(const double xoffset, const double yoffset)
 {
     _camera.changeDistance(yoffset);
 }
 
-void Game::cursor_position_callback(double xpos, double ypos)
+void Game::cursor_position_callback(const double xpos, const double ypos)
 {
 }

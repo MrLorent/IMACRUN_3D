@@ -31,7 +31,7 @@ struct Vertex{
     // CONSTRUCTOR
 
     Vertex(){}
-    Vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t)
+    Vertex(const glm::vec3 p, const glm::vec3 n, const glm::vec2 t)
         :position(p), normal(n), texCoords(t)
     {}
 };
@@ -60,7 +60,7 @@ class Mesh
         void initVbo();
         void initIbo();
         void initVao();
-        void bindTexture(int index, GLint textureId, const char* uniformName, const GLuint shadersId) const;
+        void bindTexture(const int index,const GLint textureId, const char* uniformName, const GLuint shadersId) const;
     
     public:
         // PUBLIC ATTRIBUTS

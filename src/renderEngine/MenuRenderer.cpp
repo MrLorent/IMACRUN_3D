@@ -23,7 +23,7 @@ MenuRenderer& MenuRenderer::operator=(MenuRenderer&& rhs) noexcept
 // CONSTRUCTORS
 /* basic constructors */
 
-MenuRenderer::MenuRenderer(glimac::FilePath applicationPath)
+MenuRenderer::MenuRenderer(const glimac::FilePath applicationPath)
     :_applicationPath(applicationPath),
      _title(std::move(Text2D(40, _applicationPath, "PTMono.ttc"))),
      _text(std::move(Text2D(30, _applicationPath, "PTMono.ttc"))),
@@ -56,7 +56,7 @@ MenuRenderer::~MenuRenderer()
 void MenuRenderer::setWindowParameters(
     const unsigned width,
     const unsigned height,
-    glm::mat4& projection
+    const glm::mat4& projection
 )
 {
     _WINDOW_WIDTH = width;
@@ -71,8 +71,8 @@ void MenuRenderer::setWindowParameters(
 }
 
 void MenuRenderer::render(
-    std::vector<Menu> menu_list,
-    short unsigned int menu_index
+    const std::vector<Menu> &menu_list,
+    const short unsigned int menu_index
     )
 {
     Menu current_menu = menu_list[menu_index];
@@ -80,7 +80,7 @@ void MenuRenderer::render(
     drawButtons(current_menu);
 }
 
-void MenuRenderer::drawButtons(Menu& current)
+void MenuRenderer::drawButtons(const Menu& current)
 {
     /* Draw the buttons */
     glm::vec3 text_color(1.f);
@@ -90,7 +90,7 @@ void MenuRenderer::drawButtons(Menu& current)
         if((i-1) == current.getButtonIndex()){
             text_color = glm::vec3(1.f,1.f,0.f);
         }else{
-            text_color = glm::vec3(1.f);
+            text_color = glm::vec3(1.f); 
         }
 
         _title.draw(
@@ -104,7 +104,7 @@ void MenuRenderer::drawButtons(Menu& current)
     }
 }
 
-void MenuRenderer::drawMainMenu(Menu& menu)
+void MenuRenderer::drawMainMenu(const Menu& menu)
 {
     _title.draw(
         "IMACRUN",
@@ -116,7 +116,7 @@ void MenuRenderer::drawMainMenu(Menu& menu)
     drawButtons(menu);
 }
 
-void MenuRenderer::drawGamePaused(Menu& menu)
+void MenuRenderer::drawGamePaused(const Menu& menu)
 {
     _title.draw(
         "GAME PAUSED",
@@ -128,12 +128,12 @@ void MenuRenderer::drawGamePaused(Menu& menu)
     drawButtons(menu);
 }
 
-void MenuRenderer::drawCameraSetting(Menu& menu)
+void MenuRenderer::drawCameraSetting(const Menu& menu)
 {
     drawButtons(menu);
 }
 
-void MenuRenderer::drawGameOver(Menu& menu)
+void MenuRenderer::drawGameOver(const Menu& menu)
 {
     _title.draw(
         "GAME OVER",
@@ -145,7 +145,7 @@ void MenuRenderer::drawGameOver(Menu& menu)
     drawButtons(menu);
 }
 
-void MenuRenderer::drawLoadMenu(Menu& menu, const int savedScore)
+void MenuRenderer::drawLoadMenu(const Menu& menu, const int savedScore)
 {
     _title.draw(
         "SAUVEGARDE",
@@ -175,7 +175,7 @@ void MenuRenderer::drawLoadMenu(Menu& menu, const int savedScore)
     drawButtons(menu);
 }
 
-void MenuRenderer::drawScores(Menu& menu, const std::vector<Score>& scores)
+void MenuRenderer::drawScores(const Menu& menu, const std::vector<Score>& scores)
 {
     _title.draw(
         "MEILLEURS SCORES",
@@ -202,7 +202,7 @@ void MenuRenderer::drawScores(Menu& menu, const std::vector<Score>& scores)
     drawButtons(menu);
 }
 
-void MenuRenderer::drawScoreInput(Menu& menu, std::string pseudo)
+void MenuRenderer::drawScoreInput(const Menu& menu, std::string &pseudo)
 {
     for(size_t i=pseudo.size(); i<3; ++i) pseudo += "_";
     _title.draw(
