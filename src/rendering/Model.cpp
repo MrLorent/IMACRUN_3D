@@ -35,36 +35,22 @@ void Model::draw(
 {
     /* Link the shaders of the model */
     _shaders.use();
-    
-    glm::vec3 tmp = glm::vec3(VMatrix * glm::vec4(lights[0],1));
-    glUniform3f(
+
+    glUniform3fv(
         _uLightPos1,
-        tmp.x,
-        tmp.y,
-        tmp.z
+        1,
+        /* Compute the position of the first light in MVMatrix */
+        glm::value_ptr(glm::vec3(VMatrix * glm::vec4(lights[0],1)))
     );
 
-    tmp = glm::vec3(VMatrix * glm::vec4(lights[1],1));
-    glUniform3f(
+    glUniform3fv(
         _uLightPos2,
-        tmp.x,
-        tmp.y,
-        tmp.z
+        1,
+        /* Compute the position of the second light in MVMatrix */
+        glm::value_ptr(glm::vec3(VMatrix * glm::vec4(lights[1],1)))
     );
 
-    // glUniform3fv(
-    //     _uLightPos1,
-    //     1,
-    //     glm::value_ptr(glm::vec3(glm::vec4(lights[0],1) * VMatrix))
-    // );
-
-    // glUniform3fv(
-    //     _uLightPos2,
-    //     1,
-    //     glm::value_ptr(glm::vec3(glm::vec4(lights[1],1) * VMatrix))
-    // );
-
-   // Model MATRIX
+   // MODEL MATRIX
     glUniformMatrix4fv(
         _uMMatrix,
         1,
@@ -72,7 +58,7 @@ void Model::draw(
         glm::value_ptr(MMatrix)
     );
 
-    // V MATRIX
+    // VIEW MATRIX
     glUniformMatrix4fv(
         _uVMatrix,
         1,
@@ -80,7 +66,7 @@ void Model::draw(
         glm::value_ptr(VMatrix)
     );
     
-    // MVPMATRIX
+    // MODEL VIEW PROJECTION MATRIX
     glUniformMatrix4fv(
         _uMVPMatrix,
         1,
