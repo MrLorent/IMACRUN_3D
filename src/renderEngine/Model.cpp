@@ -267,7 +267,9 @@ void Model::loadTextures(
     {
         dirName = filePath.substr(0, lastSlashIndex);
     }
-                textures.diffuse=Texture("models/" + dirName +"/"+ material.diffuse_texname);
-                textures.specular=Texture("models/" + dirName + "/"+ material.specular_texname);
-                textures.shininess=material.shininess;
+        textures.diffuse=Texture("models/" + dirName +"/"+ material.diffuse_texname);
+        if(material.specular_highlight_texname.compare("") != 0){
+            textures.specular=Texture("models/" + dirName + "/"+ material.specular_texname);
+        }
+        textures.shininess=material.shininess;
 }
