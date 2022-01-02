@@ -5,7 +5,7 @@ var searchData=
   ['score_2',['Score',['../d2/da8/struct_score.html#ab07ca4e05fa22c94ff12bf5bebb74bdc',1,'Score']]],
   ['scroll_5fcallback_3',['scroll_callback',['../d8/d97/class_app.html#a7baa5be6aba22bbc3debe0ab3044624b',1,'App::scroll_callback()'],['../dd/d1f/class_game.html#ac9eb88664480ba0209b3a325c78e734b',1,'Game::scroll_callback()']]],
   ['setbestscores_4',['setBestScores',['../d8/d97/class_app.html#abd15a14cf9c5935c4ece823e25318f24',1,'App']]],
-  ['setcurrentbutton_5',['setCurrentButton',['../d2/db8/class_menu.html#ac6fd3ac9cb772e134bc23f5e431d7250',1,'Menu']]],
+  ['setcurrentbutton_5',['setCurrentButton',['../d2/db8/class_menu.html#ac5b69d1295e0faf4491274330e4904f5',1,'Menu']]],
   ['setposition_6',['setPosition',['../da/dbb/class_camera.html#abe8633adb8475cb7c62e1a12743a1025',1,'Camera::setPosition()'],['../d8/d53/class_player.html#a34e8ed080a824f6376b2023a143fbdf5',1,'Player::setPosition()']]],
   ['setrotationdirection_7',['setRotationDirection',['../da/dbb/class_camera.html#a78112f373ab948c259ec809ba069074d',1,'Camera']]],
   ['setscore_8',['setScore',['../d8/d53/class_player.html#ad02c7a4c2fa0e7a1eb065ead84632876',1,'Player']]],

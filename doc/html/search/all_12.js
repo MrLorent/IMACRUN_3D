@@ -9,7 +9,7 @@ var searchData=
   ['scores_6',['SCORES',['../d8/d97/class_app.html#a46d05e18e033e92e1a069a626ea196cfac241eb102b0e596a46c2fbab9d2bd983',1,'App']]],
   ['scroll_5fcallback_7',['scroll_callback',['../d8/d97/class_app.html#a7baa5be6aba22bbc3debe0ab3044624b',1,'App::scroll_callback()'],['../dd/d1f/class_game.html#ac9eb88664480ba0209b3a325c78e734b',1,'Game::scroll_callback()']]],
   ['setbestscores_8',['setBestScores',['../d8/d97/class_app.html#abd15a14cf9c5935c4ece823e25318f24',1,'App']]],
-  ['setcurrentbutton_9',['setCurrentButton',['../d2/db8/class_menu.html#ac6fd3ac9cb772e134bc23f5e431d7250',1,'Menu']]],
+  ['setcurrentbutton_9',['setCurrentButton',['../d2/db8/class_menu.html#ac5b69d1295e0faf4491274330e4904f5',1,'Menu']]],
   ['setposition_10',['setPosition',['../d8/d53/class_player.html#a34e8ed080a824f6376b2023a143fbdf5',1,'Player::setPosition()'],['../da/dbb/class_camera.html#abe8633adb8475cb7c62e1a12743a1025',1,'Camera::setPosition(glm::vec3 position)']]],
   ['setrotationdirection_11',['setRotationDirection',['../da/dbb/class_camera.html#a78112f373ab948c259ec809ba069074d',1,'Camera']]],
   ['setscore_12',['setScore',['../d8/d53/class_player.html#ad02c7a4c2fa0e7a1eb065ead84632876',1,'Player']]],

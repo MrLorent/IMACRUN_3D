@@ -29,14 +29,12 @@ struct Button
 };
 
 //! The Menu class contains a list of buttons, and deal with the navigation throught them
-
 /*!
  *  The buttons of the menu are contain in the _buttons attributs,
  *  which is a std::vector. The button currently selected is given
  *  by the _currentButton attribut that correspond to the index
  *  reach in the vector of buttons.
  */
-
 class Menu
 {
 private:
@@ -45,10 +43,10 @@ private:
 public:
     // OPERATORS
      //! Constructor
-        /*!
-         *\fn Menu(std::vector<Button> buttons)
-         *\param buttons : vector of all button
-         */
+    /*!
+    *\fn Menu(std::vector<Button> buttons)
+    *\param buttons : vector of all button
+    */
     
     Menu(std::vector<Button> buttons);
     
@@ -59,10 +57,10 @@ public:
     ~Menu();
 
     //! Getter
-        /*! Getter
-         *\fn getNumberOfButtons()
-         *\return the number of button
-         */
+    /*! Getter
+    *\fn getNumberOfButtons()
+    *\return the number of button
+    */
     inline size_t getNumberOfButtons() { return _buttons.size(); }
 
         /*! Getter

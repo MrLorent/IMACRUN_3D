@@ -7,5 +7,5 @@ var searchData=
   ['rotatehorizontaly_4',['rotateHorizontaly',['../da/dbb/class_camera.html#a374856b4dff5b0601e32ef49bc00265f',1,'Camera']]],
   ['rotateverticaly_5',['rotateVerticaly',['../da/dbb/class_camera.html#a49698bad3766933db210f5ea6c8273d1',1,'Camera']]],
   ['rungame_6',['runGame',['../dd/d1f/class_game.html#abc9436a9d18e48c6e1e4fbc4ea879449',1,'Game']]],
-  ['running_7',['RUNNING',['../dd/d1f/class_game.html#adc8421a228a8402921ac21f5df08e3b6af6b379244b8712a79f9af8d4f510c09e',1,'Game']]]
+  ['running_7',['RUNNING',['../dd/d1f/class_game.html#a13b608722976d66e9697373a326ba228af6b379244b8712a79f9af8d4f510c09e',1,'Game']]]
 ];
