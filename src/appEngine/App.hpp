@@ -85,17 +85,39 @@ class App
          *\return a reference on the game.
          */
         inline Game& getGame() { return _game; }
-        inline short unsigned int getCurrentMenu() { return _menuIndex; }
 
         // SETTERS
 
         // METHODS
+
+        //! Method
+        /*!
+         *\fn void getBestScores()
+         * Method that get the registered scores in a output file.
+         */
         void getBestScores();
+
+        //! Method
+        /*!
+         *\fn void setBestScores()
+         * Method that set the registered scores in a output file.
+         */
         void setBestScores();
+
+        //! Method
+        /*!
+         *\fn void getSavedScore()
+         * Method that read the score of the last game saved in a output file.
+         */
         void getSavedScore();
 
         /* Graphics */
 
+        //! Method
+        /*!
+         *\fn void render()
+         * Main method that display the application.
+         */
         void render();
         
         /* Control managers */
