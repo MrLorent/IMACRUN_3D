@@ -120,12 +120,12 @@ void Map::reloadMap()
     }
 }
 
-size_t Map::getSize()
+size_t Map::getSize() const
 {
     return _map.size();
 }
 
-unsigned short int Map::getMapWidth()
+unsigned short int Map::getMapWidth() const
 {
     return _mapWidth;
 }
