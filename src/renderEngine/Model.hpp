@@ -59,14 +59,14 @@ struct ModelParams
 
 //! The Model class can get gether all of meshes to display. It contains meshes, shaders and 6 GLuint attributs.
 /*!
- *  _meshes is a vector of meshes.
+ *  _meshes is a std::vector of meshes.
  *  _shaders correspond to the program shaders.
- *  _uMMatrix is matrix of ...
- *  _uVMatrix is matrix of ...
- *  _uMVPMatrix is matrix of ...
- *  _uNormalMatrix is matrix of ...
- *  _uLightPos1 is the ...
- *  _uLightPos2 is the ...
+ *  _uMMatrix is a GLint corresponding to the uniform variable uMMatrix of the Model' shaders 
+ *  _uVMatrix is a GLint corresponding to the uniform variable uVMatrix of the Model' shaders
+ *  _uMVPMatrix is a GLint corresponding to the uniform variable uMVPMatrix of the Model' shaders
+ *  _uNormalMatrix is a GLint corresponding to the uniform variable uNormalMatrix of the Model' shaders
+ *  _uLightPos1 is a GLint corresponding to the uniform variable uLightPos1 of the Model' shaders
+ *  _uLightPos2 is a GLint corresponding to the uniform variable uLightPos2 of the Model' shaders
  */ 
 
 class Model

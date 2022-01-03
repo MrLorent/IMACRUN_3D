@@ -137,8 +137,7 @@ void Game::saveGame(){
             file << _map[i]; 
             if(i%_map.getMapWidth() == _map.getMapWidth()-1) file << std::endl;
         }            
-        file.close();
-        std::cout << "La partie a ete sauvegardee." << std::endl;  
+        file.close(); 
     }
     else
     {
