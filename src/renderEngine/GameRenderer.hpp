@@ -67,12 +67,12 @@ class GameRenderer
 
         //! Method
         /*!
-        *\fn void drawSkyBox(glm::mat4& VMatrix,glm::mat4& MMatrix)
+        *\fn void drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix)
         *\param VMatrix : the view matrix.
         *\param MMatrix : the model matrix.
         *\Method that draw the skybox at the right place.
         */
-        void drawSkyBox(glm::mat4& VMatrix,glm::mat4& MMatrix);
+        void drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix);
 
         //! Method
         /*!
@@ -87,7 +87,7 @@ class GameRenderer
 
         //! Method
         /*!
-        *\fn void drawWall(glm::mat4 &projMatrix, glm::mat4 &VMatrix, glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
+        *\fn void drawWall(glm::mat4 &projMatrix, glm::mat4 &VMatrix, const glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
         *\param projMatrix : the projection matrix
         *\param VMatrix : the view matrix.
         *\param MMatrix : the model matrix.
@@ -100,7 +100,7 @@ class GameRenderer
 
         //! Method
         /*!
-        *\fn void drawBarel(glm::mat4 &projMatrix, glm::mat4 &VMatrix, glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
+        *\fn void drawBarel(glm::mat4 &projMatrix, glm::mat4 &VMatrix, const glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
         *\param projMatrix : the projection matrix
         *\param VMatrix : the view matrix.
         *\param MMatrix : the model matrix.
@@ -113,7 +113,7 @@ class GameRenderer
 
         //! Method
         /*!
-        *\fn void drawWall(glm::mat4 &projMatrix, glm::mat4 &VMatrix, glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
+        *\fn void drawWall(glm::mat4 &projMatrix, glm::mat4 &VMatrix, const glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
         *\param projMatrix : the projection matrix
         *\param VMatrix : the view matrix.
         *\param MMatrix : the model matrix.
@@ -126,7 +126,7 @@ class GameRenderer
 
         //! Method
         /*!
-        *\fn void drawBottle(glm::mat4 &projMatrix, glm::mat4 &VMatrix, glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
+        *\fn void drawBottle(glm::mat4 &projMatrix, glm::mat4 &VMatrix, const glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
         *\param projMatrix : the projection matrix
         *\param VMatrix : the view matrix.
         *\param MMatrix : the model matrix.
@@ -139,7 +139,7 @@ class GameRenderer
 
         //! Method
         /*!
-        *\fn void drawArch(glm::mat4 &projMatrix, glm::mat4 &VMatrix, glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
+        *\fn void drawArch(glm::mat4 &projMatrix, glm::mat4 &VMatrix, const glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
         *\param projMatrix : the projection matrix
         *\param VMatrix : the view matrix.
         *\param MMatrix : the model matrix.
@@ -152,7 +152,7 @@ class GameRenderer
 
         //! Method
         /*!
-        *\fn void drawPlank(glm::mat4 &projMatrix, glm::mat4 &VMatrix, glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
+        *\fn void drawPlank(glm::mat4 &projMatrix, glm::mat4 &VMatrix, const glm::mat4 &MMatrix, std::deque<glm::vec3> &_currentLights);
         *\param projMatrix : the projection matrix
         *\param VMatrix : the view matrix.
         *\param MMatrix : the model matrix.
@@ -168,45 +168,50 @@ class GameRenderer
         // OPERATORS
         /* Move assignment operator */
 
+        //! Move assignement operator
         GameRenderer& operator=(GameRenderer&& rhs) noexcept;
 
         /* Copy assignment operator */
+        
+        //! Copy assignement operator
         GameRenderer& operator=(const GameRenderer&) = delete; // We disable copying
         
         // CONSTRUCTORS
+        
         //! Constructor
-            /*!
-            * Constructor by default
-            */
+        /*!
+        * Constructor by default
+        */
         GameRenderer(){}
 
         //! Constructor
-            /*!
-            *\GameRenderer(glimac::FilePath applicationPath);
-            *\param : applicationPath : absolute path to the application 
-            */
+        /*!
+        *\GameRenderer(glimac::FilePath applicationPath);
+        *\param : applicationPath : absolute path to the application 
+        */
         GameRenderer(glimac::FilePath applicationPath);
 
-        //copy constructor
+        /* copy constructor */
+        
         //! Constructor
-            /*!
-            *\Copy constructor
-            */
-
+        /*!
+        *   Copy constructor
+        */
         GameRenderer(const GameRenderer&) = delete; // We disable copying
 
         /* move constructor */
         //! Constructor
-            /*!
-            *\Move constructor
-            */
+        /*!
+        *   Move constructor
+        */
         GameRenderer(GameRenderer&& rhs) noexcept;
 
         // DESTRUCTOR
+        
         //! Destructor
-            /*!
-            * Destructor by default.
-            */
+        /*!
+        *   Destructor by default.
+        */
         ~GameRenderer(){}
 
         // METHODS
@@ -214,20 +219,21 @@ class GameRenderer
         /*!
         *\fn void render(Game& game)
         *\param game : the current game
-        *\Method that call all the models drawing at the right place.
+        * Method that render all the game elements.
         */
         void render(
             Game& game
         );
 
         /* Window parameters */
+        
         //! Method
         /*!
         *\fn void setWindowParameters( const unsigned width, const unsigned height, glm::mat4& projection);
         *\param width : the width of the window
         *\param height : the height of the window
         *\param projection : reference to a projection matrix matrix
-        *\Method that set all the window parameter in gameRenderer.
+        *   Method that set all the window parameter in gameRenderer.
         */
         void setWindowParameters(
             const unsigned width,

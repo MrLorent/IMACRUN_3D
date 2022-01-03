@@ -16,6 +16,7 @@
 
 struct ModelParams
 {
+    // PRIVATE ATTRIBUTS
     glimac::FilePath appPath;
     std::string fileName;
     std::string vsShader;
@@ -25,7 +26,7 @@ struct ModelParams
 
     //! Constructor
     /*!
-    *\fn ModelParams(glimac::FilePath appPath, std::string fileName,std::string vsShader,std::string fsShader)
+    *\fn ModelParams(const glimac::FilePath appPath, const std::string fileName, const std::string vsShader, const std::string fsShader)
     *\param appPath : path of the app
     *\param fileName : name of the .obj file
     *\param vsShader : name of the .vs file
@@ -45,7 +46,8 @@ struct ModelParams
 
     //! Constructor
     /*! 
-    *\ Constructor 
+    * \fn ModelParams(glimac::FilePath &appPath)
+    *   Constructor 
     */
     ModelParams(
         glimac::FilePath &appPath
@@ -72,11 +74,12 @@ struct ModelParams
 class Model
 {
     private:
-        // ATTRIBUTS
+        // PRIVATE ATTRIBUTS
 
         std::vector<Mesh> _meshes;
         glimac::Program _shaders;
 
+        /* Shader's uniform globals */
         GLint _uMMatrix;
         GLint _uVMatrix;
         GLint _uMVPMatrix;
@@ -114,15 +117,9 @@ class Model
         // OPERATORS
 
         //! Move assignment operator
-        /*! 
-         *\First surcharg of operator =
-         */
         Model& operator=(Model&& rhs) noexcept;
 
         //! Copy assignment operator
-        /*! 
-         *\Second surcharg of operator =
-         */
         Model& operator=(const Model&) = delete; // We disable copying
 
         // CONSTRUCTORS
@@ -130,33 +127,26 @@ class Model
         
         //! Constructor
         /*! 
-         *\Constructor by default
+         *  Constructor by default
          */
         Model(){}
 
         //! Constructor
         /*!
         *\fn Model(ModelParams params)
-        )
         *\param params : all of ModelParams attributes
         */
         Model(ModelParams params);
 
         //! Copy constructor
-        /*! 
-         *\ Copy constructor
-         */
         Model(const Model&) = delete; // We disable copying
 
         //! Move constructor
-        /*! 
-         *\ Move constructor
-         */
         Model(Model&& rhs) noexcept;
 
         //! Destructor
         /*! 
-         *\Destructor by default
+         *  Destructor by default
          */
         ~Model(){}
 
@@ -164,13 +154,13 @@ class Model
         
         //! Method
         /*!
-        *\fn void draw(glm::mat4 &ProjMatrix, glm::mat4 &MVMatrix, glm::mat4 const & MMatrix, std::deque<glm::vec3>& lights)
+        *\fn void draw(const glm::mat4& ProjMatrix, const glm::mat4& MVMatrix, const glm::mat4& MMatrix, const std::deque<glm::vec3>& lights)
         * Method that draws the model in its 3 dimensions position and with lights on it
         */
         void draw(
-            const glm::mat4 &ProjMatrix,
-            const glm::mat4 &MVMatrix,
-            const glm::mat4 & MMatrix,
+            const glm::mat4& ProjMatrix,
+            const glm::mat4& MVMatrix,
+            const glm::mat4& MMatrix,
             const std::deque<glm::vec3>& lights
         );
 };

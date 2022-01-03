@@ -16,9 +16,12 @@ class Texture
         // OPERATORS
         /* Move assignment operator */
 
+        //! Move assignment operator
         Texture& operator=(Texture&& rhs) noexcept;
 
         /* Copy assignment operator */
+
+        //! Copy assignment operator
         Texture& operator=(const Texture&) = delete; // We disable copying
 
         // CONSTRUCTORS
@@ -26,7 +29,7 @@ class Texture
         
         //! Constructor
         /*!
-        *\ Constructor by default
+        *   Constructor by default
         */ 
         Texture();
 
@@ -39,25 +42,21 @@ class Texture
         
         /* Copy constructor */
 
+        //! Copy constructor
         Texture(const Texture&) = delete; // We disable copying
 
         /* move constructor */
 
-            //! Move Constructor
-            /*!
-            *\fn (Texture&& rhs) noexcept;
-            *\ Move constructor 
-            */   
+        //! Move Constructor  
         Texture(Texture&& rhs) noexcept;
 
         // DESTRUCTOR
         
-            //! Destructor
-            /*!
-            *\ Destructor by default
-            */     
+        //! Destructor
+        /*!
+        *   Destructor by default
+        */     
         ~Texture();
-
         
         // GETTER
 
@@ -67,6 +66,7 @@ class Texture
         *\return the texture id 
         */    
         inline GLuint getId() const { return _id; }
+
         //! Getter
         /*!
         *\fn inline std::string getType() const
@@ -78,7 +78,7 @@ class Texture
         
         //! Method
         /*!
-        *\fn load()
+        *\fn bool load(const std::string& filePath)
         *\param filePath Relative path from the asset to the texture
         *\return true if the texture loading is successfull or false if the texture loading failed
         */ 

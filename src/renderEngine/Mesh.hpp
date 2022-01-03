@@ -48,7 +48,7 @@ struct Vertex{
 
     //! Constructor
     /*! 
-    *\Constructor by default
+    *   Constructor by default
     */
     Vertex(){}
 
@@ -89,7 +89,7 @@ namespace std {
 class Mesh
 {
     private:
-        // ATTRIBUTS
+        // PRIVATE ATTRIBUTS
         
         GLuint _vao;
         GLuint _vbo;
@@ -135,15 +135,9 @@ class Mesh
         // OPERATORS
 
         //! Move assignment operator
-        /*! 
-         *\First surcharg of operator =
-         */
         Mesh& operator=(Mesh&& rhs) noexcept;
 
         //! Copy assignment operator
-        /*! 
-         *\Second surcharg of operator =
-         */
         Mesh& operator=(const Mesh&) = delete; // We disable copying
 
         // CONSTRUCTORS
@@ -151,14 +145,13 @@ class Mesh
         
         //! Constructor
         /*! 
-         *\Constructor by default
+         *  Constructor by default
          */
         Mesh();
 
         //! Constructor
         /*!
-        *\fn Mesh(const std::vector<Vertex>& vertices,const std::vector<unsigned int>& indices,Textures&& textures
-        )
+        *\fn Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Textures&& textures)
         *\param vertices : vector of all vertex
         *\param indices : vector of all indices
         *\param textures : Textures of texture to display
@@ -170,20 +163,14 @@ class Mesh
         );
 
         //! Copy constructor
-        /*! 
-         *\ Copy constructor
-         */
         Mesh(const Mesh&) = delete; // We disable copying
 
         //! Move constructor
-        /*! 
-         *\ Move constructor
-         */
         Mesh(Mesh&& rhs) noexcept;
 
         //! Destructor
         /*! 
-         *\Destructor by default
+         *  Destructor by default
          */
         ~Mesh();
 

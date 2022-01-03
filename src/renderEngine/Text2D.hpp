@@ -15,14 +15,15 @@
 //! The Character structure contain a TextureID, the size of the character, the bearing and the advance 
 
 struct Character {
-    unsigned int TextureID;  // ID handle of the glyph texture
-    glm::ivec2   Size;       // Size of glyph
-    glm::ivec2   Bearing;    // Offset from baseline to left/top of glyph
-    unsigned int Advance;    // Offset to advance to next glyph
+    unsigned int TextureID;  //!< ID handle of the glyph texture
+    glm::ivec2   Size;       //!< Size of glyph
+    glm::ivec2   Bearing;    //!< Offset from baseline to left/top of glyph
+    unsigned int Advance;    //!< Offset to advance to next glyph
 };
 
 struct Shader{
     glimac::Program program;
+    
     //! Constructor
     /*!
      * Constructor by default
@@ -45,6 +46,8 @@ struct Shader{
 class Text2D
 {
     private:
+        // PRIVATE ATTRIBUTS
+
         std::map<char, Character> _alphabet;
         GLuint _vao;
         GLuint _vbo; 
@@ -54,17 +57,18 @@ class Text2D
         // OPERATORS
         /* Move assignment operator */
 
+        //! Move assignment operator
         Text2D& operator=(Text2D&& rhs) noexcept;
 
-        /* Copy assignment operator */
+        //! Copy assignment operator
         Text2D& operator=(const Text2D&) = delete; // We disable copying
 
         // CONSTRUCTORS
         /* basic constructors */
 
-         //! Constructor
+        //! Constructor
         /*!
-        * Constructor by default
+        *   Constructor by default
         */
         Text2D(){};
 
@@ -79,14 +83,12 @@ class Text2D
 
         /* Copy constructor */
 
+        //! Copy constructor
         Text2D(const Text2D&) = delete; // We disable copying
 
         /* move constructor */
-        //! Constructor
-        /*!
-        *\fn Text2D(Text2D&& rhs) noexcept;
-        *\Move Constructor by default
-        */
+
+        //! Move constructor
         Text2D(Text2D&& rhs) noexcept;
 
         // DESTRUCTORS
@@ -104,9 +106,8 @@ class Text2D
         *\param pos : glm::vec2 giving the position of the begining of the text.
         *\param color : glm::vec3 giving the color of the text.
         *\param projetctionMatrix : the text projection matrix.
-        *\Method that draw the given text to the right place and with the right color.
+        * Method that draw the given text to the right place and with the right color.
         */
-        
         void draw(
             std::string text,   /* Text to write */
             glm::vec2 pos,      /* Position in screen, starting from bottom left */
@@ -115,5 +116,6 @@ class Text2D
         );
 
         //PUBLIC ATTRIBUTES
+        
         Shader shader;
 };
