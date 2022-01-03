@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 
     /* Intialize glad (loads the OpenGL functions) */
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        std::cerr << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 
     /* Hook input callbacks */
     /* Keyboard */ 
-    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods){
+    glfwSetKeyCallback(window, [](GLFWwindow* window,const int key,const int scancode,const int action,const int mods){
 
         if(get_app(window).getGame().getState() == Game::RUNNING)
         {
@@ -70,12 +70,12 @@ int main(int argc, char** argv)
     });
 
     /* Keyboard for text input */
-    glfwSetCharCallback(window, [](GLFWwindow* window, unsigned int codepoint){
+    glfwSetCharCallback(window, [](GLFWwindow* window,const unsigned int codepoint){
         if(get_app(window).getGame().getState() == Game::FINISHED) get_app(window).char_callback(codepoint);
     });
 
     /* Mouse Buttons */
-    glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods){
+    glfwSetMouseButtonCallback(window, [](GLFWwindow* window,const int button,const int action,const int mods){
         if(get_app(window).getGame().getState() == Game::RUNNING)
         {
             get_app(window).getGame().mouse_button_callback(button, action, mods);
@@ -87,7 +87,7 @@ int main(int argc, char** argv)
     });
 
     /* Mouse scroll */
-    glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset){
+    glfwSetScrollCallback(window, [](GLFWwindow* window,const double xoffset,const double yoffset){
         if(get_app(window).getGame().getState() == Game::RUNNING)
         {
             get_app(window).getGame().scroll_callback(xoffset, yoffset);
@@ -99,7 +99,7 @@ int main(int argc, char** argv)
     });
 
     /* Cursor position */
-    glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos){
+    glfwSetCursorPosCallback(window, [](GLFWwindow* window,const double xpos,const double ypos){
         if(get_app(window).getGame().getState() == Game::RUNNING)
         {
             get_app(window).getGame().cursor_position_callback(xpos, ypos);
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
     });
 
     /* Window resize */
-    glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height){
+    glfwSetWindowSizeCallback(window, [](GLFWwindow* window, const int width,const int height){
         get_app(window).size_callback(window, width, height);
     });
 
