@@ -12,7 +12,7 @@ char& Map::operator[](const size_t& i)
 
 Map::Map()
     :_mapWidth(5),
-     _seed(5),
+     _seed(time(NULL)),
      _random(std::mt19937_64(_seed))
 {
     loadMapElements();

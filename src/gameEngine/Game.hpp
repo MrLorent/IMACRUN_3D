@@ -14,12 +14,17 @@ class Game
 
         unsigned short int _state;
 
+        /* Map speed parameters */
         float _caseSubdivisions;
         unsigned int _caseSubdivisionsIndex;
 
         /* Player placement parameters */
         const unsigned short int _defaultIndex;
         unsigned short int _playerIndex;
+
+        /* Turn obstacle parameters */
+        short int _turn;
+        unsigned short int _wallDistance;
         
         /* Skybox parameters */
         glm::mat4 _skyBoxMMatrix;
@@ -67,9 +72,6 @@ class Game
         Camera _camera;
         Map _map;
         Player _player;
-
-        short int _turn;
-        unsigned short int _wallDistance;
         
         // CONSTRUCTORS
         /* basic constructors */
