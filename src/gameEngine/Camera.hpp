@@ -10,8 +10,8 @@
 class Camera
 {
 private:
-    short unsigned int _state;
-    short unsigned int _mode;
+    unsigned short int _state;
+    unsigned short int _mode;
     short int _rotationDirection;
     unsigned int _rotationIndex;
     unsigned int _rotationDuration;
@@ -62,10 +62,10 @@ public:
 
     //! Constructor
     /*!
-    *\fn Camera(short unsigned int caseSubdivisions)
+    *\fn Camera(unsigned short int caseSubdivisions)
     *\param caseSubdivisions : Number of steps needed for a map element to move one meter.
     */
-    Camera(short unsigned int caseSubdivisions);
+    Camera(unsigned short int caseSubdivisions);
 
     // DESTRUCTOR
 
@@ -79,17 +79,17 @@ public:
 
     //! Getter
     /*!
-    *\fn inline short unsigned int getState() const
+    *\fn inline unsigned short int getState() const
     *\return return the state of the camera (LOCKED or UNLOCKED).
     */
-    inline short unsigned int getState() const { return _state; }
+    inline unsigned short int getState() const { return _state; }
     
     //! Getter
     /*!
-    *\fn inline short unsigned int getMode() const
+    *\fn inline unsigned short int getMode() const
     *\return return the mode of the camera (TACKBALL or FREEFLY).
     */
-    inline short unsigned int getMode() const { return _mode; }
+    inline unsigned short int getMode() const { return _mode; }
     
     //! Getter
     /*!
@@ -109,11 +109,11 @@ public:
 
     //! Setter
     /*!
-    *\fn void setState(const short unsigned int newState)
+    *\fn void setState(const unsigned short int newState)
     *\param newState : state from enum CAMERA_STATE to switch with. 
     * Setter that change the camera state (LOCKED or UNLOCKED)
     */
-    void setState(const short unsigned int newState);
+    void setState(const unsigned short int newState);
 
     //! Setter
     /*!

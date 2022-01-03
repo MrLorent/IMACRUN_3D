@@ -5,7 +5,7 @@ var searchData=
   ['paused_2',['PAUSED',['../dd/d1f/class_game.html#a13b608722976d66e9697373a326ba228ae3322a644e40eb81431a16d30f43f12b',1,'Game']]],
   ['place_3',['place',['../d2/da8/struct_score.html#ae2d45ed32b7d84bdf145c7538a2f22d7',1,'Score']]],
   ['plank_4',['PLANK',['../dd/d11/class_map.html#acc0e456aa1580566d791879e3e0cefba',1,'Map']]],
-  ['player_5',['Player',['../d8/d53/class_player.html',1,'Player'],['../d8/d53/class_player.html#a7b4d5674256e0dcb4b4f75c3438c8f74',1,'Player::Player(short unsigned int caseSubdivision)'],['../d8/d53/class_player.html#affe0cc3cb714f6deb4e62f0c0d3f1fd8',1,'Player::Player()']]],
+  ['player_5',['Player',['../d8/d53/class_player.html',1,'Player'],['../d8/d53/class_player.html#a7b4d5674256e0dcb4b4f75c3438c8f74',1,'Player::Player(unsigned short int caseSubdivision)'],['../d8/d53/class_player.html#affe0cc3cb714f6deb4e62f0c0d3f1fd8',1,'Player::Player()']]],
   ['player_2ecpp_6',['Player.cpp',['../d2/d82/_player_8cpp.html',1,'']]],
   ['player_2ehpp_7',['Player.hpp',['../d0/d16/_player_8hpp.html',1,'']]],
   ['player_5fhpp_8',['PLAYER_HPP',['../d0/d16/_player_8hpp.html#a8f468ea78c85d59850fe08ce9228062e',1,'Player.hpp']]],

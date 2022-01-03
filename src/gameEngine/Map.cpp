@@ -129,5 +129,5 @@ unsigned short int Map::getMapWidth() const
 
 void Map::deleteFirstLigne()
 {
-    for(short unsigned int i=0;i<_mapWidth;++i) _map.pop_front();
+    for(unsigned short int i=0;i<_mapWidth;++i) _map.pop_front();
 }

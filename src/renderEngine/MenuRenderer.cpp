@@ -70,7 +70,7 @@ void MenuRenderer::setWindowParameters(
 
 void MenuRenderer::render(
     std::vector<Menu> menu_list,
-    short unsigned int menu_index
+    unsigned short int menu_index
     )
 {
     Menu current_menu = menu_list[menu_index];

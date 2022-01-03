@@ -34,7 +34,7 @@ class App
         /* Application parameters */
         std::vector<Score> _scores;
         std::vector<Menu> _menuList;
-        short unsigned int _menuIndex;
+        unsigned short int _menuIndex;
         MenuRenderer _menuRenderer;
         std::string _pseudoInput;
         int _savedScore;

@@ -94,12 +94,3 @@ bool Texture::load(const std::string& filePath)
 
     return true;
 }
-
-void Texture::bind(const int index)
-{
-    if(_id != 0)
-    {
-        glActiveTexture(GL_TEXTURE0 + index);
-        glBindTexture(GL_TEXTURE_2D, _id);
-    }
-}
