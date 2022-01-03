@@ -101,10 +101,10 @@ private:
     //! Method
     /*!
     *\void setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const short unsigned int rank);
-    *\param MMatrix : the model matrix.
-    *\param firstLights :
-    *\param light : 
-    *\param rank :
+    *\param MMatrix : MMatrix of the light_marker placed 5 case before the actual light.
+    *\param firstLights : first lights contained in the map
+    *\param light : two actual pontual lights position
+    *\param rank : 0 if the light is on the left, else it's on the right
     *\Method that .
     */
     void setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const short unsigned int rank);
