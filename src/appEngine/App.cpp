@@ -128,16 +128,19 @@ void App::setBestScores()
     unsigned short int index = 0;
     bool registered = false;
 
-    while(!registered && index < _scores.size())
+    for(std::vector<Score>::iterator it = _scores.begin(); it != _scores.end(); ++it)
     {
-        if(_game.getScore() > _scores[index].score)
+        if(_game.getScore() > it->score && !registered)
         {
-            _scores[index] = Score(index+1, _pseudoInput, _game.getScore());
+            _scores.insert(it, Score(index+1, _pseudoInput, _game.getScore()));
             registered = true;
         }
         index++;
     }
+    _scores.pop_back();
     _pseudoInput = "";
+
+    for(unsigned int i=0; i<_scores.size(); ++i) _scores[i].place = i+1;
 
     std::ofstream file;
     std::string const fileName("./saves/scores.txt");
