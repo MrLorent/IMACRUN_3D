@@ -11,7 +11,7 @@ Game::Game()
      _wallDistance(3)
 {}
 
-void Game::setState(const short unsigned int newState, const short unsigned int mode)
+void Game::setState(const unsigned short int newState, const unsigned short int mode)
 {
     switch (_state)
     {

@@ -3,7 +3,7 @@
 // CONSTRUCTOR
 /* basic constructor */
 
-Camera::Camera(short unsigned int caseSubdivisions)
+Camera::Camera(unsigned short int caseSubdivisions)
     :_state(LOCKED),
      _mode(TRACKBALL),
      _rotationDirection(0),
@@ -31,7 +31,7 @@ Camera::~Camera(){}
 
 // SETTERS
 
-void Camera::setState(const short unsigned int newState)
+void Camera::setState(const unsigned short int newState)
 {
     switch (_state)
     {

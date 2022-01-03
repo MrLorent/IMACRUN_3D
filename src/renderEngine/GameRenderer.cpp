@@ -280,7 +280,7 @@ void GameRenderer::drawSkyBox(glm::mat4& VMatrix, glm::mat4& MMatrix)
     );
 }
 
-void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const short unsigned int rank)
+void GameRenderer::setLights(glm::mat4& MMatrix,std::vector<glm::vec3>& firstLights, std::deque<glm::vec3>& lights, const unsigned short int rank)
 {
     MMatrix = glm::translate(
         MMatrix,

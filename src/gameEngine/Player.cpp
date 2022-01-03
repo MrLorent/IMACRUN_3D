@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(short unsigned int caseSubdivision)
+Player::Player(unsigned short int caseSubdivision)
     :_position(glm::vec3(0.f, 0.f, 0.f)),
      _isJumping(false),
      _isCrouching(false),
@@ -74,8 +74,3 @@ unsigned int Player::getScore()const{
 void Player::upScore(){
     _score++;
 }
-
-
-// Player::~Player()
-// {
-// }

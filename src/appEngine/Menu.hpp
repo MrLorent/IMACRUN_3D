@@ -16,14 +16,14 @@
 struct Button
 {
     std::string label;
-    short unsigned int link;
+    unsigned short int link;
      //! Constructor
         /*!
-         *\fn Button(std::string label, short unsigned int link)
+         *\fn Button(std::string label, unsigned short int link)
          *\param label : name of the button
          *\param link : correspond to a menu define in the enum APP_MENUS in the App class
          */
-    Button(std::string label, short unsigned int link)
+    Button(std::string label, unsigned short int link)
         :label(label), link(link)
     {}
 };
@@ -39,10 +39,10 @@ class Menu
 {
 private:
     std::vector<Button> _buttons;
-    short unsigned int _currentButton;
+    unsigned short int _currentButton;
 public:
     // OPERATORS
-     //! Constructor
+    //! Constructor
     /*!
     *\fn Menu(std::vector<Button> buttons)
     *\param buttons : vector of all button
@@ -67,27 +67,27 @@ public:
         *\fn getButtonIndex()
         *\return the button's index
         */
-    inline short unsigned int getButtonIndex() { return _currentButton; }
+    inline unsigned short int getButtonIndex() { return _currentButton; }
 
         /*! Getter
         *\fn getButtonIndex()
         *\return the current Button's link
         */
-    inline short unsigned int getCurrentButtonLink() { return _buttons[_currentButton].link; }
+    inline unsigned short int getCurrentButtonLink() { return _buttons[_currentButton].link; }
 
         /*! Getter
-        *\fn Button getButtonAt(short unsigned int index)
+        *\fn Button getButtonAt(unsigned short int index)
         *\param index : index to have the right button
         */
-    Button getButtonAt(short unsigned int index) { return _buttons[index]; }
+    Button getButtonAt(unsigned short int index) { return _buttons[index]; }
 
 
     //! Setter
         /*! Setter
-        *\fn setCurrentButton(const short unsigned int index)
+        *\fn setCurrentButton(const unsigned short int index)
         *\param index : set the current button at the index
         */
-    void setCurrentButton(const short unsigned int index);
+    void setCurrentButton(const unsigned short int index);
 
     //! METHODS
         /*! Method

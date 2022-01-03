@@ -1,7 +1,7 @@
 var searchData=
 [
   ['c_5fstr_0',['c_str',['../d8/d61/classglimac_1_1_file_path.html#ae823251a25bf0f9a9294368ac020e5e8',1,'glimac::FilePath']]],
-  ['camera_1',['Camera',['../da/dbb/class_camera.html',1,'Camera'],['../da/dbb/class_camera.html#a01f94c3543f56ede7af49dc778f19331',1,'Camera::Camera()'],['../da/dbb/class_camera.html#aa9f39bf1b82b35f825f2ecc97a4dd7c2',1,'Camera::Camera(short unsigned int caseSubdivisions)']]],
+  ['camera_1',['Camera',['../da/dbb/class_camera.html',1,'Camera'],['../da/dbb/class_camera.html#a01f94c3543f56ede7af49dc778f19331',1,'Camera::Camera()'],['../da/dbb/class_camera.html#aa9f39bf1b82b35f825f2ecc97a4dd7c2',1,'Camera::Camera(unsigned short int caseSubdivisions)']]],
   ['camera_2ecpp_2',['Camera.cpp',['../d1/d33/_camera_8cpp.html',1,'']]],
   ['camera_2ehpp_3',['Camera.hpp',['../d4/d6a/_camera_8hpp.html',1,'']]],
   ['camera_5fhpp_4',['CAMERA_HPP',['../d4/d6a/_camera_8hpp.html#a6e512587c9494450239940fc30dae273',1,'Camera.hpp']]],
