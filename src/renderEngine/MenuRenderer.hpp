@@ -10,6 +10,13 @@ struct Score
     std::string name;
     unsigned int score;
 
+        //! Constructor
+        /*!
+        *\fn Score(unsigned short int p, std::string n, unsigned int s);
+        *\param p : the rank of the player 
+        *\param n : the name of the player
+        *\param s : the score of the player
+        */ 
     Score(unsigned short int p, std::string n, unsigned int s)
         :place(p), name(n), score(s)
     {}
