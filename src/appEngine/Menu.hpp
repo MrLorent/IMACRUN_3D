@@ -46,7 +46,8 @@ class Menu
     public:
         // OPERATORS
         
-        // CONSTRUCTOR
+        // CONSTRUCTORS
+        /* basic constructor */
 
         //! Constructor
         /*!
@@ -55,11 +56,15 @@ class Menu
         */
         Menu(const std::vector<Button> &buttons);
         
+        // DESTRUCTOR
+
         //! Destructor
         /*!
         *   destructor by default
         */
         ~Menu();
+
+        // GETTERS
 
         //! Getter
         /*!
@@ -89,6 +94,7 @@ class Menu
         */
         Button getButtonAt(const unsigned short int index) const { return _buttons[index]; }
 
+        // SETTERS
 
         //! Setter
         /*!
@@ -96,6 +102,8 @@ class Menu
         *\param index : set the current button at the index
         */
         void setCurrentButton(const unsigned short int index);
+
+        // METHODS
 
         //! Method
         /*!

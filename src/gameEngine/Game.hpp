@@ -13,11 +13,34 @@ class Game
         // ATTRIBUTS
 
         unsigned short int _state;
+
+        float _caseSubdivisions;
+        unsigned int _caseSubdivisionsIndex;
+
+        /* Player placement parameters */
         const unsigned short int _defaultIndex;
         unsigned short int _playerIndex;
+        
+        /* Skybox parameters */
         glm::mat4 _skyBoxMMatrix;
 
+        // PRIVATE METHODS
+
+        //! Private method
+        /*!
+        *\fn void checkPlayerPosition()
+        * Check the case under the player position and
+        * determine if the game is finished or not.
+        */
         void checkPlayerPosition();
+
+        //! Private method
+        /*!
+        *\fn void passTurn()
+        * Fonction called when the player pass a turn obstacle
+        * to modify the map in order signifie to the gameRenderer
+        * that the turn has been passed. 
+        */
         void passTurn();
 
     public:
@@ -40,12 +63,10 @@ class Game
         static constexpr short int RIGHT = 1;
 
         // ATTRIBUTS
+
         Camera _camera;
         Map _map;
         Player _player;
-
-        float _caseSubdivisions;
-        unsigned int _caseSubdivisionsIndex;
 
         short int _turn;
         unsigned short int _wallDistance;
