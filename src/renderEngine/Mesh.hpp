@@ -8,12 +8,24 @@
 #include "Program.hpp"
 #include "Texture.hpp"
 
+//! The Textures structure contains 2 different textures and a shininess value.
+/*!
+ *  The two textures correspond to a diffuse and a specular one.
+ *  The float shininess defines a shininess level.
+ */
+
 struct Textures{
     Texture diffuse;
     Texture specular;
     float shininess; 
 };
 
+//! The Vertex structure contains a position, a normal and texture coords.
+/*!
+ *  position is a 3 dimensions vector with x, y and z value.
+ *  normal is also a 3 dimensions vector with x, y and z value.
+ *  texCoords is a 2 dimensions vector with x and y value.
+ */
 
 struct Vertex{
     glm::vec3 position;
@@ -22,18 +34,39 @@ struct Vertex{
 
     // OPERATORS
 
+    //! Boolean operator
+    /*! 
+    *\Surcharg of operator == for a vertex
+    */
     bool operator==(const Vertex& other) const {
         return position == other.position && normal == other.normal && texCoords == other.texCoords;
     }
 
     // CONSTRUCTOR
 
+    //! Constructor
+    /*! 
+    *\Constructor by default
+    */
     Vertex(){}
+
+    //! Constructor
+    /*!
+    *\fn Vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t)
+    *\param p : position of vertex
+    *\param n : normal vector of the vextex plan
+    *\param t : textCoords vector of the texture 2D
+    */
     Vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t)
         :position(p), normal(n), texCoords(t)
     {}
 };
 
+//! Method
+/*!
+*\fn size_t operator()(Vertex const& vertex) const
+* Method that hashes a vertex structure to arrange them in in a hash list
+*/
 namespace std {
     template<> struct hash<Vertex> {
         size_t operator()(Vertex const& vertex) const {
@@ -43,6 +76,13 @@ namespace std {
         }
     };
 }
+
+//! The Mesh class contains 3 GLuint attributs, a vector vertices, a vector of indices and a instance of Testures structure
+/*!
+ *  vertices is a vector of vertex.
+ *  indices is a vector of unsigned int.
+ *  textures is a textures struct to display.
+ */
 
 class Mesh
 {
@@ -55,9 +95,32 @@ class Mesh
 
         // PRIVATE METHODS
 
+        //! Method
+        /*!
+        *\fn void initVbo()
+        * Method that initialises the Vbo
+        */
         void initVbo();
+
+        //! Method
+        /*!
+        *\fn void initIbo()
+        * Method that initialises the Ibo
+        */
         void initIbo();
+
+        //! Method
+        /*!
+        *\fn void initVao()
+        * Method that initialises the Vao
+        */
         void initVao();
+
+        //! Method
+        /*!
+        *\fn void bindTexture(int index, GLint textureId, const char* uniformName, const GLuint shadersId) const
+        * Method that binds the texture in shaders
+        */
         void bindTexture(int index, GLint textureId, const char* uniformName, const GLuint shadersId) const;
     
     public:
@@ -68,37 +131,67 @@ class Mesh
         Textures textures;
 
         // OPERATORS
-        /* Move assignment operator */
 
+        //! Move assignment operator
+        /*! 
+         *\First surcharg of operator =
+         */
         Mesh& operator=(Mesh&& rhs) noexcept;
 
-        /* Copy assignment operator */
+        //! Copy assignment operator
+        /*! 
+         *\Second surcharg of operator =
+         */
         Mesh& operator=(const Mesh&) = delete; // We disable copying
 
         // CONSTRUCTORS
         /* basic constructor */
         
+        //! Constructor
+        /*! 
+         *\Constructor by default
+         */
         Mesh();
+
+        //! Constructor
+        /*!
+        *\fn Mesh(const std::vector<Vertex>& vertices,const std::vector<unsigned int>& indices,Textures&& textures
+        )
+        *\param vertices : vector of all vertex
+        *\param indices : vector of all indices
+        *\param textures : Textures of texture to display
+        */
         Mesh(
             const std::vector<Vertex>& vertices,
             const std::vector<unsigned int>& indices,
             Textures&& textures
         );
 
-        /* Copy constructor */
-
+        //! Copy constructor
+        /*! 
+         *\ Copy constructor
+         */
         Mesh(const Mesh&) = delete; // We disable copying
 
-        /* move constructor */
-
+        //! Move constructor
+        /*! 
+         *\ Move constructor
+         */
         Mesh(Mesh&& rhs) noexcept;
 
-        // DESTRUCTOR
-
+        //! Destructor
+        /*! 
+         *\Destructor by default
+         */
         ~Mesh();
 
         // METHODS
         
+        //! Method
+        /*!
+        *\fn void draw(glimac::Program& shaders)
+        * Method that draws the mesh thanks to shaders 
+        */
         void draw(glimac::Program& shaders);
 
 };
