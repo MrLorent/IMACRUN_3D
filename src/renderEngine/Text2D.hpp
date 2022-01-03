@@ -12,6 +12,7 @@
 #include FT_FREETYPE_H
 
 
+//! The Character structure contain a TextureID, the size of the character, the bearing and the advance 
 
 struct Character {
     unsigned int TextureID;  // ID handle of the glyph texture
@@ -22,7 +23,17 @@ struct Character {
 
 struct Shader{
     glimac::Program program;
+    //! Constructor
+    /*!
+     * Constructor by default
+     */
     Shader(){}
+    
+    //! Constructor
+    /*!
+    *\fn  Shader(const glimac::FilePath& applicationPath)
+    *\param applicationPath : FilePath to the application.
+    */
     Shader(const glimac::FilePath& applicationPath)
     :program(glimac::loadProgram(
         applicationPath.dirPath() + "src/renderEngine/shaders/text2D.vs.glsl",
@@ -51,7 +62,19 @@ class Text2D
         // CONSTRUCTORS
         /* basic constructors */
 
+         //! Constructor
+        /*!
+        * Constructor by default
+        */
         Text2D(){};
+
+        //! Constructor
+        /*!
+        *\fn  Text2D(const unsigned int fontSize, glimac::FilePath name, std::string fontName="Arial.ttf")
+        *\param fontSize : Size of the font.
+        *\param name : FilePath to the application.
+        *\param fontName : name of the font, Arial by default.
+        */
         Text2D(const unsigned int fontSize, glimac::FilePath name, std::string fontName="Arial.ttf");
 
         /* Copy constructor */
@@ -59,14 +82,30 @@ class Text2D
         Text2D(const Text2D&) = delete; // We disable copying
 
         /* move constructor */
-        
+        //! Constructor
+        /*!
+        *\fn Text2D(Text2D&& rhs) noexcept;
+        *\Move Constructor by default
+        */
         Text2D(Text2D&& rhs) noexcept;
 
         // DESTRUCTORS
-
+        //! Destructor
+        /*!
+         * Destructor by default.
+         */
         ~Text2D();
         
         // METHODS
+        //! Method
+        /*!
+        *\fn void draw(std::string text, glm::vec2 pos, glm::vec3 color, glm::mat4 projectionMatrix);
+        *\param text : the text we want to display.
+        *\param pos : glm::vec2 giving the position of the begining of the text.
+        *\param color : glm::vec3 giving the color of the text.
+        *\param projetctionMatrix : the text projection matrix.
+        *\Method that draw the given text to the right place and with the right color.
+        */
         
         void draw(
             std::string text,   /* Text to write */
