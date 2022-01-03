@@ -108,7 +108,7 @@ void App::getBestScores()
         std::string pseudo;
         unsigned int score;
 
-        for(short unsigned int i=0; i<3;++i)
+        for(unsigned short int i=0; i<3;++i)
         {
             file >> pseudo;
             file >> score;
@@ -125,7 +125,7 @@ void App::getBestScores()
 
 void App::setBestScores()
 {
-    short unsigned int index = 0;
+    unsigned short int index = 0;
     bool registered = false;
 
     while(!registered && index < _scores.size())
@@ -146,7 +146,7 @@ void App::setBestScores()
     if(file.is_open())
     {
 
-        for(short unsigned int i=0; i<_scores.size();++i)
+        for(unsigned short int i=0; i<_scores.size();++i)
         {
             file << _scores[i].name << std::endl;
             file << _scores[i].score << std::endl;
@@ -187,7 +187,7 @@ void App::render()
         break;
     case GAME:
         {
-            const short unsigned int gameState = _game.getState();
+            const unsigned short int gameState = _game.getState();
             
             switch (gameState)
             {
@@ -262,8 +262,8 @@ void App::key_callback(int key, int scancode, int action, int mods)
         case GLFW_KEY_ENTER: // Enter
             if(action !=0)
             {
-                const short unsigned int PREVIOUS_MENU = _menuIndex;
-                const short unsigned int BUTTON_CLICKED = _menuList[PREVIOUS_MENU].getButtonIndex();
+                const unsigned short int PREVIOUS_MENU = _menuIndex;
+                const unsigned short int BUTTON_CLICKED = _menuList[PREVIOUS_MENU].getButtonIndex();
                 _menuIndex = _menuList[_menuIndex].getCurrentButtonLink();
                 if(_menuIndex == LOAD_MENU && _savedScore == -1)
                 {

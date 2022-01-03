@@ -12,9 +12,9 @@ class Game
     private:
         // ATTRIBUTS
 
-        short unsigned int _state;
-        const short unsigned int _defaultIndex;
-        short unsigned int _playerIndex;
+        unsigned short int _state;
+        const unsigned short int _defaultIndex;
+        unsigned short int _playerIndex;
         glm::mat4 _skyBoxMMatrix;
 
         void checkPlayerPosition();
@@ -48,7 +48,7 @@ class Game
         unsigned int _caseSubdivisionsIndex;
 
         short int _turn;
-        short unsigned int _wallDistance;
+        unsigned short int _wallDistance;
         
         // CONSTRUCTORS
         /* basic constructors */
@@ -71,10 +71,10 @@ class Game
 
         //! Getter
         /*!
-        *\fn inline short unsigned int getState() const
+        *\fn inline unsigned short int getState() const
         *\return return the state of the Game according to those defined in the enum GAME_STATE
         */
-        inline short unsigned int getState() const { return _state; }
+        inline unsigned short int getState() const { return _state; }
 
         //! Getter
         /*!
@@ -115,12 +115,12 @@ class Game
 
         //! Setter
         /*!
-        *\fn void setState(const short unsigned int newState, const short unsigned int mode)
+        *\fn void setState(const unsigned short int newState, const unsigned short int mode)
         *\param newState : state from enum GAME_STATES to switch with. 
         *\param mode : mode from enum START_MODE to specify how to start a game
         * Setter that change the game state
         */
-        void setState(const short unsigned int newState, const short unsigned int mode);
+        void setState(const unsigned short int newState, const unsigned short int mode);
 
         //  METHODS
 
