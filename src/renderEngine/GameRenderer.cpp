@@ -161,7 +161,6 @@ void GameRenderer::drawMap(Game& game, glm::mat4& VMatrix)
             0.5 - game.getPlayerIndex() - game.getCaseSubdivisionIndex() / game.getCaseSubdivision()
         ) 
     );
-   // matrix matrice= matrix(_PROJECTION_MATRIX, VMatrix, MMatrix, currentLights);
     for(unsigned int i=0; i<_renderingLength; ++i)
     {
         for(unsigned short int k=0; k < game._map.getMapWidth(); ++k){
@@ -300,8 +299,8 @@ void GameRenderer::setLights(const glm::mat4& MMatrix,std::vector<glm::vec3>& fi
     }
 }
 
-void GameRenderer::drawWall(//a voir si matrice par reference
-    glm::mat4 &_PROJECTION_MATRIX,
+void GameRenderer::drawWall(
+    glm::mat4 &projMatrix,
     glm::mat4 &VMatrix,
     const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights
@@ -316,7 +315,7 @@ void GameRenderer::drawWall(//a voir si matrice par reference
 }
 
 void GameRenderer::drawBarel(
-    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &projMatrix,
     glm::mat4 &VMatrix,
     const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights
@@ -335,7 +334,7 @@ void GameRenderer::drawBarel(
     }
 
  void GameRenderer::drawLantern(
-    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &projMatrix,
     glm::mat4 &VMatrix,
     const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
@@ -348,7 +347,7 @@ void GameRenderer::drawBarel(
     }
 
 void GameRenderer::drawBottle(
-    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &projMatrix,
     glm::mat4 &VMatrix,
     const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
@@ -361,7 +360,7 @@ void GameRenderer::drawBottle(
     }
 
 void GameRenderer::drawArch(
-    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &projMatrix,
     glm::mat4 &VMatrix,
     const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){
@@ -373,7 +372,7 @@ void GameRenderer::drawArch(
     }
 
 void GameRenderer::drawPlank(
-    glm::mat4 &_PROJECTION_MATRIX,
+    glm::mat4 &projMatrix,
     glm::mat4 &VMatrix,
     const glm::mat4 &MMatrix,
     std::deque<glm::vec3> &currentLights){

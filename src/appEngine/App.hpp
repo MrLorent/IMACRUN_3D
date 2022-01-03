@@ -8,6 +8,16 @@
 #include "Game.hpp"
 #include "GameRenderer.hpp"
 
+//! The App class deals with the navigation throught the different menus, and the game.
+
+/*!
+ *  The App class contains a MenuRenderer object and
+ *  deals with the navigation throught the different
+ *  according to the Strategy design pattern. It also
+ *  contains a Game object and a GameRenderer object
+ *  to launch the game.
+ */
+
 class App
 {
 private:
@@ -49,23 +59,50 @@ public:
     // CONSTRUCTORS
     /* Basic constructors*/
 
+        //! Constructor
+        /*!
+         *\fn App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
+         *\param window : pointer to a GLFWwindow
+         *\param width : width of the GLFWwindow
+         *\param height : height of the GLFWwindow
+         *\param path : local path to the application root directory
+         */
     App(GLFWwindow *window, const unsigned int width, const unsigned int height, const std::string &path);
 
     // DESTRUCTORS
     ~App(){};
 
-    // GETTERS
+        //! Getter
+        /*!
+         *\fn inline Game& getGame()
+         *\return a reference on the game.
+         */
 
     inline Game &getGame() { return _game; }
 
-    // SETTERS
+        // METHODS
+
+        //! Method
+        /*!
+         *\fn void getBestScores()
+         * Method that get the registered scores in a output file.
+         */
+        //! Method
+        /*!
+         *\fn void getSavedScore()
+         * Method that read the score of the last game saved in a output file.
+         */
 
     // METHODS
     void getBestScores();
     void setBestScores();
     void getSavedScore();
 
-    /* Graphics */
+        //! Method
+        /*!
+         *\fn void render()
+         * Main method that display the application.
+         */
 
     void render();
 

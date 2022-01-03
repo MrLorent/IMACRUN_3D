@@ -70,15 +70,21 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>The <a class="el" href="../../d7/d62/struct_vertex.html" title="The Vertex structure contains a position, a normal and texture coords.">Vertex</a> structure contains a position, a normal and texture coords.  
+ <a href="../../d7/d62/struct_vertex.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../d6/d4a/_mesh_8hpp_source.html">Mesh.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a80a54a84866d511b63bcc6f38899bed9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/struct_vertex.html#a80a54a84866d511b63bcc6f38899bed9">operator==</a> (const <a class="el" href="../../d7/d62/struct_vertex.html">Vertex</a> &amp;other) const</td></tr>
+<tr class="memdesc:a80a54a84866d511b63bcc6f38899bed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean operator.  <a href="../../d7/d62/struct_vertex.html#a80a54a84866d511b63bcc6f38899bed9">More...</a><br /></td></tr>
 <tr class="separator:a80a54a84866d511b63bcc6f38899bed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97488994a2482d70da74e1b91d40e169"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/struct_vertex.html#a97488994a2482d70da74e1b91d40e169">Vertex</a> ()</td></tr>
+<tr class="memdesc:a97488994a2482d70da74e1b91d40e169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="../../d7/d62/struct_vertex.html#a97488994a2482d70da74e1b91d40e169">More...</a><br /></td></tr>
 <tr class="separator:a97488994a2482d70da74e1b91d40e169"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea138dd7030754ec36f3647ce7a3f6f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/struct_vertex.html#aea138dd7030754ec36f3647ce7a3f6f0">Vertex</a> (glm::vec3 p, glm::vec3 n, glm::vec2 t)</td></tr>
+<tr class="memdesc:aea138dd7030754ec36f3647ce7a3f6f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="../../d7/d62/struct_vertex.html#aea138dd7030754ec36f3647ce7a3f6f0">More...</a><br /></td></tr>
 <tr class="separator:aea138dd7030754ec36f3647ce7a3f6f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -90,7 +96,10 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8d5babcf0ee1f315dae1207c375759a4"><td class="memItemLeft" align="right" valign="top">glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d62/struct_vertex.html#a8d5babcf0ee1f315dae1207c375759a4">texCoords</a></td></tr>
 <tr class="separator:a8d5babcf0ee1f315dae1207c375759a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >The <a class="el" href="../../d7/d62/struct_vertex.html" title="The Vertex structure contains a position, a normal and texture coords.">Vertex</a> structure contains a position, a normal and texture coords. </p>
+<p >position is a 3 dimensions vector with x, y and z value. normal is also a 3 dimensions vector with x, y and z value. texCoords is a 2 dimensions vector with x and y value. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a97488994a2482d70da74e1b91d40e169" name="a97488994a2482d70da74e1b91d40e169"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a97488994a2482d70da74e1b91d40e169">&#9670;&nbsp;</a></span>Vertex() <span class="overload">[1/2]</span></h2>
 
@@ -113,6 +122,9 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Constructor. </p>
+<p >\Constructor by default </p>
 
 </div>
 </div>
@@ -156,6 +168,16 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>: position of vertex </td></tr>
+    <tr><td class="paramname">n</td><td>: normal vector of the vextex plan </td></tr>
+    <tr><td class="paramname">t</td><td>: textCoords vector of the texture 2D </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -182,6 +204,9 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Boolean operator. </p>
+<p >\Surcharg of operator == for a vertex </p>
 
 </div>
 </div>

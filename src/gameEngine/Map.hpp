@@ -45,19 +45,65 @@ public:
     char& operator[](const size_t& i);
 
     // CONSTRUCTEURS
+
+    //! Constructor
+    /*!
+    * Constructor by default
+    */
     Map();
 
     // DESTRUCTEURS
+
+    //! Destructor
+    /*!
+    * Destructor by default.
+    */
     ~Map();
 
     // GETTERS
+
+    //! Getter
+    /*!
+    *\fn size_t getSize() const
+    *\return the number of elements contain in the std::vector<char> _map attribut 
+    */
     size_t getSize() const;
-    unsigned short int getMapWidth() const ;
+
+    //! Getter
+    /*!
+    *\fn unsigned short int getMapWidth() const
+    *\return the number of cases in the map width.
+    */
+    unsigned short int getMapWidth() const;
 
     // METHODS
+
+    //! Method
+    /*!
+    *\fn void initGame()
+    * Method that reinitialise the map parameters to create a new one
+    */
     void initMap();
+
+    //! Method
+    /*!
+    *\fn void add(const char c)
+    * Method that add a new element to the _map attribut
+    */
     void add(const char c);
+
+    //! Method
+    /*!
+    *\fn void reloadMap()
+    * Method that refill the _map attribut by randomly picking a map element into the mapElement attribut.
+    */
     void reloadMap();
+
+    //! Method
+    /*!
+    *\fn void deleteFirstLigne()
+    * Method that delete the first line of the map.
+    */
     void deleteFirstLigne();
 };
 

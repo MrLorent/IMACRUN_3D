@@ -31,7 +31,7 @@ Camera::~Camera(){}
 
 // SETTERS
 
-void Camera::setState(const short unsigned int newState)
+void Camera::setState(const unsigned short int newState)
 {
     switch (_state)
     {
@@ -88,6 +88,8 @@ void Camera::toggleCameraLock()
 void Camera::changeDistance(const float delta)
 {
     _distance -= delta;
+    _distance=glm::clamp(_distance, 2.f, 10.f);
+
 }
 
 // FREEFLY METHODS

@@ -17,7 +17,7 @@ Menu::~Menu()
 
 // SETTER
 
-void Menu::setCurrentButton(const short unsigned int index)
+void Menu::setCurrentButton(const unsigned short int index)
 {
     _currentButton = index;
 }

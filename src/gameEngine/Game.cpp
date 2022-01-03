@@ -11,7 +11,7 @@ Game::Game()
      _wallDistance(3)
 {}
 
-void Game::setState(const short unsigned int newState, const short unsigned int mode)
+void Game::setState(const unsigned short int newState, const unsigned short int mode)
 {
     switch (_state)
     {
@@ -89,7 +89,7 @@ void Game::initGameFromSave(){
     _player = Player(_caseSubdivisions);
     
     /* Initialization of the game */
-    std::ifstream file("./externals/save.txt");
+    std::ifstream file("./saves/save.txt");
     if(file) {
         //Charger score
         int score;
@@ -123,7 +123,7 @@ void Game::initGameFromSave(){
 void Game::saveGame(){
     
     std::ofstream file;
-    std::string const fileName("./externals/save.txt");
+    std::string const fileName("./saves/save.txt");
     file.open(fileName, std::ios::out | std::ios::binary);
 
     if(file.is_open())    
@@ -137,8 +137,7 @@ void Game::saveGame(){
             file << _map[i]; 
             if(i%_map.getMapWidth() == _map.getMapWidth()-1) file << std::endl;
         }            
-        file.close();
-        std::cerr << "La partie a ete sauvegardee." << std::endl;  
+        file.close(); 
     }
     else
     {
@@ -200,7 +199,7 @@ void Game::checkPlayerPosition()
         if(_player.getPosition().x != 0) setState(FINISHED, 0);
         break;
     case Map::PLANK:
-        if(!_player._isCrouching) setState(FINISHED, 0);
+        if(!_player._isCrouching || _player._isJumping) setState(FINISHED, 0);
     default:
         break;
     }

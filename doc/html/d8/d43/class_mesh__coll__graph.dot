@@ -3,9 +3,9 @@ digraph "Mesh"
  // LATEX_PDF_SIZE
   edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
   node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="Mesh",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 [label="Mesh",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="The Mesh class contains 3 GLuint attributs, a vector vertices, a vector of indices and a instance of ..."];
   Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" textures" ,fontname="Helvetica"];
-  Node2 [label="Textures",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dda/struct_textures.html",tooltip=" "];
+  Node2 [label="Textures",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dda/struct_textures.html",tooltip="The Textures structure contains 2 different textures and a shininess value."];
   Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" diffuse\nspecular" ,fontname="Helvetica"];
   Node3 [label="Texture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d7f/class_texture.html",tooltip=" "];
 }

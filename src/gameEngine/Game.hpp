@@ -9,14 +9,12 @@
 
 class Game
 {
-    // friend class GameRenderer;
-
     private:
         // ATTRIBUTS
 
-        short unsigned int _state;
-        const short unsigned int _defaultIndex;
-        short unsigned int _playerIndex;
+        unsigned short int _state;
+        const unsigned short int _defaultIndex;
+        unsigned short int _playerIndex;
         glm::mat4 _skyBoxMMatrix;
 
         void checkPlayerPosition();
@@ -24,7 +22,7 @@ class Game
 
     public:
         // CONSTANTS
-        enum GAME_STATE{
+        enum GAME_STATES{
             WAITING = 0,
             RUNNING = 1,
             PAUSED = 2,
@@ -50,34 +48,109 @@ class Game
         unsigned int _caseSubdivisionsIndex;
 
         short int _turn;
-        short unsigned int _wallDistance;
+        unsigned short int _wallDistance;
         
         // CONSTRUCTORS
         /* basic constructors */
 
+        //! Constructor
+        /*!
+        * Constructor by default
+        */
         Game();
 
         // DESTRUCTORS
+
+        //! Destructor
+        /*!
+        * Destructor by default.
+        */
         ~Game(){};
 
         // GETTERS
-        inline short unsigned int getState() const { return _state; }
+
+        //! Getter
+        /*!
+        *\fn inline unsigned short int getState() const
+        *\return return the state of the Game according to those defined in the enum GAME_STATE
+        */
+        inline unsigned short int getState() const { return _state; }
+
+        //! Getter
+        /*!
+        *\fn inline float getCaseSubdivision() const
+        *\return return number of steps needed for a map element to move one meter.
+        */
         inline float getCaseSubdivision() const { return _caseSubdivisions; }
+
+        //! Getter
+        /*!
+        *\fn inline unsigned int getCaseSubdivisionIndex() const
+        *\return return the current case subdivision index 
+        */
         inline unsigned int getCaseSubdivisionIndex() const { return _caseSubdivisionsIndex; }
+
+        //! Getter
+        /*!
+        *\fn inline unsigned int getScore() const
+        *\return return the score of the game
+        */
         inline unsigned int getScore() const { return _player.getScore(); }
+
+        //! Getter
+        /*!
+        *\fn inline unsigned int getPlayerIndex() const
+        *\return return the current player index in term of map line
+        */
         inline unsigned int getPlayerIndex() const { return _playerIndex; }
+
+        //! Getter
+        /*!
+        *\fn inline glm::mat4& getSkyBoxMMatrix()
+        *\return return the skyBox MMatrix
+        */
         inline glm::mat4& getSkyBoxMMatrix() { return _skyBoxMMatrix; }
 
         // SETTER
 
-        void setState(const short unsigned int newState, const short unsigned int mode);
+        //! Setter
+        /*!
+        *\fn void setState(const unsigned short int newState, const unsigned short int mode)
+        *\param newState : state from enum GAME_STATES to switch with. 
+        *\param mode : mode from enum START_MODE to specify how to start a game
+        * Setter that change the game state
+        */
+        void setState(const unsigned short int newState, const unsigned short int mode);
 
         //  METHODS
 
+        //! Method
+        /*!
+        *\fn void initGame()
+        * Method that reinitialise the game parameters to start a new game
+        */
         void initGame();
+
+        //! Method
+        /*!
+        *\fn void initGameFromSave()
+        * Method that reinitialise the game parameters according to an external file
+        */
         void initGameFromSave();
+
+        //! Method
+        /*!
+        *\fn void runGame()
+        * Method that define one turn of game
+        */
         void runGame();
-        void saveGame(); 
+        
+        //! Method
+        /*!
+        *\fn void saveGame()
+        * Method that register the parameters of the current game in external file save.txt
+        */
+        void saveGame();
 
         void key_callback(const int key, const int scancode, const int action, const int mods);
         void mouse_button_callback(const int button, const int action, const int mods);
