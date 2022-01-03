@@ -59,7 +59,7 @@ void Player::crouch()
 {
     if(_crouchingIndex == _crouchingTiming){
         _isCrouching= false;
-        _crouchingIndex =0;
+        _crouchingIndex = 0;
     }
     else
     {

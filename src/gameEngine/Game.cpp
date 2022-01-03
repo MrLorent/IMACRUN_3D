@@ -203,7 +203,7 @@ void Game::checkPlayerPosition()
         if(_player.getPosition().x != 0) setState(FINISHED, 0);
         break;
     case Map::PLANK:
-        if(!_player._isCrouching) setState(FINISHED, 0);
+        if(!_player._isCrouching || _player._isJumping) setState(FINISHED, 0);
     default:
         break;
     }
