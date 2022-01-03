@@ -95,9 +95,6 @@ void Map::initMap()
         _map.push_back(mapStart[i]);
     }
     
-    // for(int i=0; i<_mapElements[0].size() * 2; ++i){
-    //     _map.push_back(_mapElements[0][i%_mapElements[0].size()]);
-    // }
     while(_map.size() < 25 * _mapWidth)
     {
         int randomIndex = _distribution(_random);
