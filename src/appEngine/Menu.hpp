@@ -39,7 +39,7 @@ struct Button
 class Menu
 {
     private:
-        // ATTRIBUTS
+        // PRIVATE ATTRIBUTS
         std::vector<Button> _buttons;
         unsigned short int _currentButton;
 
@@ -62,7 +62,7 @@ class Menu
         /*!
         *   destructor by default
         */
-        ~Menu();
+        ~Menu(){};
 
         // GETTERS
 

@@ -11,10 +11,6 @@ Menu::Menu(const std::vector<Button> &buttons)
 {
 }
 
-Menu::~Menu()
-{
-}
-
 // SETTER
 
 void Menu::setCurrentButton(const unsigned short int index)

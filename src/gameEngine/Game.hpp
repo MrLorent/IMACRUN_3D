@@ -10,7 +10,7 @@
 class Game
 {
     private:
-        // ATTRIBUTS
+        // PRIVATE ATTRIBUTS
 
         unsigned short int _state;
 

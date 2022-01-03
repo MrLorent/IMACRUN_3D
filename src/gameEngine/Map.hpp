@@ -12,14 +12,25 @@
 class Map
 {
 private:
+    // PRIVATE ATTRIBUTS
+
     unsigned short int _mapWidth;
     std::deque<char> _map;
     std::vector<std::vector<char>> _mapElements;
     
+    /* Mersenne twister random parameters */
     unsigned _seed;
     std::mt19937_64 _random;
     std::uniform_int_distribution<int> _distribution;
 
+    // PRIVATE METHODS
+
+    //! Private method
+    /*!
+    *\fn void loadMapElements()
+    * Method that read all the map elements in external file ./assets/map/map.txt
+    * and register then in the _mapElement attribut
+    */
     void loadMapElements();
 
 public:
@@ -34,13 +45,21 @@ public:
     static constexpr char ARCH = 'a';
     static constexpr char PLANK = 'o';
 
-
-
-    // ATTRIBUTS
+    // PUBLIC ATTRIBUTS
     std::vector<glm::vec3> firstLights;
 
     // OPERATORS
+
+    //! Operator
+    /*!
+    * Getter : return the value at the index given
+    */
     const char& operator[](const size_t& i) const;
+    
+    //! Operator
+    /*!
+    * Setter : return the reference of the value at the index given
+    */
     char& operator[](const size_t& i);
 
     // CONSTRUCTEURS
@@ -49,7 +68,7 @@ public:
     /*!
     * Constructor by default
     */
-    Map();
+    Map(){};
 
     // DESTRUCTEURS
 
@@ -57,7 +76,7 @@ public:
     /*!
     * Destructor by default.
     */
-    ~Map();
+    ~Map(){};
 
     // GETTERS
 

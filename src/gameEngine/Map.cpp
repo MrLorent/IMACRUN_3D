@@ -19,10 +19,6 @@ Map::Map()
     _distribution = std::uniform_int_distribution<int>(0,_mapElements.size()-1);
 }
 
-Map::~Map()
-{
-}
-
 void Map::loadMapElements()
 {
     std::ifstream file;

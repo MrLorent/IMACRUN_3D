@@ -21,7 +21,7 @@
 class App
 {
     private:
-        // ATTRIBUTS
+        // PRIVATE ATTRIBUTS
         /* Window parameters */
         int _WINDOW_WIDTH;
         int _WINDOW_HEIGHT;
@@ -76,7 +76,7 @@ class App
 
         //! Destructor
         /*! 
-        *\  destructor by default
+        *   destructor by default
         */
         ~App(){};
 

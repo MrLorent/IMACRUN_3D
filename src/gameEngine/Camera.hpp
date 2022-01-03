@@ -10,8 +10,12 @@
 class Camera
 {
     private:
+        // PRIVATE ATTRIBUTS
+
         unsigned short int _state;
         unsigned short int _mode;
+
+        /* rotation parameters */
         short int _rotationDirection;
         unsigned int _rotationIndex;
         unsigned int _rotationDuration;
