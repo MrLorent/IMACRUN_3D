@@ -68,7 +68,7 @@ public:
     /*!
     * Constructor by default
     */
-    Map(){};
+    Map();
 
     // DESTRUCTEURS
 
