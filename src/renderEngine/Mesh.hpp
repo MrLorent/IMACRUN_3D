@@ -54,7 +54,7 @@ struct Vertex{
 
     //! Constructor
     /*!
-    *\fn Vertex(glm::vec3 p, glm::vec3 n, glm::vec2 t)
+    *\fn Vertex(const glm::vec3 p, const glm::vec3 n, const glm::vec2 t)
     *\param p : position of vertex
     *\param n : normal vector of the vextex plan
     *\param t : textCoords vector of the texture 2D
@@ -120,7 +120,7 @@ class Mesh
 
         //! Method
         /*!
-        *\fn void bindTexture(int index, GLint textureId, const char* uniformName, const GLuint shadersId) const
+        *\fn void bindTexture(const int index,const GLint textureId, const char* uniformName, const GLuint shadersId) const
         * Method that binds the texture in shaders
         */
         void bindTexture(const int index,const GLint textureId, const char* uniformName, const GLuint shadersId) const;

@@ -31,11 +31,11 @@ class Player
             */ 
         Player(){}
 
-            //! Constructor
-            /*!
-            *\fn Player(unsigned short int caseSubdivision);
-            * \param caseSubdivisions : Number of steps needed for a map element to move one meter.
-            */ 
+        //! Constructor
+        /*!
+        *\fn Player(const unsigned short int caseSubdivision);
+        * \param caseSubdivisions : Number of steps needed for a map element to move one meter.
+        */ 
         Player(const unsigned short int caseSubdivision);
         
         // DESTRUCTORS

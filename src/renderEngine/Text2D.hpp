@@ -70,7 +70,7 @@ class Text2D
 
         //! Constructor
         /*!
-        *\fn  Text2D(const unsigned int fontSize, glimac::FilePath name, std::string fontName="Arial.ttf")
+        *\fn  Text2D(const unsigned int fontSize,const glimac::FilePath path, const std::string &fontName="Arial.ttf")
         *\param fontSize : Size of the font.
         *\param name : FilePath to the application.
         *\param fontName : name of the font, Arial by default.

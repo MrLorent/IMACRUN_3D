@@ -59,14 +59,13 @@ public:
      * Constructor by default
      */
     Camera(){};
-    Camera(const unsigned short int caseSubdivisions);
 
     //! Constructor
     /*!
-    *\fn Camera(unsigned short int caseSubdivisions)
+    *\fn Camera(const unsigned short int caseSubdivisions)
     *\param caseSubdivisions : Number of steps needed for a map element to move one meter.
     */
-    Camera(unsigned short int caseSubdivisions);
+    Camera(const unsigned short int caseSubdivisions);
 
     // DESTRUCTOR
 
@@ -104,7 +103,7 @@ public:
     *\fn inline glm::vec3 getPosition()
     *\return the camera position.
     */
-    inline glm::vec3 getPosition(){ return _position; };
+    inline glm::vec3 getPosition() const { return _position; };
 
     // SETTERS
 
@@ -126,30 +125,26 @@ public:
 
     //! Setter
     /*!
-    *\fn void setPosition(glm::vec3 position);
+    *\fn void setPosition(const glm::vec3 position);
     *\param position : position to which place the camera 
     * Set the position of the camera.
     */
-    void setPosition(glm::vec3 position);
+    void setPosition(const glm::vec3 position);
 
     // METHODS
 
     //! Method
     /*!
-    *\fn void changeDistance(float delta)
+    *\fn void changeDistance(const float delta)
     * Method that change the distance of the camera from the subject in Trackball mode
     */
+    void changeDistance(const float delta);
 
     //! Method
     /*!
     *\fn void switchMode()
     * Method that switch between Trackball and Freefly mode
     */
-    void changeDistance(const float delta);
-    void setPosition(const glm::vec3 position);
-    glm::vec3 getPosition() const {
-        return _position;
-    };
     void switchMode();
 
     //! Method
@@ -165,36 +160,37 @@ public:
     * Method that enable the camera to follow the player after a turn
     */
     void takeTurn();
-    void rotateHorizontaly(const float degrees);
-    void rotate90Horizontaly(const short int direction);
-    void rotateVerticaly(const float degrees);
+
 
     //! Method
     /*!
-    *\fn void rotateHorizontaly(float degrees)
+    *\fn void rotateHorizontaly(const float degrees)
     *\param degrees : degree of the rotation angle
     * Method that makes the camera rotate horizontally
     */
-    //! Method
-    /*!
-    *\fn void rotate90Horizontaly(short int direction)
-    *\param direction : ddirection of the rotation
-    * Method that rotate of 90 degres in the direction given
-    */
+    void rotateHorizontaly(const float degrees);
 
     //! Method
     /*!
-    *\fn void rotateVerticaly(float degrees)
+    *\fn void rotate90Horizontaly(const short int direction)
+    *\param direction : ddirection of the rotation
+    * Method that rotate of 90 degres in the direction given
+    */
+    void rotate90Horizontaly(const short int direction);
+    
+    //! Method
+    /*!
+    *\fn void rotateVerticaly(const float degrees)
     *\param degrees : degree of the rotation angle
     * Method that makes the camera rotate vertically
     */
+    void rotateVerticaly(const float degrees);
 
     //! Method
     /*!
     *\fn glm::mat4 getViewMatrix() const
     * Method that compute the ViewMatrix of the camera
     */
-
     glm::mat4 getViewMatrix() const;
 
     //! Method

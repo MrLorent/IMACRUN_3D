@@ -59,51 +59,54 @@ public:
     // CONSTRUCTORS
     /* Basic constructors*/
 
-        //! Constructor
-        /*!
-         *\fn App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
-         *\param window : pointer to a GLFWwindow
-         *\param width : width of the GLFWwindow
-         *\param height : height of the GLFWwindow
-         *\param path : local path to the application root directory
-         */
+    //! Constructor
+    /*!
+    *\fn App(GLFWwindow* window, const unsigned int width, const unsigned int height, const std::string path)
+    *\param window : pointer to a GLFWwindow
+    *\param width : width of the GLFWwindow
+    *\param height : height of the GLFWwindow
+    *\param path : local path to the application root directory
+    */
     App(GLFWwindow *window, const unsigned int width, const unsigned int height, const std::string &path);
 
     // DESTRUCTORS
     ~App(){};
 
-        //! Getter
-        /*!
-         *\fn inline Game& getGame()
-         *\return a reference on the game.
-         */
-
+    //! Getter
+    /*!
+    *\fn inline Game& getGame()
+    *\return a reference on the game.
+    */      
     inline Game &getGame() { return _game; }
 
-        // METHODS
-
-        //! Method
-        /*!
-         *\fn void getBestScores()
-         * Method that get the registered scores in a output file.
-         */
-        //! Method
-        /*!
-         *\fn void getSavedScore()
-         * Method that read the score of the last game saved in a output file.
-         */
-
     // METHODS
+
+    //! Method
+    /*!
+    *\fn void getBestScores()
+    * Method that get the registered scores in a output file.
+    */
     void getBestScores();
+
+    //! Method
+    /*!
+    *\fn void SetBestScores()
+    * Method that Set the registered scores in a output file.
+    */
     void setBestScores();
+    
+    //! Method
+    /*!
+    *\fn void getSavedScore()
+    * Method that read the score of the last game saved in a output file.
+    */
     void getSavedScore();
 
-        //! Method
-        /*!
-         *\fn void render()
-         * Main method that display the application.
-         */
-
+    //! Method
+    /*!
+    *\fn void render()
+    * Main method that display the application.
+    */
     void render();
 
     /* Control managers */

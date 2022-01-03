@@ -43,18 +43,18 @@ private:
     unsigned short int _currentButton;
 public:
     // OPERATORS
+    
     //! Constructor
     /*!
     *\fn Menu(std::vector<Button> buttons)
     *\param buttons : vector of all button
     */
-    
     Menu(const std::vector<Button> &buttons);
     
     //! Destructor
-        /*! Destructor
-         *\destructor by default
-         */
+    /*! Destructor
+    *\destructor by default
+    */
     ~Menu();
 
     //! Getter
@@ -63,37 +63,40 @@ public:
     *\return the number of button
     */
     inline size_t getNumberOfButtons() const { return _buttons.size(); }
+    
+    //! Getter
+    /*! Getter
+    *\fn getButtonIndex()
+    *\return the button's index
+    */
     inline short unsigned int getButtonIndex() const  { return _currentButton; }
+
+    //! Getter
+    /*! Getter
+    *\fn getButtonIndex()
+    *\return the current Button's link
+    */
     inline short unsigned int getCurrentButtonLink() const { return _buttons[_currentButton].link; }
 
-        /*! Getter
-        *\fn getButtonIndex()
-        *\return the button's index
-        */
+    //! Getter
+    /*! Getter
+    *\fn Button getButtonAt(unsigned short int index)
+    *\param index : index to have the right button
+    */
     Button getButtonAt(const unsigned short int index) const { return _buttons[index]; }
-
-        /*! Getter
-        *\fn getButtonIndex()
-        *\return the current Button's link
-        */
-    void setCurrentButton(const unsigned short int index);
-
-        /*! Getter
-        *\fn Button getButtonAt(unsigned short int index)
-        *\param index : index to have the right button
-        */
 
 
     //! Setter
-        /*! Setter
-        *\fn setCurrentButton(const unsigned short int index)
-        *\param index : set the current button at the index
-        */
+    /*! Setter
+    *\fn setCurrentButton(const unsigned short int index)
+    *\param index : set the current button at the index
+    */
+    void setCurrentButton(const unsigned short int index);
 
-    //! METHODS
-        /*! Method
-        *\fn changeCurrentButton(short int direction)
-        *\param direction : -1 if it goes up, else it's going down
-        */
+    //! Method
+    /*! Method
+    *\fn changeCurrentButton(short int direction)
+    *\param direction : -1 if it goes up, else it's going down
+    */
     void changeCurrentButton(const short int direction);
 };

@@ -24,17 +24,17 @@ class Texture
         // CONSTRUCTORS
         /* basic constructor */
         
-            //! Constructor
-            /*!
-            *\ Constructor by default
-            */ 
+        //! Constructor
+        /*!
+        *\ Constructor by default
+        */ 
         Texture();
 
-            //! Constructor
-            /*!
-            *\fn Texture(const std::string filePath);
-            *\param filePath : Relative path from the asset file to the texture file
-            */ 
+        //! Constructor
+        /*!
+        *\fn Texture(const std::string filePath);
+        *\param filePath : Relative path from the asset file to the texture file
+        */ 
         Texture(const std::string &filePath);
         
         /* Copy constructor */
@@ -58,30 +58,30 @@ class Texture
             */     
         ~Texture();
 
-        inline GLuint getId()const{ return _id; }
-        inline std::string getType()const{return _type;}
+        
         // GETTER
 
-            //! Getter
-            /*!
-            *\fn getId()
-            *\return the texture id 
-            */    
-
-            //! Getter
-            /*!
-            *\fn getTYpe()
-            *\return the type of the texture
-            */    
+        //! Getter
+        /*!
+        *\fn inline GLuint getId() const
+        *\return the texture id 
+        */    
+        inline GLuint getId() const { return _id; }
+        //! Getter
+        /*!
+        *\fn inline std::string getType() const
+        *\return the type of the texture
+        */    
+        inline std::string getType() const {return _type;}
 
         // METHODS
         
-            //! Method
-            /*!
-            *\fn load()
-            *\param filePath Relative path from the asset to the texture
-            *\return true if the texture loading is successfull or false if the texture loading failed
-            */ 
+        //! Method
+        /*!
+        *\fn load()
+        *\param filePath Relative path from the asset to the texture
+        *\return true if the texture loading is successfull or false if the texture loading failed
+        */ 
         bool load(const std::string& filePath);
     
 };
