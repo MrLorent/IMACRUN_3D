@@ -86,7 +86,7 @@ App::App(GLFWwindow* window, const unsigned int width, const unsigned int height
 void App::getSavedScore()
 {
     std::ifstream file;
-    std::string const fileName("./externals/save.txt");
+    std::string const fileName("./saves/save.txt");
     file.open(fileName, std::ios::out | std::ios::binary);
 
     if(file.is_open())
@@ -103,7 +103,7 @@ void App::getSavedScore()
 
 void App::getBestScores()
 {
-    std::ifstream file("./externals/scores.txt");
+    std::ifstream file("./saves/scores.txt");
     if(file) {
         std::string pseudo;
         unsigned int score;
@@ -140,7 +140,7 @@ void App::setBestScores()
     _pseudoInput = "";
 
     std::ofstream file;
-    std::string const fileName("./externals/scores.txt");
+    std::string const fileName("./saves/scores.txt");
     file.open(fileName, std::ios::out | std::ios::binary);
 
     if(file.is_open())

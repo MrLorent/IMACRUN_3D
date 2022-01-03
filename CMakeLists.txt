@@ -88,4 +88,4 @@ add_custom_command(
 endfunction()
 copy_folder_to_the_output_folder("assets")
 copy_folder_to_the_output_folder("src/renderEngine/shaders")
-copy_folder_to_the_output_folder("externals")
+copy_folder_to_the_output_folder("saves")

@@ -89,7 +89,7 @@ void Game::initGameFromSave(){
     _player = Player(_caseSubdivisions);
     
     /* Initialization of the game */
-    std::ifstream file("./externals/save.txt");
+    std::ifstream file("./saves/save.txt");
     if(file) {
         //Charger score
         int score;
@@ -123,7 +123,7 @@ void Game::initGameFromSave(){
 void Game::saveGame(){
     
     std::ofstream file;
-    std::string const fileName("./externals/save.txt");
+    std::string const fileName("./saves/save.txt");
     file.open(fileName, std::ios::out | std::ios::binary);
 
     if(file.is_open())    
