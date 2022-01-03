@@ -88,7 +88,7 @@ void Camera::toggleCameraLock()
 void Camera::changeDistance(const float delta)
 {
     _distance -= delta;
-    _distance=glm::clamp(_distance, 2.f, 10.f);
+    _distance=glm::clamp(_distance, 2.f, 6.f);
 
 }
 
