@@ -137,7 +137,7 @@ void MenuRenderer::drawGameOver(const Menu& menu)
 {
     _title.draw(
         "GAME OVER",
-        glm::vec2(_WINDOW_WIDTH/2.f -200.f, _WINDOW_HEIGHT-100.f),
+        glm::vec2(_WINDOW_WIDTH/2.f -110.f, _WINDOW_HEIGHT-100.f),
         glm::vec3(1.f,1.f,0.f),
         _TEXT_PROJECTION_MATRIX
     );
@@ -167,7 +167,7 @@ void MenuRenderer::drawLoadMenu(const Menu& menu, const int savedScore)
     {
         _text.draw(
             "SAUVEGARDE 1  |  SCORE : " + std::to_string(savedScore),
-            glm::vec2(125.f , _WINDOW_HEIGHT - 250),
+            glm::vec2(_WINDOW_WIDTH/2.f - 235.f , _WINDOW_HEIGHT - 250),
             glm::vec3(1.f),
             _TEXT_PROJECTION_MATRIX
         );
@@ -185,13 +185,13 @@ void MenuRenderer::drawScores(const Menu& menu, const std::vector<Score>& scores
     );
 
     float marginTop = 200.f;
-    float marginleft = 132.5f;
+    float marginLeft = 225.f;
 
     for(size_t i=0; i<scores.size();++i)
     {
         _text.draw(
             std::to_string(scores[i].place) + "    |    " + scores[i].name + "    |    " + std::to_string(scores[i].score),
-            glm::vec2(marginleft, _WINDOW_HEIGHT - marginTop),
+            glm::vec2(_WINDOW_WIDTH/2.f - marginLeft, _WINDOW_HEIGHT - marginTop),
             glm::vec3(1.f),
             _TEXT_PROJECTION_MATRIX
         );
