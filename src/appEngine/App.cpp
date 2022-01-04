@@ -317,6 +317,7 @@ void App::key_callback(const int key, const int scancode, const int action, cons
                         }else if(BUTTON_CLICKED == 0){
                             _menuIndex = SCORE_INPUT;
                         }else{
+                            _menuIndex = MAIN_MENU;
                             _game.setState(Game::WAITING, 0);
                         }
                         
