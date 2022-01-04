@@ -310,8 +310,16 @@ void App::key_callback(const int key, const int scancode, const int action, cons
                         _game.setState(Game::WAITING, 0);
                         break;
                     case SCORE_INPUT:
-                        _game.setState(Game::WAITING, 0);
-                        setBestScores();
+                        if(BUTTON_CLICKED == 0 && _pseudoInput.size() == 3)
+                        {
+                            setBestScores();
+                            _game.setState(Game::WAITING, 0);
+                        }else if(BUTTON_CLICKED == 0){
+                            _menuIndex = SCORE_INPUT;
+                        }else{
+                            _game.setState(Game::WAITING, 0);
+                        }
+                        
                         break;
                     case LOAD_MENU:
                         if(BUTTON_CLICKED == 0 && _savedScore != -1)
