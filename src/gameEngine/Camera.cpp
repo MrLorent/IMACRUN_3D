@@ -144,7 +144,8 @@ void Camera::takeTurn()
         }
         else
         {
-            _phi += glm::radians(float(90.f * 1/_rotationDuration * -_rotationDirection));
+            _phi += glm::radians(float(90.f * 1/_rotationDuration * _rotationDirection));
+            computeDirectionVectors();
         }
         _rotationIndex++;
     }
@@ -176,7 +177,7 @@ void Camera::rotate90Horizontaly(const short int direction)
     else
     {
         _phi += glm::radians(90.f * direction);
-        _phi=glm::clamp(_phi, glm::radians(-30.f), glm::radians(30.f));
+        //_phi=glm::clamp(_phi, glm::radians(-30.f), glm::radians(30.f));
         computeDirectionVectors();
     }
 }
